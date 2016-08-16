@@ -8,9 +8,10 @@ using easy_vet.Models;
 namespace easyvet.Migrations
 {
     [DbContext(typeof(VetContext))]
-    partial class VetContextModelSnapshot : ModelSnapshot
+    [Migration("20160816013014_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

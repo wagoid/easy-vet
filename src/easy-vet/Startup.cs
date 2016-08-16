@@ -29,7 +29,7 @@ namespace easy_vet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=VetDb;Trusted_Connection=True;";
+            var connection = @"Server=DESK-WAGNER\HAL9000;Database=EasyVet;Integrated Security=SSPI;";
             services.AddDbContext<VetContext>(options => options.UseSqlServer(connection));
 
             // Add framework services.

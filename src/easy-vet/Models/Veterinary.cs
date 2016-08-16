@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace easy_vet.Models
 {
-    public class Dog : Animal
+    public class Veterinary : Employee
     {
-        public string Breed { get; set; }
+        public new int Id { get; set; }
+        public string Specialty { get; set; }
     }
 }
