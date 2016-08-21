@@ -9,7 +9,7 @@ using EasyVet.Helpers;
 namespace EasyVet.Controllers
 {
     
-    public class Veterinary : BaseController
+    public class Veterinary : BaseController, Interfaces.Crud<Models.Veterinary>
     {
         public Veterinary() : base()
         {

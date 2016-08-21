@@ -10,10 +10,8 @@ namespace EasyVet.Tests.Mocks
 {
     class VetContext : DbContext, Models.Interfaces.VetContext 
     {
-        public bool ThrowWhenAccessingDbSet;
-        public VetContext(bool throwWhenAccessingDbSet = false) : base ()
+        public VetContext() : base ()
         {
-            this.ThrowWhenAccessingDbSet = throwWhenAccessingDbSet;
             this.Addresses = new Mocks.DbSet<Address>();
             this.Users = new Mocks.DbSet<User>();
             this.Employees = new Mocks.DbSet<Employee>();
@@ -36,17 +34,7 @@ namespace EasyVet.Tests.Mocks
         public IDbSet<Employee> Employees { get; set; }
         public IDbSet<Cashier> Cashiers { get; set; }
         public IDbSet<Costumer> Costumers { get; set; }
-        private IDbSet<Veterinary> veterinaries;
-
-        public IDbSet<Veterinary> Veterinaries
-        {
-            get
-            {
-                checkIfShouldThrow();
-                return veterinaries;
-            }
-            set { veterinaries = value; }
-        }
+        public IDbSet<Veterinary> Veterinaries { get; set; }
 
         public IDbSet<SalesPerson> SalesPeople { get; set; }
 
@@ -61,13 +49,5 @@ namespace EasyVet.Tests.Mocks
 
         public IDbSet<Animal> Animals { get; set; }
         public IDbSet<Dog> Dogs { get; set; }
-
-        private void checkIfShouldThrow()
-        {
-            if (this.ThrowWhenAccessingDbSet)
-            {
-                throw new Exception();
-            }
-        }
     }
 }
