@@ -3,9 +3,9 @@ module.exports = function(grunt) {
 	var bowerPath = 'bower_components';
 	var nodeModulesPath = 'node_modules/';
 	var srcPath = [
-		'assets/dist/**/*.js'
+		'src/dist/**/*.js'
 	];
-	var sassPath = 'assets/sass/app.scss';
+	var sassPath = 'src/sass/app.scss';
 
 	var vendorPath = [nodeModulesPath + 'react/dist/react.js', nodeModulesPath + 'react-dom/dist/react-dom.js'];
 
@@ -18,8 +18,8 @@ module.exports = function(grunt) {
 				transform: [["babelify", {presets: ['es2015', 'react']}]]
 			},
 			app: {
-				src: 'assets/js/index.js',
-				dest: 'assets/dist/js/index.js'
+				src: 'src/js/index.js',
+				dest: 'src/dist/js/index.js'
 			}
 		},
 
@@ -32,9 +32,9 @@ module.exports = function(grunt) {
 			jsx: {
 				files: [{
 					expand: true,
-					cwd: 'assets/js',
+					cwd: 'src/js',
 					src: ['*.js*'],
-					dest: 'assets/dist',
+					dest: 'src/dist',
 					ext: '.js'
 				}]
 			}
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'assets/dist/css/app.css': sassPath
+					'src/dist/css/app.css': sassPath
 				}
 			}
 		}

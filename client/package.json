@@ -7,6 +7,8 @@
     "url": "https://github.com/wagoid/easy-vet.git"
   },
   "dependencies": {
+    "history": "^3.0.0",
+    "material-ui": "^0.15.4",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",
@@ -15,10 +17,15 @@
     "redux": "^3.5.2"
   },
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "babel-plugin-transform-react-jsx": ">= 6.3",
     "babel-preset-es2015": ">= 6.3",
     "babel-preset-react": ">= 6.3",
     "babelify": "^7.3.0",
+    "eslint": "^3.3.1",
+    "eslint-config-rackt": "^1.1.1",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-react": "^6.1.2",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^0.1.13",
