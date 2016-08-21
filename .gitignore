@@ -1,3 +1,6 @@
+# Coverage files
+server/OpenCover/*
+
 ###################
 # compiled source #
 ###################
