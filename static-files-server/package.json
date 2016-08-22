@@ -1,0 +1,8 @@
+{
+  "name": "static-files-server",
+  "version": "0.0.1",
+  "description": "Serves static contents and responds to every request to /client with the index.html file.",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

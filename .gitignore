@@ -4,6 +4,7 @@ server/OpenCover/*
 # Client side files
 client/node_modules
 client/src/dist
+static-files-server/node_modules*
 
 ###################
 # compiled source #
