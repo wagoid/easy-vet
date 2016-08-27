@@ -1,14 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class Home extends Component {
-	constructor() {
-		super();
+	constructor(props, context) {
+		super(props, context);
+		console.log(props, context);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
 	handleSubmit (e) {
 		e.preventDefault();
-		this.context.router.push({pathname: `/${this._input.value}`});
+		this.context.router.push(`/easy-vet/client/${this._input.value}`);
 	}
 
 	render() {
@@ -36,6 +39,11 @@ class Home extends Component {
 			</section>
 		);
 	}
+}
+
+Home.contextTypes = {
+	muiTheme: PropTypes.object.isRequired,
+	router: PropTypes.object.isRequired
 }
 
 export default Home;

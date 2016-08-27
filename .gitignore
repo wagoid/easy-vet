@@ -5,6 +5,7 @@ server/OpenCover/*
 client/node_modules
 client/src/dist
 static-files-server/node_modules*
+client/npm-debug.log
 
 ###################
 # compiled source #

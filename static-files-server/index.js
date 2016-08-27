@@ -9,7 +9,12 @@ app.use(express.static(path.join(__dirname, '../client')));
 // handle every other route with index.html, which will contain
 // a script tag to your application's JavaScript file(s).
 app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, '../client', 'index.html'))
+  if (~request.url.indexOf('.js')) {
+    response.sendFile(path.resolve(__dirname, '../client/src/dist/js/index.js'));
+  } else {
+response.sendFile(path.resolve(__dirname, '../client', 'index.html'))
+  }
+  
 });
 
 app.listen(port);
