@@ -4,6 +4,7 @@ using System.Web.Http.Dispatcher;
 using System.Reflection;
 using System;
 using System.Web.Http.Controllers;
+using System.Web.Http.Cors;
 
 namespace EasyVet
 {
@@ -11,6 +12,7 @@ namespace EasyVet
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
             //Use
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
