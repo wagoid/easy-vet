@@ -78,14 +78,14 @@ namespace EasyVet.Tests.Controllers
             var controller = new EasyVet.Controllers.Veterinary(context);
             context.Veterinaries.Add(new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" });
 
-            context.ThrowWhenAccessingDbSet = true;
+            context.Veterinaries = null;
             var response = controller.Get();
 
             Assert.IsNotNull(response);
             Assert.IsNull(response.Data);
             Assert.IsNotNull(response.Message);
             Assert.IsNotNull(response.Type);
-            Assert.AreEqual("Exception", response.Type);
+            Assert.AreEqual("ArgumentNullException", response.Type);
         }
 
         [TestMethod]
