@@ -12,7 +12,10 @@
 
 ### Client:
 
-1. Open your shell and go to the client folder.
+1. Open your shell and go to the 'static-files-server' folder.
 2. Run `npm install`
-3. Run `grunt browserify`
-4. Use any server (like http-server) to serve the static files and open index.html
+3. Run `node index.js`
+4. Open your shell and go to the client folder.
+5. Run `npm install`
+6. Run `grunt browserify
+7. Now open localhost with the port you specified in process.env.PORT (default is 8080)
