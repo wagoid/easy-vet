@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
-import {AppBar, Drawer, RaisedButton, MenuItem, MuiThemeProvider} from 'material-ui';
-
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { AppBar,	Drawer,	RaisedButton,	MenuItem,	MuiThemeProvider } from 'material-ui';
+import MessageView from './messages/MessageView';
 
 // Define menu items for LeftNav
 let menuItems = [
@@ -28,8 +29,6 @@ class App extends React.Component {
 		this.setState({ open: !this.state.open });
 	}
 
-
-
 	// Get the selected item in LeftMenu
 	_getSelectedIndex() {
 		let currentItem;
@@ -53,12 +52,6 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id="page-container">
-				{/*<Drawer
-					ref="leftNav"
-					docked={false}
-					menuItems={menuItems}
-					selectedIndex={this._getSelectedIndex() }
-					onChange={this._onLeftNavChange} />*/}
 					<Drawer
 						docker={false}
 						open={this.state.open}
@@ -76,8 +69,12 @@ class App extends React.Component {
 					<AppBar title='Easy Vet' onLeftIconButtonTouchTap={this.handleToggle} />
 				</header>
 
-				<section className="content">
+				<section id="content">
 					{this.props.children}
+				</section>
+
+				<section id="message-view">
+					<MessageView />
 				</section>
 
 			</div>
@@ -95,9 +92,7 @@ App.contextTypes = {
 	muiTheme: PropTypes.object.isRequired
 };
 
-
-
-export default class AppProvider extends React.Component {
+export default class AppProvider extends Component {
 	constructor(...args) {
 		super(...args);
 	}
@@ -109,4 +104,4 @@ export default class AppProvider extends React.Component {
 			</MuiThemeProvider>
 		);
 	}
-};
+}

@@ -5,6 +5,7 @@ using System.Net;
 using System.Data.Entity;
 using System.Web.Http;
 using EasyVet.Helpers;
+using System.Web.Http.Cors;
 
 namespace EasyVet.Controllers
 {

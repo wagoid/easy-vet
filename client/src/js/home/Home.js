@@ -11,7 +11,7 @@ class Home extends Component {
 	
 	handleSubmit (e) {
 		e.preventDefault();
-		this.context.router.push(`/easy-vet/client/${this._input.value}`);
+		this.context.router.push(`${this._input.value}`);
 	}
 
 	render() {

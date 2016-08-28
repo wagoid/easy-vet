@@ -12,10 +12,12 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		browserify: {
 			options: {
+				watch: true,
+				keepAlive: true,
 				browserifyOptions: {
 					debug: true
 				},
-				transform: [["babelify", {presets: ['es2015', 'react']}]]
+				transform: [["babelify", {presets: ['es2015', 'react']}], ['envify']]
 			},
 			app: {
 				src: 'src/js/index.js',

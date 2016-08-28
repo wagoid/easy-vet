@@ -1,6 +1,16 @@
-export default function mainReducer(state, action) {
-  
-  //It is not doing anything with the actions for now
+const FAILURE_SUFFIX = '_FAILURE';
 
-  return state || {};
+export default function mainReducer(state = {}, action = {}) {
+	
+	if (~action.type.indexOf(FAILURE_SUFFIX)) {
+		state.message = {
+			open: true,
+			type: action.payload.type,
+			text: action.payload.message
+		}
+	} else {
+		state.message = {};
+	}
+
+	return state;
 };

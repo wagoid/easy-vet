@@ -11,6 +11,7 @@ import { configureStore } from './app/configureStore';
 //import DevTools from './containers/DevTools';
 import Home from './home/Home';
 import App from './app/App';
+import Employee from './employee';
 //import Login from './auth/Login';
 
 //hooks.bootstrap(store)();
@@ -25,6 +26,11 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 history.listen(loc => console.log('Route changed!', loc));
 
+//TODO: use an initialPath
+function getPath(path = '') {
+	var baseUrl = typeof process.env.BASE_URL === undefined? '/easy-vet/client' : process.env.BASE_URL;
+	return `${baseUrl}${path? ('/' + path) : path}`;
+}
 
 export default class Root extends Component {
 	render() {
@@ -32,9 +38,12 @@ export default class Root extends Component {
 			<div>
 				<Provider store={store}>
 					<Router history={history}>
-						<Route path='/easy-vet/client' component={App}>
+						<Route path={getPath()} component={App}>
+
+							<Route path={getPath('employee')} component={Employee} />
 							
-							<Route path="/easy-vet/client/*" component={Home} />
+							<Route path={getPath('*')} component={Home} />
+
 							{/*<Route path='/post/:id/edit' component={Draft} onEnter={hooks.editPost(store)}/>*/}
 							{/*<Route path='/post/new' component={Draft}/>*/}
 							{/*<Route path='/login' component={Login}/>*/}

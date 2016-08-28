@@ -53,8 +53,8 @@ namespace EasyVet.Tests.Controllers
             var firstAddress = context.Addresses.First();
             var secondAddress = new Address() { StreetName = "bla", Complement = "bla", Municipality = "bla", Neighbourhood = "bla", Number = 10, State = "bla", StreetType = "bla", ZipCode = "bla" };
             
-            var firstVeterinary = new Veterinary() { Address = firstAddress, BirdhDate = DateTime.Now, Cpf = "14", Name = "as", Password = "as", PhoneNumber = "as", Salary = 1500, Specialty = "dsadsa" };
-            var secondVeterinary = new Veterinary() { Address = secondAddress, BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
+            var firstVeterinary = new Veterinary() { Address = firstAddress, BirthDate = DateTime.Now, Cpf = "14", Name = "as", Password = "as", PhoneNumber = "as", Salary = 1500, Specialty = "dsadsa" };
+            var secondVeterinary = new Veterinary() { Address = secondAddress, BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
             context.Veterinaries.Add(firstVeterinary);
             context.Veterinaries.Add(secondVeterinary);
             context.SaveChanges();
@@ -76,7 +76,7 @@ namespace EasyVet.Tests.Controllers
         public void EnsureRespondsWithError()
         {
             var controller = new EasyVet.Controllers.Veterinary(context);
-            context.Veterinaries.Add(new Veterinary() { Address = context.Addresses.First(), BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" });
+            context.Veterinaries.Add(new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" });
 
             context.ThrowWhenAccessingDbSet = true;
             var response = controller.Get();
@@ -92,7 +92,7 @@ namespace EasyVet.Tests.Controllers
         public void EnsureGetByIdReturnsTheVeterinary()
         {
             var controller = new EasyVet.Controllers.Veterinary(context);
-            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
+            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
             context.Veterinaries.Add(veterinary);
             context.SaveChanges();
 
@@ -122,7 +122,7 @@ namespace EasyVet.Tests.Controllers
         public void EnsurePostCorrectlyAdds()
         {
             var controller = new EasyVet.Controllers.Veterinary();
-            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
+            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
             
             var response = controller.Post(veterinary);
 
@@ -136,7 +136,7 @@ namespace EasyVet.Tests.Controllers
         public void EnsurePutUpdatesCorrectly()
         {
             var controller = new EasyVet.Controllers.Veterinary();
-            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
+            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
             context.Veterinaries.Add(veterinary);
             context.SaveChanges();
 
@@ -153,7 +153,7 @@ namespace EasyVet.Tests.Controllers
         {
             var controller = new EasyVet.Controllers.Veterinary(context);
 
-            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirdhDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
+            var veterinary = new Veterinary() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500, Specialty = "dsadsa" };
             context.Veterinaries.Add(veterinary);
             context.SaveChanges();
 
