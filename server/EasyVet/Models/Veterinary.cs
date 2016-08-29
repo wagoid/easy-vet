@@ -14,20 +14,5 @@ namespace EasyVet.Models
 
         public List<Appointment> Appointments { get; set; }
 
-        public static Veterinary Factory(Adapters.GenericEmployee employee)
-        {
-            return new Veterinary()
-            {
-                Address = employee.Address,
-                BirthDate = employee.BirthDate,
-                Cpf = employee.Cpf,
-                Name = employee.Name,
-                Password = employee.Password,
-                PhoneNumber = employee.PhoneNumber,
-                Salary = employee.Salary,
-                Specialty = employee.Specialty,
-                Type = employee.Type
-            };
-        }
     }
 }

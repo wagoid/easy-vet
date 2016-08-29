@@ -211,7 +211,6 @@
     <Compile Include="Models\Costumer.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\Adapters\GenericEmployee.cs" />
     <Compile Include="Models\Interfaces\VetContext.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Product.cs" />
@@ -242,7 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Entities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

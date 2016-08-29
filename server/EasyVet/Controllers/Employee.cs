@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using EasyVet.Models.Adapters;
 using EasyVet.Enumerations;
 using System.Web.Http;
 using EasyVet.Helpers;
