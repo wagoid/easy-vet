@@ -21,4 +21,12 @@
         Pending,
         Paid
     }
+
+    public enum UserType
+    {
+        Costumer,
+        Cashier,
+        SalesPerson,
+        Veterinary
+    }
 }

@@ -182,8 +182,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Employee.cs" />
     <Compile Include="Controllers\Interfaces\Crud.cs" />
-    <Compile Include="Controllers\Veterinary.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -198,6 +198,10 @@
     <Compile Include="Migrations\201608280301309_ChangeBirthDate.Designer.cs">
       <DependentUpon>201608280301309_ChangeBirthDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608290050121_UserTypes.cs" />
+    <Compile Include="Migrations\201608290050121_UserTypes.Designer.cs">
+      <DependentUpon>201608290050121_UserTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -207,6 +211,7 @@
     <Compile Include="Models\Costumer.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Adapters\GenericEmployee.cs" />
     <Compile Include="Models\Interfaces\VetContext.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Product.cs" />
@@ -237,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Entities\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608280301309_ChangeBirthDate.resx">
       <DependentUpon>201608280301309_ChangeBirthDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608290050121_UserTypes.resx">
+      <DependentUpon>201608290050121_UserTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

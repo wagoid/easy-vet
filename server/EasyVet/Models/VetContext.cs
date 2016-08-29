@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
-using EasyVet.Models;
 using System.Diagnostics;
 using System;
 
@@ -14,13 +13,11 @@ namespace EasyVet.Models
     {
         public VetContext() : base("DefaultConnection")
         {
-            
 
         }
         public VetContext(string connection)
             : base(connection)
         {
-            
 
         }
 

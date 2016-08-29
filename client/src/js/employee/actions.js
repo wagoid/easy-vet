@@ -41,7 +41,7 @@ const REMOVE_EMPLOYEE_FAILURE = 'employee/REMOVE_FAILURE';
 
 export function fetchEmployees() {
 	return (dispatch, getState) => {
-		return fetch(`${urls.api}/veterinary`)
+		return fetch(`${urls.api}/employee/all`)
 			.then(response => response.json())
 			.then(json => {
 				json.Message? dispatch(employeesError(json.Type, json.Message)) : dispatch(employeesSuccess(json.Data));

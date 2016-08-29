@@ -10,7 +10,7 @@ namespace EasyVet.Tests.Mocks
 {
     class VetContext : DbContext, Models.Interfaces.VetContext 
     {
-        public VetContext() : base ()
+        public VetContext()
         {
             this.Addresses = new Mocks.DbSet<Address>();
             this.Users = new Mocks.DbSet<User>();

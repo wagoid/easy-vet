@@ -103,7 +103,7 @@
     <Compile Include="Mocks\DbSet.cs" />
     <Compile Include="Mocks\VetContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\VeterinaryTest.cs" />
+    <Compile Include="Controllers\EmployeeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

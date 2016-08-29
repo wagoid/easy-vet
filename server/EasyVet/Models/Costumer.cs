@@ -9,7 +9,6 @@ namespace EasyVet.Models
     [Table("Costumers")]
     public class Costumer : User
     {
-        //public new int Id { get; set; }
         [Required]
         public string Email { get; set; }
     }

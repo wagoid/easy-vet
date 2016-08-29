@@ -28,7 +28,7 @@ history.listen(loc => console.log('Route changed!', loc));
 
 //TODO: use an initialPath
 function getPath(path = '') {
-	var baseUrl = typeof process.env.BASE_URL === undefined? '/easy-vet/client' : process.env.BASE_URL;
+	var baseUrl = process.env.BASE_URL === undefined? '' : process.env.BASE_URL;
 	return `${baseUrl}${path? ('/' + path) : path}`;
 }
 
