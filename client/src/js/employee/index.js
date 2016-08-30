@@ -3,13 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { dateFormat } from '../helpers/util';
+import { userType, dateFormat } from '../helpers/valueDecode';
+import { floatingActionStyles } from '../helpers/util';
 
 import Employee from './Employee';
 import * as EmployeeActions from './actions';
-
-const SNACKBAR_HEIGHT = 48;
-const FLOATING_BUTTON_HEIGHT = 20;
 
 class EmployeeView extends Component {
 
@@ -25,12 +23,7 @@ class EmployeeView extends Component {
 
 	getStyles() {
 		return {
-			addContent: {
-				position: 'fixed',
-				right: 20,
-				bottom: this.props.hasOpenMessage? SNACKBAR_HEIGHT + 10 : FLOATING_BUTTON_HEIGHT,
-				zIndex: 100
-			}
+			addContent: floatingActionStyles(this.props.hasOpenMessage)
 		};
 	}
 
@@ -47,6 +40,9 @@ class EmployeeView extends Component {
 			BirthDate: {
 				func: dateFormat,
 				mask: 'date'
+			},
+			Type: {
+				func: userType
 			}
 		}
 

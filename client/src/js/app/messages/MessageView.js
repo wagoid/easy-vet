@@ -18,7 +18,7 @@ class MessageView extends Component {
 	render() {
 
 		if (this.props.open) {
-			setTimeout(this._closeMessageView, 4000);
+			setTimeout(this._closeMessageView, this.props.automaticFadeTimeout || 4000);
 		}
 		
 

@@ -18,15 +18,16 @@ class Employee extends Component {
 			addressCardText: {
 				paddingTop: 0
 			}
-		}
+		};
 	}
 
 	render() {
 		let { employee, keyReplacements, valueMasks } = this.props;
 		let address = employee.Address;
 		let styles = this.getStyles();
-
-		let keysToShow = Object.keys(employee).filter(prop => !~['Id', 'Name', 'Specialty', 'RowVersion', 'Password'].indexOf(prop));
+		let userTypeMask = valueMasks.Type;
+		
+		let keysToShow = Object.keys(employee).filter(prop => !~['Id', 'Name', 'RowVersion', 'Type', 'Password'].indexOf(prop));
 
 		var cardTexts = keysToShow.map((key, index) => {
 			let keyText = keyReplacements[key] || key;
@@ -51,7 +52,7 @@ class Employee extends Component {
 			<Card style={styles.card}>
 				<CardHeader
 					title={employee.Name}
-					subtitle={employee.Specialty}
+					subtitle={userTypeMask? userTypeMask.func(employee.Type) : employee.Type}
 				/>
 
 				{cardTexts}

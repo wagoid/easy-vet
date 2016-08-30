@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { AppBar,	Drawer,	RaisedButton,	MenuItem,	MuiThemeProvider } from 'material-ui';
+import WorkIcon from 'material-ui/svg-icons/action/work';
+import HomeIcon from 'material-ui/svg-icons/action/home';
 import MessageView from './messages/MessageView';
 
 // Define menu items for LeftNav
@@ -16,7 +19,6 @@ class App extends React.Component {
 		super(...args);
 		this.state = {open: false};
 		this.handleToggle = this.handleToggle.bind(this);
-		this._getSelectedIndex = this._getSelectedIndex.bind(this);
 	}
 
 	getChildContext() {
@@ -25,23 +27,23 @@ class App extends React.Component {
 		};
 	}
 
+	getStyles() {
+		return {
+			menuItemAnchor: {
+				textDecoration: 'none'
+			}
+		}
+	}
+
 	handleToggle () {
 		this.setState({ open: !this.state.open });
 	}
 
-	// Get the selected item in LeftMenu
-	_getSelectedIndex() {
-		let currentItem;
-		let selectedIndex;
-
-		for (let i = menuItems.length - 1; i >= 0; i--) {
-			currentItem = menuItems[i];
-			if (currentItem.route && this.context.router.isActive(currentItem.route)) {
-				selectedIndex = i;
-			}
-		}
-
-		return selectedIndex;
+	handleMenuClick(route) {
+		return () => {
+			this.context.router.push(route);
+			this.setState({ open: !this.state.open });
+		};
 	}
 
 	_onLeftNavChange(e, key, payload) {
@@ -54,7 +56,12 @@ class App extends React.Component {
 		return route? route.name : 'Home';
 	}
 
+	_push() {
+
+	}
+
 	render() {
+		let styles = this.getStyles();
 		return (
 			<div id="page-container">
 					<Drawer
@@ -62,12 +69,9 @@ class App extends React.Component {
 						open={this.state.open}
 						onRequestChange={open => this.setState({open})}
 					>
-						<RaisedButton
-							label="Toggle drawer"
-							onTouchTap={this.handleToggle}
-						/>
 
-						<MenuItem onTouchTap={this.handleToggle}>WOW</MenuItem>
+						<MenuItem onTouchTap={this.handleMenuClick('/')} leftIcon={ <HomeIcon /> } primaryText='Home'></MenuItem>
+						<MenuItem onTouchTap={this.handleMenuClick('/employee')} leftIcon={ <WorkIcon /> } primaryText='Employee' ></MenuItem>
 					</Drawer>
 
 				<header>
