@@ -1,18 +1,32 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Snackbar } from 'material-ui';
+import { bindActionCreators } from 'redux';
+import { closeMessageView } from './actions';
+
 class MessageView extends Component {
 
 	constructor(...args) {
 		super(...args);
+		this._closeMessageView = this._closeMessageView.bind(this);
+	}
+
+	_closeMessageView() {
+		this.props.dispatch(closeMessageView());
 	}
 
 	render() {
+
+		if (this.props.open) {
+			setTimeout(this._closeMessageView, 4000);
+		}
+		
+
 		return (
 				<Snackbar
 					open={this.props.open}
 					message={this.props.message || ''}
-					autoHideDuration={4000}
+					onRequestClose={this._closeMessageView}
 				/>
 		);
 	}

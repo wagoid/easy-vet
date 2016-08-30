@@ -38,11 +38,11 @@ export default class Root extends Component {
 			<div>
 				<Provider store={store}>
 					<Router history={history}>
-						<Route path={getPath()} component={App}>
+						<Route name="Home" path={getPath()} component={App}>
 
-							<Route path={getPath('employee')} component={Employee} />
+							<Route name="Employee" path={getPath('employee')} component={Employee} />
 							
-							<Route path={getPath('*')} component={Home} />
+							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 
 							{/*<Route path='/post/:id/edit' component={Draft} onEnter={hooks.editPost(store)}/>*/}
 							{/*<Route path='/post/new' component={Draft}/>*/}

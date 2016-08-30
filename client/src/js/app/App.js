@@ -49,6 +49,11 @@ class App extends React.Component {
 		this.context.router.transitionTo(payload.route);
 	}
 
+	_getCurrentRouteName() {
+		var route = this.props.routes.find(route => route.path === this.props.location.pathname);
+		return route? route.name : 'Home';
+	}
+
 	render() {
 		return (
 			<div id="page-container">
@@ -66,7 +71,7 @@ class App extends React.Component {
 					</Drawer>
 
 				<header>
-					<AppBar title='Easy Vet' onLeftIconButtonTouchTap={this.handleToggle} />
+					<AppBar title={this._getCurrentRouteName()} onLeftIconButtonTouchTap={this.handleToggle} />
 				</header>
 
 				<section id="content">

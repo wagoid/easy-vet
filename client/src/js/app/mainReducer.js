@@ -1,15 +1,18 @@
-const FAILURE_SUFFIX = '_FAILURE';
+import { CLOSE_MESSAGE_VIEW, OPEN_MESSAGE_VIEW } from './messages/actions';
 
 export default function mainReducer(state = {}, action = {}) {
-	
-	if (~action.type.indexOf(FAILURE_SUFFIX)) {
-		state.message = {
-			open: true,
-			type: action.payload.type,
-			text: action.payload.message
-		}
-	} else {
-		state.message = {};
+
+	switch (action.type) {
+		case OPEN_MESSAGE_VIEW:
+		case CLOSE_MESSAGE_VIEW:
+			state.message = action.payload;
+			break;
+
+		default:
+			if (!state.message) {
+				state.message = {};
+			}
+			break;
 	}
 
 	return state;

@@ -1,4 +1,5 @@
 import * as urls from '../app/config/urls';
+import { openMessageView } from '../app/messages/actions';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
 export const FETCH_EMPLOYEES_SUCCESS = 'employee/FETCH_SUCCESS';
@@ -11,7 +12,7 @@ function employeesSuccess(employees) {
 	}
 }
 export const FETCH_EMPLOYEES_FAILURE = 'employee/FETCH_FAILURE';
-function employeesError(type, message) {
+function employeesError({ type, message }) {
 	return {
 		type: FETCH_EMPLOYEES_FAILURE,
 		payload: {
@@ -38,17 +39,26 @@ const REMOVE_EMPLOYEE = 'employee/REMOVE';
 const REMOVE_EMPLOYEE_SUCCESS = 'employee/REMOVE_SUCCESS';
 const REMOVE_EMPLOYEE_FAILURE = 'employee/REMOVE_FAILURE';
 
-
 export function fetchEmployees() {
 	return (dispatch, getState) => {
 		return fetch(`${urls.api}/employee/all`)
 			.then(response => response.json())
 			.then(json => {
-				json.Message? dispatch(employeesError(json.Type, json.Message)) : dispatch(employeesSuccess(json.Data));
+				if (json.Message) {
+					dispatch(openMessageView({ type: json.Type, text: json.Message }));
+					dispatch(employeesError(json.Type, json.Message))();
+				} else {
+					dispatch(employeesSuccess(json.Data))
+				}
 			})
 			.catch(error => {
-				//TODO: put this on util.js
-				dispatch(employeesError('FetchError', error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message))
+				//TODO: put the default catch on approach util.js
+				let payload = {
+					type: 'FetchError',
+					text: error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message
+				};
+				dispatch(employeesError(payload));
+				dispatch(openMessageView(payload));
 			});
 	}
 }

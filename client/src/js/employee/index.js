@@ -8,6 +8,9 @@ import { dateFormat } from '../helpers/util';
 import Employee from './Employee';
 import * as EmployeeActions from './actions';
 
+const SNACKBAR_HEIGHT = 48;
+const FLOATING_BUTTON_HEIGHT = 20;
+
 class EmployeeView extends Component {
 
 	constructor(...args) {
@@ -25,7 +28,7 @@ class EmployeeView extends Component {
 			addContent: {
 				position: 'fixed',
 				right: 20,
-				bottom: 20,
+				bottom: this.props.hasOpenMessage? SNACKBAR_HEIGHT + 10 : FLOATING_BUTTON_HEIGHT,
 				zIndex: 100
 			}
 		};
@@ -75,7 +78,8 @@ EmployeeView.defaultProps = {
 
 EmployeeView.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	employees: PropTypes.array
+	employees: PropTypes.array,
+	open: PropTypes.bool,
 }
 
 EmployeeView.contextTypes = {
@@ -84,5 +88,6 @@ EmployeeView.contextTypes = {
 }
 
 export default connect(state => ({
-	employees: state.employee.employees
+	employees: state.employee.employees,
+	hasOpenMessage: !!state.main.message.open
 }))(EmployeeView);
