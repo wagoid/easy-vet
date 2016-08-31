@@ -3,10 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton, Paper, SelectField, MenuItem } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
-import { userType, dateFormat } from '../helpers/valueDecode';
-import { floatingActionStyles } from '../helpers/util';
-import TextFieldControlled from '../app/components/fields/TextFieldControlled';
-import EmployeeTypes from './EmployeeTypes';
+import { userType, dateFormat } from '../../helpers/valueDecode';
+import { floatingActionStyles } from '../../helpers/util';
+import TextFieldControlled from '../../app/components/fields/TextFieldControlled';
+import EmployeeTypes from '../EmployeeTypes';
+import AddressSelect from '../../address/AddressSelect';
 
 
 class EmployeeForm extends Component {
@@ -67,6 +68,8 @@ class EmployeeForm extends Component {
 						validations={requiredValidation}
 					/>
 					<br />
+					<AddressSelect />
+					<br />
 					<TextFieldControlled
 						name="BirthDate"
 						type="date"
@@ -101,6 +104,8 @@ class SpecialtyGroup extends Component {
 	handleChange(event, index, value) {
 		if (value === 3) {
 			this.setState({ isVeterinary: true });
+		} else {
+			this.setState({ isVeterinary: false });
 		}
 	}
 
@@ -124,7 +129,8 @@ class SpecialtyGroup extends Component {
 	}
 }
 
-export default connect(state => ({
+export default connect((state, ownProps) => ({
 	employees: state.employee.employees,
-	hasOpenMessage: !!state.main.message.open
+	hasOpenMessage: !!state.main.message.open,
+	employeeId: ownProps.location.query.id
 }))(EmployeeForm);

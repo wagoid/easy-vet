@@ -9,3 +9,22 @@ export function floatingActionStyles(hasOpenMessage) {
 		zIndex: 100
 	};
 }
+
+export function catchFetch(dispatch, ...actionsToDispatch) {
+	return error => {
+		let payload = {
+			type: 'FetchError',
+			text: error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message
+		};
+		actionsToDispatch.forEach(actionMethod => dispatch(actionMethod(payload)));
+	};
+}
+
+export function dispatchErrorActions(dispatch, errorPayload, ...errorActions) {
+	errorActions.forEach(erroAction => dispatch(errorAction(errorPayload)));
+}
+
+export function fetchJson(config) {
+	return fetch(config)
+		.then(response => response.json());
+}

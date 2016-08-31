@@ -28,7 +28,7 @@ class EmployeeView extends Component {
 	}
 
 	addEmployee() {
-		this.context.router.push('/employee/new')
+		this.context.router.push('/employee/edit')
 	}
 
 	render() {
