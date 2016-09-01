@@ -1,19 +1,25 @@
 import { CLOSE_MESSAGE_VIEW, OPEN_MESSAGE_VIEW } from './messages/actions';
 
-export default function mainReducer(state = {}, action = {}) {
+const initialState = {
+	message: {
+		open: false
+	}
+};
 
+export default function mainReducer(state = {}, action = {}) {
+	let newState = state;
 	switch (action.type) {
 		case OPEN_MESSAGE_VIEW:
 		case CLOSE_MESSAGE_VIEW:
-			state.message = action.payload;
+			newState  = { ...state, message: action.payload };
 			break;
 
 		default:
-			if (!state.message) {
-				state.message = {};
-			}
+			//if (!newState.message) {
+				newState = Object.assign({}, state, initialState);
+			//}
 			break;
 	}
 
-	return state;
+	return newState;
 };

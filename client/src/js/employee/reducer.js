@@ -2,15 +2,21 @@ import * as actions from './actions';
 
 export default function reducer(state = {}, action = {}) {
 	const { type, payload } = action;
+	let newState = state;
 
 	switch (type) {
 		case actions.FETCH_EMPLOYEES_SUCCESS:
-			return payload;
+			newState = payload;
+			break;
 
-		case actions.FETCH_EMPLOYEES_FAILURE:
-			return payload;
+		case actions.CREATE_EMPLOYEE_SUCCESS:
+			newState.employees = [ ...state.employees, payload.employee];
+			break;
 
 		default:
-			return payload || state;
+			newState = state;
+			break;
 	}
+
+	return newState;
 }

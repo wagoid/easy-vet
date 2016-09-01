@@ -68,7 +68,7 @@ class EmployeeForm extends Component {
 						validations={requiredValidation}
 					/>
 					<br />
-					<AddressSelect />
+					<AddressSelect floatingLabelText="Endereço" />
 					<br />
 					<TextFieldControlled
 						name="BirthDate"

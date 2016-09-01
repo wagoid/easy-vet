@@ -2,15 +2,21 @@ import * as actions from './actions';
 
 export default function reducer(state = {}, action = {}) {
 	const { type, payload } = action;
+	let newState = state;
 
 	switch (type) {
 		case actions.FETCH_ADDRESSES_SUCCESS:
-			return payload;
+			newState = payload;
+			break;
 
 		case actions.FETCH_ADDRESSES_FAILURE:
-			return payload;
+			newState = payload;
+			break
 
 		default:
-			return payload || state;
+			newState = state;
+			break;
 	}
+
+	return newState;
 }

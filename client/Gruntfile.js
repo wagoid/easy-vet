@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 				browserifyOptions: {
 					debug: true
 				},
-				transform: [["babelify", {presets: ['es2015', 'react']}], ['envify']]
+				transform: [["babelify", { presets: ['es2015', 'react'], plugins: ['transform-object-rest-spread'] }], ['envify']]
 			},
 			app: {
 				src: 'src/js/index.js',

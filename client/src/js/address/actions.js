@@ -1,6 +1,6 @@
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
-import { catchFetch, dispatchErrorActions, fetchJson } from '../helpers/util';
+import { genericFetch, fetchJson, catchFetch } from '../helpers/util';
 
 export const FETCH_ADDRESSES = 'address/FETCH';
 export const FETCH_ADDRESSES_SUCCESS = 'address/FETCH_SUCCESS';
@@ -40,17 +40,13 @@ const REMOVE_EMPLOYEE = 'address/REMOVE';
 const REMOVE_EMPLOYEE_SUCCESS = 'address/REMOVE_SUCCESS';
 const REMOVE_EMPLOYEE_FAILURE = 'address/REMOVE_FAILURE';
 
-export function fetchEmployees() {
+export function fetchAddresses() {
 	return (dispatch, getState) => {
-		return fetchJson(`${urls.api}/address`)
-			.then(json => {
-				if (json.Message) {
-					let errorPayload = { type: json.Type, text: json.Message };
-					dispatchErrorActions(dispatch, errorPayload, openMessageView, addressesError);
-				} else {
-					dispatch(addressSuccess(json.Data))
-				}
-			})
-			.catch(catchFetch(dispatch, addressesError, openMessageView));
+		return genericFetch(dispatch, {
+			url: `${urls.api}/address`,
+			businessErrorActions: [ openMessageView, addressesError ],
+			fetchErrorActions: [ openMessageView, addressesError ],
+			successAction: addressSuccess
+		});
 	}
 }

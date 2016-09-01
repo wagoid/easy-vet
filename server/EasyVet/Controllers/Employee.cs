@@ -26,35 +26,35 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<IList<Models.Veterinary>> Veterinaries()
         {
-            return this.safelyRespond<IList<Models.Veterinary>>(() => getList(context.Veterinaries));
+            return this.safelyRespond<IList<Models.Veterinary>>(() => getEmployeeList(context.Veterinaries));
         }
 
         [Route("api/employee/veterinary/{id}")]
         [HttpGet]
         public Response<Models.Veterinary> Veterinary(int id)
         {
-            return this.safelyRespond<Models.Veterinary>(() => getFirstOrDefault(this.context.Veterinaries, id));
+            return this.safelyRespond<Models.Veterinary>(() => getEmployeeFirstOrDefault(this.context.Veterinaries, id));
         }
 
         [Route("api/employee/veterinary")]
         [HttpPost]
         public Response<int> PostVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            return this.safelyRespond<int>(() => post(context.Veterinaries, veterinary));
+            return this.safelyRespond<int>(() => postEmployee(context.Veterinaries, veterinary));
         }
 
         [Route("api/employee/veterinary")]
         [HttpPut]
         public Response<bool> PutVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            return this.safelyRespond<bool>(() => put(context.Veterinaries, veterinary));
+            return this.safelyRespond<bool>(() => putEmployee(context.Veterinaries, veterinary));
         }
 
         [Route("api/employee/veterinary/{id}")]
         [HttpPut]
         public Response<bool> DeleteVeterinary(int id)
         {
-            return this.safelyRespond<bool>(() => delete(context.Veterinaries, id));
+            return this.safelyRespond<bool>(() => deleteEmployee(context.Veterinaries, id));
         }
 
         #endregion
@@ -65,35 +65,35 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<IList<Models.Cashier>> Cashiers()
         {
-            return this.safelyRespond<IList<Models.Cashier>>(() => getList(context.Cashiers));
+            return this.safelyRespond<IList<Models.Cashier>>(() => getEmployeeList(context.Cashiers));
         }
 
         [Route("api/employee/cashier/{id}")]
         [HttpGet]
         public Response<Models.Cashier> Cashier(int id)
         {
-            return this.safelyRespond<Models.Cashier>(() => getFirstOrDefault(this.context.Cashiers, id));
+            return this.safelyRespond<Models.Cashier>(() => getEmployeeFirstOrDefault(this.context.Cashiers, id));
         }
 
         [Route("api/employee/cashier")]
         [HttpPost]
         public Response<int> PostCashier([FromBody]Models.Cashier cashier)
         {
-            return this.safelyRespond<int>(() => post(context.Cashiers, cashier));
+            return this.safelyRespond<int>(() => postEmployee(context.Cashiers, cashier));
         }
 
         [Route("api/employee/cashier")]
         [HttpPut]
         public Response<bool> PutCashier([FromBody]Models.Cashier cashier)
         {
-            return this.safelyRespond<bool>(() => put(context.Cashiers, cashier));
+            return this.safelyRespond<bool>(() => putEmployee(context.Cashiers, cashier));
         }
 
         [Route("api/employee/Cashier/{id}")]
         [HttpPut]
         public Response<bool> DeleteCashier(int id)
         {
-            return this.safelyRespond<bool>(() => delete(context.Cashiers, id));
+            return this.safelyRespond<bool>(() => deleteEmployee(context.Cashiers, id));
         }
 
         #endregion
@@ -104,35 +104,35 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<IList<Models.SalesPerson>> SalesPeople()
         {
-            return this.safelyRespond<IList<Models.SalesPerson>>(() => getList(context.SalesPeople));
+            return this.safelyRespond<IList<Models.SalesPerson>>(() => getEmployeeList(context.SalesPeople));
         }
 
         [Route("api/employee/salesperson/{id}")]
         [HttpGet]
         public Response<Models.SalesPerson> SalesPerson(int id)
         {
-            return this.safelyRespond<Models.SalesPerson>(() => getFirstOrDefault(this.context.SalesPeople, id));
+            return this.safelyRespond<Models.SalesPerson>(() => getEmployeeFirstOrDefault(this.context.SalesPeople, id));
         }
 
         [Route("api/employee/salesperson")]
         [HttpPost]
         public Response<int> PostSalesPerson([FromBody]Models.SalesPerson salesperson)
         {
-            return this.safelyRespond<int>(() => post(context.SalesPeople, salesperson));
+            return this.safelyRespond<int>(() => postEmployee(context.SalesPeople, salesperson));
         }
 
         [Route("api/employee/salesperson")]
         [HttpPut]
         public Response<bool> PutSalesPerson([FromBody]Models.SalesPerson salesperson)
         {
-            return this.safelyRespond<bool>(() => put(context.SalesPeople, salesperson));
+            return this.safelyRespond<bool>(() => putEmployee(context.SalesPeople, salesperson));
         }
 
         [Route("api/employee/salesperson/{id}")]
         [HttpPut]
         public Response<bool> DeleteSalesPerson(int id)
         {
-            return this.safelyRespond<bool>(() => delete(context.SalesPeople, id));
+            return this.safelyRespond<bool>(() => deleteEmployee(context.SalesPeople, id));
         }
 
         #endregion
@@ -147,9 +147,9 @@ namespace EasyVet.Controllers
               {
                   var employees = new List<Object>();
 
-                  employees.AddRange(getList(context.Cashiers));
-                  employees.AddRange(getList(context.SalesPeople));
-                  employees.AddRange(getList(context.Veterinaries));
+                  employees.AddRange(getEmployeeList(context.Cashiers));
+                  employees.AddRange(getEmployeeList(context.SalesPeople));
+                  employees.AddRange(getEmployeeList(context.Veterinaries));
 
                   return employees;
               });

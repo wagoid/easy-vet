@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Address.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Employee.cs" />
     <Compile Include="Controllers\Interfaces\Crud.cs" />

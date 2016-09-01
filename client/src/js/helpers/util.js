@@ -10,11 +10,25 @@ export function floatingActionStyles(hasOpenMessage) {
 	};
 }
 
+export function genericFetch(dispatch, config = {}) {
+	return fetchJson(config.url)
+		.then(json => {
+			if (json.Message) {
+				let errorPayload = { type: json.Type, text: json.Message };
+				dispatchErrorActions(dispatch, errorPayload, ...config.businessErrorActions);
+			} else {
+				dispatch(config.successAction(json.Data))
+			}
+		})
+		.catch(catchFetch(dispatch, ...config.fetchErrorActions));
+}
+
 export function catchFetch(dispatch, ...actionsToDispatch) {
 	return error => {
+		console.log(error, error.stack);
 		let payload = {
-			type: 'FetchError',
-			text: error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message
+			type:  ~error.message.indexOf('fetch')? 'FetchError' : error.name,
+			text: ~error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message
 		};
 		actionsToDispatch.forEach(actionMethod => dispatch(actionMethod(payload)));
 	};
@@ -24,7 +38,9 @@ export function dispatchErrorActions(dispatch, errorPayload, ...errorActions) {
 	errorActions.forEach(erroAction => dispatch(errorAction(errorPayload)));
 }
 
-export function fetchJson(config) {
-	return fetch(config)
-		.then(response => response.json());
+export function fetchJson(url) {
+	return fetch(url)
+		.then(response =>  {
+			return response.json()
+		});
 }

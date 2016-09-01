@@ -18,7 +18,9 @@ class EmployeeView extends Component {
 	}
 
 	componentDidMount() {
-		this.actions.fetchEmployees();
+		if (!this.props.employees.length) {
+			this.actions.fetchEmployees();
+		}
 	}
 
 	getStyles() {
