@@ -16,7 +16,7 @@ namespace EasyVet.Controllers
 
         }
 
-        public Animal(Models.Interfaces.AniContext AniContext) : base(aniContext) {
+        public Animal(Models.Interfaces.VetContext vetContext) : base(vetContext) {
 
         }
 

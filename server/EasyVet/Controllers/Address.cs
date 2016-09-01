@@ -31,16 +31,16 @@ namespace EasyVet.Controllers
             return this.safelyRespond<Models.Address>(() => getFirstOrDefault(this.context.Addresses, id));
         }
 
-        public Response<int> Post([FromBody]Models.Address veterinary)
+        public Response<int> Post([FromBody]Models.Address address)
         {
-            return this.safelyRespond<int>(() => post(context.Addresses, veterinary));
+            return this.safelyRespond<int>(() => post(context.Addresses, address));
         }
 
-        [Route("api/employee/veterinary")]
+        [Route("api/employee/address")]
         [HttpPut]
-        public Response<bool> Put([FromBody]Models.Address veterinary)
+        public Response<bool> Put([FromBody]Models.Address address)
         {
-            return this.safelyRespond<bool>(() => put(context.Addresses, veterinary));
+            return this.safelyRespond<bool>(() => put(context.Addresses, address));
         }
 
         public Response<bool> Delete(int id)
