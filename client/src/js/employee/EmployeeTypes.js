@@ -26,11 +26,15 @@ class EmployeeTypes extends Component {
 		});
 
 		return (
-			<SelectField value={this.state.value} onChange={this.handleChange}>
+			<SelectField fullWidth={this.props.fullWidth} value={this.state.value} onChange={this.handleChange}>
 				{employeeTypeOptions}
 			</SelectField>
 		);
 	}
+}
+
+EmployeeTypes.PropTypes = {
+	fullWidth: PropTypes.bool
 }
 
 export default EmployeeTypes;

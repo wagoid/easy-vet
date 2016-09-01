@@ -37,7 +37,7 @@ class AddressSelect extends Component {
 		return (
 			<SelectField
 				floatingLabelText={this.props.floatingLabelText}
-				autoWidth={true}
+				fullWidth={this.props.fullWidth}
 				value={this.state.value}
 				onChange={this.handleChange}
 			>
@@ -55,7 +55,8 @@ class AddressSelect extends Component {
 
 AddressSelect.PropTypes = {
 	addresses: PropTypes.array,
-	floatingLabelText: PropTypes.string.isRequired
+	floatingLabelText: PropTypes.string.isRequired,
+	fullWidth: PropTypes.bool
 }
 
 AddressSelect.defaultProps = {

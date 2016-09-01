@@ -32,6 +32,10 @@ class TextFieldControlled extends Component {
 			errorText,
 			value
 		});
+
+		if (this.props.model) {
+			this.props.model[this.props.name] = value;
+		}
 	};
 
 	getErrorText(value) {
@@ -41,7 +45,7 @@ class TextFieldControlled extends Component {
 			Object.keys(this.props.validations).forEach(validation => {
 				let validationParams = this.props.validations[validation];
 				if (!validations[validation](value, validationParams)) {
-					errorText += validationParams.message || validations.DEFAULT_MESSAGES[validation](validationParams);
+					errorText = validationParams.message || validations.DEFAULT_MESSAGES[validation](validationParams);
 				}
 			});
 		}
@@ -55,6 +59,8 @@ class TextFieldControlled extends Component {
 				<TextField
 					value={this.state.value}
 					errorText={this.state.errorText}
+					type={this.props.type}
+					fullWidth={this.props.fullWidth}
 					hintText={this.props.hintText}
 					onBlur={this.handleBlur}
 					onChange={this.handleChange}
@@ -67,7 +73,10 @@ class TextFieldControlled extends Component {
 
 TextFieldControlled.propTypes = {
 	floatingLabelText: PropTypes.string.isRequired,
-	validations: PropTypes.object
+	validations: PropTypes.object,
+	name: PropTypes.string,
+	type: PropTypes.string,
+	fullWidth: PropTypes.bool
 }
 
 export default TextFieldControlled;

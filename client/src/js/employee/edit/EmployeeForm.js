@@ -14,23 +14,30 @@ class EmployeeForm extends Component {
 	
 	constructor(props) {
 		super(props);
+		this.employee = {};
 		this.saveEmployee = this.saveEmployee.bind(this);
-		this.state = {
-			isVeterinary: props.isVeterinary || false
-		};
+		this.setAddress = this.setAddress.bind(this);
 	}
 
 	getStyles() {
 		return {
 			addContent: floatingActionStyles(this.props.hasOpenMessage),
 			paper: {
-				padding: window.screen.width > 400? '14px 24px 24px' : '14px 5px 24px 5px'
+				padding: window.screen.width > 400? '14px 24px 24px' : '14px 5px 24px 5px',
+				margin: '5px auto 0px auto',
+				width: '50%',
+				minWidth: '300px'
 			}
 		};
 	}
 
 	saveEmployee() {
 
+	}
+
+	setAddress(event, index, value) {
+		var address = this.props.addresses.find(addr => addr.Id === value);
+		this.employee.Address = address;
 	}
 
 	render() {
@@ -45,17 +52,21 @@ class EmployeeForm extends Component {
 				<Paper style={styles.paper}>
 					<TextFieldControlled
 						name="Name"
+						model={this.employee}
 						ref="Name"
 						type="text"
 						hintText="Wagão"
+						fullWidth={true}
 						floatingLabelText="User name"
 						validations={requiredValidation}
 					/>
 					<br />
 					<TextFieldControlled
 						name="Cpf"
+						model={this.employee}
 						ref="Cpf"
 						type="text"
+						fullWidth={true}
 						hintText="999.999.999-99"
 						floatingLabelText="Cpf"
 						validations={requiredValidation}
@@ -63,22 +74,24 @@ class EmployeeForm extends Component {
 					<br />
 					<TextFieldControlled
 						name="Password"
+						model={this.employee}
 						type="password"
+						fullWidth={true}
 						floatingLabelText="Password"
 						validations={requiredValidation}
 					/>
 					<br />
-					<AddressSelect floatingLabelText="Endereço" />
+					<AddressSelect fullWidth={true} floatingLabelText="Endereço" onChange={this.setAddress} />
 					<br />
 					<TextFieldControlled
 						name="BirthDate"
+						model={this.employee}
 						type="date"
-						hintText="01/01/2001"
 						floatingLabelText="Birth date"
 						validations={requiredValidation}
 					/>
 					<br />
-					<SpecialtyGroup name="SpecialtyGroup" ref="SpecialtyGroup" />
+					<SpecialtyGroup model={this.employee} name="SpecialtyGroup" ref="SpecialtyGroup" />
 
 					<FloatingActionButton
 						style={styles.addContent}
@@ -107,12 +120,15 @@ class SpecialtyGroup extends Component {
 		} else {
 			this.setState({ isVeterinary: false });
 		}
+		this.props.model[this.props.name] = value;
 	}
 
 	render() {
 		let specialtyField = (
 			<TextFieldControlled
 				name="Specialty"
+				fullWidth={true}
+				model={this.props.model}
 				ref="Specialty"
 				type="text"
 				hintText="Brain surgery"
@@ -122,15 +138,20 @@ class SpecialtyGroup extends Component {
 
 		return (
 			<div>
-				<EmployeeTypes ref="Type" onChange={this.handleChange} name="Type" />
+				<EmployeeTypes ref="Type" fullWidth={true} onChange={this.handleChange} name="Type" />
 				{this.state.isVeterinary? specialtyField : ''}
 			</div>
 		);
 	}
 }
 
+SpecialtyGroup.propTypes = {
+	model: PropTypes.object.isRequired
+}
+
 export default connect((state, ownProps) => ({
 	employees: state.employee.employees,
 	hasOpenMessage: !!state.main.message.open,
+	addresses: state.address.addresses,
 	employeeId: ownProps.location.query.id
 }))(EmployeeForm);
