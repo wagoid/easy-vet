@@ -1,3 +1,5 @@
+import { isObject, isNumber} from './util';
+
 export const DEFAULT_MESSAGES = {
 	required: () => 'This field is required',
 	minLength: (params) => `This field must have a minimum length of ${params.minLength}`,
@@ -5,7 +7,8 @@ export const DEFAULT_MESSAGES = {
 };
 
 export function required(value) {
-	return !!value;
+	var isNonEmptyArray = Array.isArray(value) && !!value.length;
+	return isObject(value)? !!Object.keys(value).length : (!!value || isNonEmptyArray || isNumber(value));
 }
 
 export function minLength(value, params) {

@@ -1,6 +1,7 @@
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
-import { catchFetch, dispatchErrorActions, fetchJson } from '../helpers/util';
+import { catchFetch, dispatchErrorActions, fetchJson, genericFetch } from '../helpers/util';
+import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
 export const FETCH_EMPLOYEES_SUCCESS = 'employee/FETCH_SUCCESS';
@@ -12,6 +13,7 @@ function employeesSuccess(employees) {
 		}
 	}
 }
+
 export const FETCH_EMPLOYEES_FAILURE = 'employee/FETCH_FAILURE';
 function employeesError({ type, message }) {
 	return {
@@ -25,8 +27,29 @@ function employeesError({ type, message }) {
 
 //Make the others down there
 const CREATE_EMPLOYEE = 'employee/CREATE';
+
 const CREATE_EMPLOYEE_SUCCESS = 'employee/CREATE_SUCCESS';
+function employeesCreateSuccess({ type, message }) {
+	return {
+		type: CREATE_EMPLOYEE_SUCCESS,
+		payload: {
+			type,
+			message
+		}
+	}
+}
+
+
 const CREATE_EMPLOYEE_FAILURE = 'employee/CREATE_FAILURE';
+function employeesCreateError({ type, message }) {
+	return {
+		type: CREATE_EMPLOYEE_FAILURE,
+		payload: {
+			type,
+			message
+		}
+	}
+}
 
 const READ_EMPLOYEE = 'employee/READ';
 const READ_EMPLOYEE_SUCCESS = 'employee/READ_SUCCESS';
@@ -52,5 +75,26 @@ export function fetchEmployees() {
 				}
 			})
 			.catch(catchFetch(dispatch, employeesError, openMessageView));
+	}
+}
+
+export function createEmployee(employee) {
+	return (dispatch, getState) => {
+		let params = {
+			method: 'POST',
+			mode: 'no-cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: employee
+		};
+		return genericFetch(dispatch, {
+			url: `${urls.api}/employee/${EMPLOYEE_TYPES[employee.Type].toLowerCase()}`,
+			params,
+			businessErrorActions: [openMessageView, employeesCreateError],
+			fetchErrorActions: [openMessageView, employeesCreateError],
+			successAction: employeesCreateSuccess
+		});
 	}
 }

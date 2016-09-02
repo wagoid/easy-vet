@@ -11,7 +11,7 @@ export function floatingActionStyles(hasOpenMessage) {
 }
 
 export function genericFetch(dispatch, config = {}) {
-	return fetchJson(config.url)
+	return fetchJson(config.url, config.params)
 		.then(json => {
 			if (json.Message) {
 				let errorPayload = { type: json.Type, text: json.Message };
@@ -35,12 +35,23 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 }
 
 export function dispatchErrorActions(dispatch, errorPayload, ...errorActions) {
-	errorActions.forEach(erroAction => dispatch(errorAction(errorPayload)));
+	errorActions.forEach(errorAction => dispatch(errorAction(errorPayload)));
 }
 
-export function fetchJson(url) {
-	return fetch(url)
+export function fetchJson(url, params) {
+	return fetch(url, params)
 		.then(response =>  {
 			return response.json()
 		});
+}
+
+
+
+
+export function isObject(value) {
+	return Object.prototype.toString.call(value) === '[object Object]';
+}
+
+export function isNumber(value) {
+	return typeof value === 'number';
 }
