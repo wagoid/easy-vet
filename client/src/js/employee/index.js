@@ -30,7 +30,7 @@ class EmployeeView extends Component {
 	}
 
 	addEmployee() {
-		this.context.router.push('/employee/edit')
+		this.context.router.push('/employee/form')
 	}
 
 	render() {

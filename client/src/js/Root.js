@@ -12,7 +12,7 @@ import { configureStore } from './app/configureStore';
 import Home from './home/Home';
 import App from './app/App';
 import Employee from './employee';
-import EmployeeForm from './employee/edit/EmployeeForm';
+import EmployeeForm from './employee/form/EmployeeForm';
 //import Login from './auth/Login';
 
 //hooks.bootstrap(store)();
@@ -42,7 +42,7 @@ export default class Root extends Component {
 						<Route name="Home" path={getPath()} component={App}>
 
 							<Route name="Employees" path={getPath('employee')} component={Employee} />
-							<Route name="Employee" path={getPath('employee/edit')} component={EmployeeForm} />
+							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
 							
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 
