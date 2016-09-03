@@ -16,7 +16,8 @@ export function genericFetch(dispatch, config = {}) {
 	return axios(config.params)
 		.then(response => {
 			if (response.data.Message) {
-				let errorPayload = { type: response.Type, text: response.Message };
+				var firstMessageSentence = response.data.Message.split('.').shift();
+				let errorPayload = { type: response.data.Type, text: firstMessageSentence };
 				dispatchErrorActions(dispatch, errorPayload, ...config.businessErrorActions);
 			} else {
 				dispatch(config.successAction(response.data.Data))
@@ -29,8 +30,8 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 	return error => {
 		console.log(error, error.stack);
 		let payload = {
-			type:  ~error.message.indexOf('fetch')? 'FetchError' : error.name,
-			text: ~error.message.indexOf('fetch')? 'Failed to retrieve data from server' : error.message
+			type:  ~error.message.indexOf('Network Error')? 'FetchError' : error.name,
+			text: ~error.message.indexOf('Network Error')? 'Failed to retrieve data from server' : error.message
 		};
 		actionsToDispatch.forEach(actionMethod => dispatch(actionMethod(payload)));
 	};
@@ -49,4 +50,8 @@ export function isObject(value) {
 
 export function isNumber(value) {
 	return typeof value === 'number';
+}
+
+export function isString(value) {
+	return typeof value === 'string';
 }

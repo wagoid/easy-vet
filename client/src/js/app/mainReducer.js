@@ -6,7 +6,7 @@ const initialState = {
 	}
 };
 
-export default function mainReducer(state = {}, action = {}) {
+export default function mainReducer(state = initialState, action = {}) {
 	let newState = state;
 	switch (action.type) {
 		case OPEN_MESSAGE_VIEW:
@@ -15,9 +15,7 @@ export default function mainReducer(state = {}, action = {}) {
 			break;
 
 		default:
-			//if (!newState.message) {
-				newState = Object.assign({}, state, initialState);
-			//}
+				newState = state;
 			break;
 	}
 

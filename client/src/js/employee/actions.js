@@ -1,6 +1,6 @@
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
-import { catchFetch, dispatchErrorActions, fetchJson, genericFetch, objectToFormData } from '../helpers/util';
+import { catchFetch, dispatchErrorActions, genericFetch, objectToFormData } from '../helpers/util';
 import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
@@ -65,16 +65,12 @@ const REMOVE_EMPLOYEE_FAILURE = 'employee/REMOVE_FAILURE';
 
 export function fetchEmployees() {
 	return (dispatch, getState) => {
-		return fetchJson(`${urls.api}/employee/all`)
-			.then(json => {
-				if (json.Message) {
-					let errorPayload = { type: json.Type, text: json.Message };
-					dispatchErrorActions(dispatch, errorPayload, openMessageView, employeesError);
-				} else {
-					dispatch(employeesSuccess(json.Data))
-				}
-			})
-			.catch(catchFetch(dispatch, employeesError, openMessageView));
+		return genericFetch(dispatch, {
+			params: { method: 'get', url: `${urls.api}/employee/all`},
+			businessErrorActions: [openMessageView, employeesError],
+			fetchErrorActions: [openMessageView, employeesError],
+			successAction: employeesSuccess
+		});
 	}
 }
 
