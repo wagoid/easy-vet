@@ -3,33 +3,38 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton, Paper, TextField, Divider, Subheader, SelectField, DatePicker, MenuItem } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
+import ContentEdit from 'material-ui/svg-icons/content/create';
 import { userType, dateFormat } from '../../helpers/valueDecode';
 import * as validations from '../../helpers/validations';
 import EmployeeTypes from '../EmployeeTypes';
 import getStyles from './styles';
 import { getFieldsValidations, getAddressFieldsValidations } from './validations';
 import * as EmployeeActions from '../actions';
+import { ViewMode } from '../../constants';
+import { isString } from '../../helpers/util';
 
-let employeeProperties = [ 'Name', 'Cpf', 'Password', 'BirthDate', 'Address', 'Type', 'Salary' ].reduce((prev, prop) => ({ ...prev, [prop]: null }), {});
+let employeeProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Salary' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
-	'Neighbourhood', 'Municipality', 'State', 'ZipCode'].reduce((prev, prop) => ({ ...prev, [prop]: null }), {});
+	'Neighbourhood', 'Municipality', 'State', 'ZipCode'].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 
 let defaultEmployee = Object.assign({}, employeeProperties, { Address: addressProperties });
 defaultEmployee.Type = 1;
 
 class EmployeeForm extends Component {
 	
-	constructor(props) {
+	constructor (props) {
 		super(props);
 		this.state = {
 			error: {
 				Address: {}
 			},
-			employee: defaultEmployee
+			employee: defaultEmployee,
+			inViewMode: false
 		};
 		this.validations = getFieldsValidations();
 		this.addressValidations = getAddressFieldsValidations();
 		this.saveEmployee = this.saveEmployee.bind(this);
+		this.editEmployee = this.editEmployee.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleAddressBlur = this.handleAddressBlur.bind(this);
 		this.handleAddressChange = this.handleAddressChange.bind(this);
@@ -61,14 +66,31 @@ class EmployeeForm extends Component {
 				<TextField
 					name={name}
 					type={type || 'text'}
+					readOnly={this.state.inViewMode}
 					onChange={this.handleAddressChange}
 					onBlur={this.handleAddressBlur}
+					value={this.state.employee.Address[name]}
 					errorText={this.state.error.Address[name]}
 					floatingLabelText={label}
 				/>
 				<br />
 			</div>
 		);
+	}
+
+	componentWillMount() {
+		let locationState = this.props.location.state;
+		if (locationState && locationState.employeeId && locationState.inViewMode) {
+			let employees = this.props.employees || [];
+			let employee = employees.find(employee => employee.Id === locationState.employeeId);
+			if (employee) {
+				this.setState({ employee, inViewMode: locationState.inViewMode })
+			}
+		}
+	}
+
+	editEmployee() {
+		this.setState({ inViewMode: false })
 	}
 
 	handleBlur(event) {
@@ -157,7 +179,12 @@ class EmployeeForm extends Component {
 				error
 			});
 		} else {
-			this.actions.createEmployee(this.state.employee);
+			this.actions.createEmployee(this.state.employee, this.props.location)
+				.then(() => {
+					if (this.state.employee.Id > 0) {
+						this.setState({ inViewMode: true });
+					}
+				});
 		}
 	}
 
@@ -183,6 +210,35 @@ class EmployeeForm extends Component {
 			required: true
 		};
 
+		let birthDateField;
+
+		let birthDate = this.state.employee.BirthDate;
+		if (birthDate && isString(birthDate)) {
+			this.state.employee.BirthDate = new Date(birthDate);
+			birthDateField = (
+				<DatePicker
+							name="BirthDate"
+							disabled={this.state.inViewMode}
+							onChange={this.handleBirthDateChange}
+							autoOk={false}
+							floatingLabelText="Birth Date"
+							value={this.state.employee.BirthDate}
+							maxDate={new Date()}
+						/>
+			);
+		} else {
+			birthDateField = (
+				<DatePicker
+							name="BirthDate"
+							disabled={this.state.inViewMode}
+							onChange={this.handleBirthDateChange}
+							autoOk={false}
+							floatingLabelText="Birth Date"
+							maxDate={new Date()}
+						/>
+			);
+		}
+
 		return (
 			<div id='employee-edit'>
 
@@ -193,7 +249,9 @@ class EmployeeForm extends Component {
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
 						hintText="Wagão"
+						readOnly={this.state.inViewMode}
 						errorText={this.state.error.Name}
+						value={this.state.employee.Name}
 						floatingLabelText="User name"
 					/>
 					<br />
@@ -202,7 +260,9 @@ class EmployeeForm extends Component {
 						type="text"
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
+						readOnly={this.state.inViewMode}
 						errorText={this.state.error.Cpf}
+						value={this.state.employee.Cpf}
 						hintText="999.999.999-99"
 						floatingLabelText="Cpf"
 					/>
@@ -212,18 +272,27 @@ class EmployeeForm extends Component {
 						type="password"
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
+						readOnly={this.state.inViewMode}
 						errorText={this.state.error.Password}
+						value={this.state.employee.Password}
 						floatingLabelText="Password"
 					/>
 					<br />
 
-					<DatePicker
-						name="BirthDate"
-						onChange={this.handleBirthDateChange}
-						autoOk={false}
-						floatingLabelText="Birth Date"
-						maxDate={new Date()}
+					<TextField
+						name="PhoneNumber"
+						type="text"
+						onChange={this.handleChange}
+						onBlur={this.handleBlur}
+						readOnly={this.state.inViewMode}
+						errorText={this.state.error.PhoneNumber}
+						value={this.state.employee.PhoneNumber}
+						hintText="(31) 89999-9999"
+						floatingLabelText="Phone number"
 					/>
+					<br />
+
+					{birthDateField}
 					<br />
 
 					<TextField
@@ -231,12 +300,19 @@ class EmployeeForm extends Component {
 						type="number"
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
+						readOnly={this.state.inViewMode}
 						errorText={this.state.error.Salary}
+						value={this.state.employee.Salary}
 						floatingLabelText="Salary"
 					/>
 
 					<br />
-					<SpecialtyGroup onChange={this.handleChange} name="SpecialtyGroup" ref="SpecialtyGroup" />
+					<SpecialtyGroup
+						employee={this.state.employee}
+						inViewMode={this.state.inViewMode}
+						onChange={this.handleChange}
+						name="SpecialtyGroup"
+					/>
 					
 					<div id="divider-container" style={styles.dividerContainer}>
 						<Divider />
@@ -249,10 +325,10 @@ class EmployeeForm extends Component {
 				</Paper>
 
 				<FloatingActionButton
-						style={styles.addContent}
-						onTouchTap={this.saveEmployee}
+						style={styles.floatingAction}
+						onTouchTap={this.state.inViewMode? this.editEmployee : this.saveEmployee}
 					>
-						<ContentSave />
+						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
 					</FloatingActionButton>
 
 			</div>
@@ -269,30 +345,37 @@ class SpecialtyGroup extends Component {
 	}
 
 	handleChange(event, index, value) {
-		if (value === 3) {
-			this.setState({ isVeterinary: true });
-		} else {
-			this.setState({ isVeterinary: false });
+		if (index && value) {
+			if (value === 3) {
+				this.setState({ isVeterinary: true });
+			} else {
+				this.setState({ isVeterinary: false });
+			}
+			if (this.props.onChange) {
+				this.props.onChange(event, value, 'Type');
+			}
+		} else if(this.props.onChange) {
+			this.props.onChange(event, event.target.value, event.target.name);
 		}
-		if (this.props.onChange) {
-			this.props.onChange(event, value, 'Type');
-		}
+		
 	}
 
 	render() {
 		let specialtyField = (
 			<TextField
 				name="Specialty"
-				ref="Specialty"
 				type="text"
+				readOnly={this.props.inViewMode}
 				hintText="Brain surgery"
 				floatingLabelText="Specialty"
+				value={this.props.employee.Specialty || ''}
+				onChange={this.handleChange}
 			/>
 		);
 
 		return (
 			<div>
-				<EmployeeTypes ref="Type" onChange={this.handleChange} name="Type" />
+				<EmployeeTypes disabled={this.props.inViewMode || this.props.employee.Id > 0} onChange={this.handleChange} name="Type" />
 				<br />
 				{this.state.isVeterinary? specialtyField : ''}
 			</div>
@@ -300,9 +383,12 @@ class SpecialtyGroup extends Component {
 	}
 }
 
+SpecialtyGroup.propTypes = {
+	inViewMode: PropTypes.bool.isRequired,
+	employee: PropTypes.object.isRequired
+}
+
 export default connect((state, ownProps) => ({
 	employees: state.employee.employees,
-	hasOpenMessage: !!state.main.message.open,
-	//addresses: state.address.addresses, -- Won't be used anymore, we will just add all the address fields, but keep that in case we change to a select again
-	employeeId: ownProps.location.query.id
+	hasOpenMessage: !!state.main.message.open
 }))(EmployeeForm);

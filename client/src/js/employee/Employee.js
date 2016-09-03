@@ -4,12 +4,18 @@ import FlatButton from 'material-ui/FlatButton';
 
 class Employee extends Component {
 
+	constructor(...args) {
+		super(...args);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
 	getStyles() {
 		return {
 			card: {
 				cursor: 'pointer',
-				width: '50%',
+				width: '100%',
 				minWidth: '300px',
+				maxWidth: '1000px',
 				margin: '5px auto 0px auto'
 			},
 			cardText: {
@@ -19,6 +25,12 @@ class Employee extends Component {
 				paddingTop: 0
 			}
 		};
+	}
+
+	handleClick() {
+		if (this.props.onClick) {
+			this.props.onClick(this.props.employee);
+		}
 	}
 
 	render() {
@@ -49,7 +61,7 @@ class Employee extends Component {
 		});
 
 		return (
-			<Card style={styles.card}>
+			<Card onClick={this.handleClick} style={styles.card}>
 				<CardHeader
 					title={employee.Name}
 					subtitle={userTypeMask? userTypeMask.func(employee.Type) : employee.Type}
@@ -64,7 +76,8 @@ class Employee extends Component {
 Employee.propTypes = {
 	employee: PropTypes.object.isRequired,
 	keyReplacements: PropTypes.object.isRequired,
-	valueMasks: PropTypes.object.isRequired
+	valueMasks: PropTypes.object.isRequired,
+	onClick: PropTypes.func
 }
 
 export default Employee;

@@ -46,11 +46,6 @@ class App extends React.Component {
 		};
 	}
 
-	_onLeftNavChange(e, key, payload) {
-		// Do DOM Diff refresh
-		this.context.router.transitionTo(payload.route);
-	}
-
 	_getCurrentRouteName() {
 		var route = this.props.routes.find(route => route.path === this.props.location.pathname);
 		return route? route.name : 'Home';

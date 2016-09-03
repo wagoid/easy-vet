@@ -1,7 +1,9 @@
+import { push } from 'react-router-redux';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch, objectToFormData } from '../helpers/util';
 import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
+import { ViewMode } from '../constants';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
 export const FETCH_EMPLOYEES_SUCCESS = 'employee/FETCH_SUCCESS';
@@ -29,12 +31,14 @@ function employeesError({ type, message }) {
 const CREATE_EMPLOYEE = 'employee/CREATE';
 
 const CREATE_EMPLOYEE_SUCCESS = 'employee/CREATE_SUCCESS';
-function employeesCreateSuccess({ type, message }) {
-	return {
-		type: CREATE_EMPLOYEE_SUCCESS,
-		payload: {
-			type,
-			message
+function employeesCreateSuccess(employee) {
+	return employeeId => {
+		employee.Id = employeeId;
+		return {
+			type: CREATE_EMPLOYEE_SUCCESS,
+			payload: {
+				employee
+			}
 		}
 	}
 }
@@ -69,18 +73,19 @@ export function fetchEmployees() {
 			params: { method: 'get', url: `${urls.api}/employee/all`},
 			businessErrorActions: [openMessageView, employeesError],
 			fetchErrorActions: [openMessageView, employeesError],
-			successAction: employeesSuccess
+			successActions: [employeesSuccess]
 		});
 	}
 }
 
-export function createEmployee(employee) {
-	var headers = new Headers();
-	headers.set('accept', 'application/json');
-	headers.set('content-type', 'application/json');
+export function createEmployee(employee, currentLocation) {
 	return (dispatch, getState) => {
+		let successActionPayload = {
+			type: 'Success',
+			text: 'Employee saved with success!'
+		};
 		let params = {
-			method: 'post',
+			method:  employee.Id > 0? 'put' : 'post',
 			url: `${urls.api}/employee/${EMPLOYEE_TYPES[employee.Type].toLowerCase().replace(' ', '')}`,
 			data: JSON.stringify(employee)
 		};
@@ -88,7 +93,7 @@ export function createEmployee(employee) {
 			params,
 			businessErrorActions: [openMessageView, employeesCreateError],
 			fetchErrorActions: [openMessageView, employeesCreateError],
-			successAction: employeesCreateSuccess
+			successActions: [openMessageView.bind(null, successActionPayload), employeesCreateSuccess(employee)]
 		});
 	}
 }

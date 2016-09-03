@@ -11,7 +11,7 @@ import { configureStore } from './app/configureStore';
 //import DevTools from './containers/DevTools';
 import Home from './home/Home';
 import App from './app/App';
-import Employee from './employee';
+import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
 //import Login from './auth/Login';
 
@@ -41,7 +41,7 @@ export default class Root extends Component {
 					<Router history={history}>
 						<Route name="Home" path={getPath()} component={App}>
 
-							<Route name="Employees" path={getPath('employee')} component={Employee} />
+							<Route name="Employees" path={getPath('employee')} component={EmployeeList} />
 							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
 							
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />

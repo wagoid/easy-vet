@@ -26,7 +26,7 @@ class EmployeeTypes extends Component {
 		});
 
 		return (
-			<SelectField fullWidth={this.props.fullWidth} value={this.state.value} onChange={this.handleChange}>
+			<SelectField disabled={this.props.disabled} fullWidth={this.props.fullWidth} value={this.state.value} onChange={this.handleChange}>
 				{employeeTypeOptions}
 			</SelectField>
 		);
@@ -34,7 +34,8 @@ class EmployeeTypes extends Component {
 }
 
 EmployeeTypes.PropTypes = {
-	fullWidth: PropTypes.bool
+	fullWidth: PropTypes.bool,
+	disabled: PropTypes.bool
 }
 
 export default EmployeeTypes;

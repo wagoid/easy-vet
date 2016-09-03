@@ -18,9 +18,9 @@ export function genericFetch(dispatch, config = {}) {
 			if (response.data.Message) {
 				var firstMessageSentence = response.data.Message.split('.').shift();
 				let errorPayload = { type: response.data.Type, text: firstMessageSentence };
-				dispatchErrorActions(dispatch, errorPayload, ...config.businessErrorActions);
+				dispatchActions(dispatch, errorPayload, ...config.businessErrorActions);
 			} else {
-				dispatch(config.successAction(response.data.Data))
+				dispatchActions(dispatch, response.data.Data, ...config.successActions);
 			}
 		})
 		.catch(catchFetch(dispatch, ...config.fetchErrorActions));
@@ -37,11 +37,9 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 	};
 }
 
-export function dispatchErrorActions(dispatch, errorPayload, ...errorActions) {
-	errorActions.forEach(errorAction => dispatch(errorAction(errorPayload)));
+export function dispatchActions(dispatch, payload, ...actions) {
+	actions.forEach(action => dispatch(action(payload)));
 }
-
-
 
 
 export function isObject(value) {

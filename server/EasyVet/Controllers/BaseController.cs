@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace EasyVet.Controllers
 {
@@ -24,8 +25,6 @@ namespace EasyVet.Controllers
             this.context = context;
             this.responseHandler = new ResponseHandler();
         }
-
-       
 
         protected Response<T> safelyRespond<T>(Func<T> func)
         {

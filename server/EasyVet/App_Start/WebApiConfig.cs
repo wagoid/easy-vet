@@ -5,6 +5,7 @@ using System.Reflection;
 using System;
 using System.Web.Http.Controllers;
 using System.Web.Http.Cors;
+using EasyVet.App_Start;
 
 namespace EasyVet
 {
@@ -12,9 +13,9 @@ namespace EasyVet
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-            //Use
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            //config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            //Format text/plain as json to bypass browser options requests
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -9,11 +9,12 @@ import { floatingActionStyles } from '../helpers/util';
 import Employee from './Employee';
 import * as EmployeeActions from './actions';
 
-class EmployeeView extends Component {
+class EmployeeList extends Component {
 
 	constructor(...args) {
 		super(...args);
 		this.addEmployee = this.addEmployee.bind(this);
+		this.viewEmployee = this.viewEmployee.bind(this);
 		this.actions = bindActionCreators(EmployeeActions, this.props.dispatch);
 	}
 
@@ -33,6 +34,11 @@ class EmployeeView extends Component {
 		this.context.router.push('/employee/form')
 	}
 
+	viewEmployee(employee) {
+		let newLocation =  { ...this.props.location, pathname: '/employee/form' , state: { employeeId: employee.Id, inViewMode: true } };
+		this.context.router.push(newLocation);
+	}
+
 	render() {
 		const styles = this.getStyles();
 		let keyReplacements = {
@@ -50,6 +56,7 @@ class EmployeeView extends Component {
 
 		const employeeCards = this.props.employees.map((employee) => {
 			return (<Employee
+				onClick={this.viewEmployee}
 				key={employee.Id}
 				employee={employee}
 				keyReplacements={keyReplacements}
@@ -70,17 +77,17 @@ class EmployeeView extends Component {
 	}
 }
 
-EmployeeView.defaultProps = {
+EmployeeList.defaultProps = {
 	employees: []
 }
 
-EmployeeView.propTypes = {
+EmployeeList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 	employees: PropTypes.array,
 	open: PropTypes.bool,
 }
 
-EmployeeView.contextTypes = {
+EmployeeList.contextTypes = {
 	router: PropTypes.object.isRequired,
 	muiTheme: PropTypes.object.isRequired
 }
@@ -88,4 +95,4 @@ EmployeeView.contextTypes = {
 export default connect(state => ({
 	employees: state.employee.employees,
 	hasOpenMessage: !!state.main.message.open
-}))(EmployeeView);
+}))(EmployeeList);
