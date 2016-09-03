@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const SNACKBAR_HEIGHT = 48;
 export const FLOATING_BUTTON_BOTTOM = 20;
 
@@ -11,13 +13,13 @@ export function floatingActionStyles(hasOpenMessage) {
 }
 
 export function genericFetch(dispatch, config = {}) {
-	return fetchJson(config.url, config.params)
-		.then(json => {
-			if (json.Message) {
-				let errorPayload = { type: json.Type, text: json.Message };
+	return axios(config.params)
+		.then(response => {
+			if (response.data.Message) {
+				let errorPayload = { type: response.Type, text: response.Message };
 				dispatchErrorActions(dispatch, errorPayload, ...config.businessErrorActions);
 			} else {
-				dispatch(config.successAction(json.Data))
+				dispatch(config.successAction(response.data.Data))
 			}
 		})
 		.catch(catchFetch(dispatch, ...config.fetchErrorActions));
@@ -36,13 +38,6 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 
 export function dispatchErrorActions(dispatch, errorPayload, ...errorActions) {
 	errorActions.forEach(errorAction => dispatch(errorAction(errorPayload)));
-}
-
-export function fetchJson(url, params) {
-	return fetch(url, params)
-		.then(response =>  {
-			return response.json()
-		});
 }
 
 

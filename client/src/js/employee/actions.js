@@ -1,6 +1,6 @@
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
-import { catchFetch, dispatchErrorActions, fetchJson, genericFetch } from '../helpers/util';
+import { catchFetch, dispatchErrorActions, fetchJson, genericFetch, objectToFormData } from '../helpers/util';
 import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
@@ -79,18 +79,16 @@ export function fetchEmployees() {
 }
 
 export function createEmployee(employee) {
+	var headers = new Headers();
+	headers.set('accept', 'application/json');
+	headers.set('content-type', 'application/json');
 	return (dispatch, getState) => {
 		let params = {
-			method: 'POST',
-			mode: 'no-cors',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: employee
+			method: 'post',
+			url: `${urls.api}/employee/${EMPLOYEE_TYPES[employee.Type].toLowerCase().replace(' ', '')}`,
+			data: JSON.stringify(employee)
 		};
 		return genericFetch(dispatch, {
-			url: `${urls.api}/employee/${EMPLOYEE_TYPES[employee.Type].toLowerCase()}`,
 			params,
 			businessErrorActions: [openMessageView, employeesCreateError],
 			fetchErrorActions: [openMessageView, employeesCreateError],
