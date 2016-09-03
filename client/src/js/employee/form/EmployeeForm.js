@@ -12,6 +12,7 @@ import { getFieldsValidations, getAddressFieldsValidations } from './validations
 import * as EmployeeActions from '../actions';
 import { ViewMode } from '../../constants';
 import { isString } from '../../helpers/util';
+import { addressDefinitions, employeeDefinitions } from './fieldDefinitions';
 
 let employeeProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Salary' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
@@ -44,37 +45,49 @@ class EmployeeForm extends Component {
 	}
 
 	getAddressGenericTextFields() {
-		let addressDefinitions = [
-			{ name: 'StreetType', label: 'Street type'  },
-			{ name: 'StreetName', label: 'Street name'  },
-			{ name: 'Number', label: 'Number', type: 'number'  },
-			{ name: 'Complement', label: 'Complement'  },
-			{ name: 'Neighbourhood', label: 'Neighbourhood'  },
-			{ name: 'Municipality', label: 'Municipality'  },
-			{ name: 'State', label: 'State'  },
-			{ name: 'ZipCode', label: 'Zip code'  }
-		];
-
 		return addressDefinitions.map((addressDefinition, key) => {
-			return this.createGenericTextField(Object.assign({}, addressDefinition, { key }));
+			return this.createGenericAddressTextField({...addressDefinition, key });
 		});
 	}
 
-	createGenericTextField({ name, label, type, key }) {
+	createGenericAddressTextField({ name, label, type, key }) {
 		return (
-			<div key={key}>
-				<TextField
-					name={name}
-					type={type || 'text'}
-					readOnly={this.state.inViewMode}
-					onChange={this.handleAddressChange}
-					onBlur={this.handleAddressBlur}
-					value={this.state.employee.Address[name]}
-					errorText={this.state.error.Address[name]}
-					floatingLabelText={label}
-				/>
-				<br />
-			</div>
+			<TextField
+				key={key}
+				name={name}
+				type={type || 'text'}
+				style={ { display: 'block' } }
+				readOnly={this.state.inViewMode}
+				onChange={this.handleAddressChange}
+				onBlur={this.handleAddressBlur}
+				value={this.state.employee.Address[name]}
+				errorText={this.state.error.Address[name]}
+				floatingLabelText={label}
+			/>
+		);
+	}
+
+	getGenericTextFields() {
+		return employeeDefinitions.map((employeeDefinitions, key) => {
+			return this.createGenericTextField({ ...employeeDefinitions, key });
+		});
+	}
+
+	createGenericTextField({ name, label, type, hintText, key }) {
+		return (
+			<TextField
+				key={key}
+				name={name}
+				style={ { display: 'block' } }
+				type={type || 'text'}
+				readOnly={this.state.inViewMode}
+				onChange={this.handleChange}
+				onBlur={this.handleBlur}
+				hintText={hintText || ''}
+				value={this.state.employee[name]}
+				errorText={this.state.error[name]}
+				floatingLabelText={label}
+			/>
 		);
 	}
 
@@ -243,70 +256,11 @@ class EmployeeForm extends Component {
 			<div id='employee-edit'>
 
 				<Paper style={styles.paper}>
-					<TextField
-						name="Name"
-						type="text"
-						onChange={this.handleChange}
-						onBlur={this.handleBlur}
-						hintText="Wagão"
-						readOnly={this.state.inViewMode}
-						errorText={this.state.error.Name}
-						value={this.state.employee.Name}
-						floatingLabelText="User name"
-					/>
-					<br />
-					<TextField
-						name="Cpf"
-						type="text"
-						onChange={this.handleChange}
-						onBlur={this.handleBlur}
-						readOnly={this.state.inViewMode}
-						errorText={this.state.error.Cpf}
-						value={this.state.employee.Cpf}
-						hintText="999.999.999-99"
-						floatingLabelText="Cpf"
-					/>
-					<br />
-					<TextField
-						name="Password"
-						type="password"
-						onChange={this.handleChange}
-						onBlur={this.handleBlur}
-						readOnly={this.state.inViewMode}
-						errorText={this.state.error.Password}
-						value={this.state.employee.Password}
-						floatingLabelText="Password"
-					/>
-					<br />
-
-					<TextField
-						name="PhoneNumber"
-						type="text"
-						onChange={this.handleChange}
-						onBlur={this.handleBlur}
-						readOnly={this.state.inViewMode}
-						errorText={this.state.error.PhoneNumber}
-						value={this.state.employee.PhoneNumber}
-						hintText="(31) 89999-9999"
-						floatingLabelText="Phone number"
-					/>
-					<br />
+					{this.getGenericTextFields()}
 
 					{birthDateField}
 					<br />
 
-					<TextField
-						name="Salary"
-						type="number"
-						onChange={this.handleChange}
-						onBlur={this.handleBlur}
-						readOnly={this.state.inViewMode}
-						errorText={this.state.error.Salary}
-						value={this.state.employee.Salary}
-						floatingLabelText="Salary"
-					/>
-
-					<br />
 					<SpecialtyGroup
 						employee={this.state.employee}
 						inViewMode={this.state.inViewMode}
@@ -365,6 +319,7 @@ class SpecialtyGroup extends Component {
 			<TextField
 				name="Specialty"
 				type="text"
+				style={ { display: 'block' } }
 				readOnly={this.props.inViewMode}
 				hintText="Brain surgery"
 				floatingLabelText="Specialty"
@@ -376,7 +331,6 @@ class SpecialtyGroup extends Component {
 		return (
 			<div>
 				<EmployeeTypes disabled={this.props.inViewMode || this.props.employee.Id > 0} onChange={this.handleChange} name="Type" />
-				<br />
 				{this.state.isVeterinary? specialtyField : ''}
 			</div>
 		);

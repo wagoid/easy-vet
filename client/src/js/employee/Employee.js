@@ -46,7 +46,7 @@ class Employee extends Component {
 			if (key === 'Address') {
 				return (
 					<CardText key={index} style={styles.addressCardText}>
-						{`${address.StreetType} ${address.StreetName}, nº ${address.Number} - ${address.Neighbourhood}`}
+						Address: {`${address.StreetType} ${address.StreetName}, nº ${address.Number} - ${address.Neighbourhood}`}
 					</CardText>
 				);
 			} else {

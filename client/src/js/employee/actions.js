@@ -28,14 +28,15 @@ function employeesError({ type, message }) {
 }
 
 //Make the others down there
-const CREATE_EMPLOYEE = 'employee/CREATE';
+export const CREATE_EMPLOYEE = 'employee/CREATE';
 
-const CREATE_EMPLOYEE_SUCCESS = 'employee/CREATE_SUCCESS';
-function employeesCreateSuccess(employee) {
+export const CREATE_EMPLOYEE_SUCCESS = 'employee/CREATE_SUCCESS';
+function employeeSaveSuccess(employee) {
+	let actionToUse = employee.Id > 0? UPDATE_EMPLOYEE_SUCCESS : CREATE_EMPLOYEE_SUCCESS;
 	return employeeId => {
 		employee.Id = employeeId;
 		return {
-			type: CREATE_EMPLOYEE_SUCCESS,
+			type: actionToUse,
 			payload: {
 				employee
 			}
@@ -44,7 +45,7 @@ function employeesCreateSuccess(employee) {
 }
 
 
-const CREATE_EMPLOYEE_FAILURE = 'employee/CREATE_FAILURE';
+export const CREATE_EMPLOYEE_FAILURE = 'employee/CREATE_FAILURE';
 function employeesCreateError({ type, message }) {
 	return {
 		type: CREATE_EMPLOYEE_FAILURE,
@@ -59,9 +60,9 @@ const READ_EMPLOYEE = 'employee/READ';
 const READ_EMPLOYEE_SUCCESS = 'employee/READ_SUCCESS';
 const READ_EMPLOYEE_FAILURE = 'employee/READ_FAILURE';
 
-const UPDATE_EMPLOYEE = 'employee/UPDATE';
-const UPDATE_EMPLOYEE_SUCCESS = 'employee/UPDATE_SUCCESS';
-const UPDATE_EMPLOYEE_FAILURE = 'employee/UPDATE_FAILURE';
+export const UPDATE_EMPLOYEE = 'employee/UPDATE';
+export const UPDATE_EMPLOYEE_SUCCESS = 'employee/UPDATE_SUCCESS';
+export const UPDATE_EMPLOYEE_FAILURE = 'employee/UPDATE_FAILURE';
 
 const REMOVE_EMPLOYEE = 'employee/REMOVE';
 const REMOVE_EMPLOYEE_SUCCESS = 'employee/REMOVE_SUCCESS';
@@ -93,7 +94,7 @@ export function createEmployee(employee, currentLocation) {
 			params,
 			businessErrorActions: [openMessageView, employeesCreateError],
 			fetchErrorActions: [openMessageView, employeesCreateError],
-			successActions: [openMessageView.bind(null, successActionPayload), employeesCreateSuccess(employee)]
+			successActions: [openMessageView.bind(null, successActionPayload), employeeSaveSuccess(employee)]
 		});
 	}
 }
