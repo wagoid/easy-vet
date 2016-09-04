@@ -56,19 +56,19 @@ namespace EasyVet.Tests.Controllers
         [TestMethod]
         public void EnsureGetAllVeterinaries()
         {
-            assertGetAllEmployees(context.Veterinaries, new EasyVet.Controllers.Employee().Veterinaries);
+            assertGetAllEmployees(context.Veterinaries, new EasyVet.Controllers.Employee(context).Veterinaries);
         }
 
         [TestMethod]
         public void EnsureGetAllCashiers()
         {
-            assertGetAllEmployees(context.Cashiers, new EasyVet.Controllers.Employee().Cashiers);
+            assertGetAllEmployees(context.Cashiers, new EasyVet.Controllers.Employee(context).Cashiers);
         }
 
         [TestMethod]
         public void EnsureGetAllSalesPeople()
         {
-            assertGetAllEmployees(context.SalesPeople, new EasyVet.Controllers.Employee().SalesPeople);
+            assertGetAllEmployees(context.SalesPeople, new EasyVet.Controllers.Employee(context).SalesPeople);
         }
 
         private void assertGetAllEmployees<TEntity>(IDbSet<TEntity> collection, Func<Response<IList<TEntity>>> getMethod) where TEntity : Employee, new()
@@ -181,7 +181,7 @@ namespace EasyVet.Tests.Controllers
         [TestMethod]
         public void EnsurePostCorrectlyAdds()
         {
-            var controller = new EasyVet.Controllers.Employee();
+            var controller = new EasyVet.Controllers.Employee(context);
             assertPostCorrectlyAdds(context.Veterinaries, controller.PostVeterinary);
             assertPostCorrectlyAdds(context.Cashiers, controller.PostCashier);
             assertPostCorrectlyAdds(context.SalesPeople, controller.PostSalesPerson);
@@ -203,7 +203,7 @@ namespace EasyVet.Tests.Controllers
         [TestMethod]
         public void EnsurePutUpdatesCorrectly()
         {
-            var controller = new EasyVet.Controllers.Employee();
+            var controller = new EasyVet.Controllers.Employee(context);
             assertPutCorrectlyAdds(context.Veterinaries, controller.PutVeterinary);
             assertPutCorrectlyAdds(context.Cashiers, controller.PutCashier);
             assertPutCorrectlyAdds(context.SalesPeople, controller.PutSalesPerson);
