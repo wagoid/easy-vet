@@ -1,1 +1,1 @@
-export const api = 'http://localhost:9072/api';
+export const api = 'https://easyvetapi.azurewebsites.net/api';

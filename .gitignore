@@ -7,6 +7,9 @@ client/src/dist
 static-files-server/node_modules*
 client/npm-debug.log
 
+# Web config for security purposes
+server/EasyVet/Web.config
+
 ###################
 # compiled source #
 ###################
