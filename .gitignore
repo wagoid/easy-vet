@@ -4,6 +4,7 @@ server/OpenCover/*
 # Client side files
 client/node_modules
 client/src/dist
+client/dist
 static-files-server/node_modules*
 client/npm-debug.log
 

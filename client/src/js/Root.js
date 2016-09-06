@@ -11,9 +11,10 @@ import { configureStore } from './app/configureStore';
 //import DevTools from './containers/DevTools';
 import Home from './home/Home';
 import App from './app/App';
+import ExternalApp from './app/ExternalApp';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
-//import Login from './auth/Login';
+import Login from './auth/Login';
 
 //hooks.bootstrap(store)();
 
@@ -33,13 +34,27 @@ function getPath(path = '') {
 	return `${baseUrl}${path? ('/' + path) : path}`;
 }
 
+function requireAuth(store, nextState, replace, next) {
+	let userData = store.getState().userData;
+	//using only memory store for now
+	if (!userData) {
+		replace('/login');
+	}
+
+	next();
+}
+
 export default class Root extends Component {
 	render() {
 		return (
 			<div>
 				<Provider store={store}>
 					<Router history={history}>
-						<Route name="Home" path={getPath()} component={App}>
+						<Route component={ExternalApp}>
+							<Route name="Login" path={getPath('login')} component={Login} />
+						</Route>
+						
+						<Route onEnter={requireAuth.bind(this, store)} name="Home" path={getPath()} component={App}>
 
 							<Route name="Employees" path={getPath('employee')} component={EmployeeList} />
 							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />

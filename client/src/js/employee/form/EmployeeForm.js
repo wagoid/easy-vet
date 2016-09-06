@@ -181,11 +181,11 @@ class EmployeeForm extends Component {
 	}
 
 	saveEmployee() {
-		var error = {...this.state.error};
+		let error = {...this.state.error};
 		this.setEmployeeErrors(error);
 		this.setEmployeeAddressErrors(error);
-		let hasError = Object.keys(error.Address).filter(prop => error.Address[prop]).length;
-		hasError = hasError || Object.keys(error).filter(prop => prop !== 'Address' && error[prop]).length;
+		let hasError = Object.keys(error.Address).some(prop => !!error.Address[prop]);
+		hasError = hasError || Object.keys(error).some(prop => prop !== 'Address' && !!error[prop]);
 
 		if (hasError) {
 			this.setState({

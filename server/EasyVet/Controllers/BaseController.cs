@@ -66,7 +66,7 @@ namespace EasyVet.Controllers
         protected bool deleteEmployee<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Employee
         {
             var entity = entityDbSet.FirstOrDefault(e => e.Id == id);
-            throwEntityNotFounWhenNull(entity, id);
+            throwEntityNotFoundWhenNull(entity, id);
 
             entityDbSet.Remove(entity);
             context.SaveChanges();
@@ -100,14 +100,14 @@ namespace EasyVet.Controllers
         protected bool delete<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : BaseEntity
         {
             var entity = entityDbSet.FirstOrDefault(e => e.Id == id);
-            throwEntityNotFounWhenNull(entity, id);
+            throwEntityNotFoundWhenNull(entity, id);
 
             entityDbSet.Remove(entity);
             context.SaveChanges();
             return true;
         }
 
-        protected void throwEntityNotFounWhenNull<TEntity>(TEntity entity, int id) where TEntity : class
+        protected void throwEntityNotFoundWhenNull<TEntity>(TEntity entity, int id) where TEntity : class
         {
             if (entity == null)
             {

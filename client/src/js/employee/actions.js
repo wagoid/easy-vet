@@ -1,7 +1,7 @@
 import { push } from 'react-router-redux';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
-import { catchFetch, dispatchErrorActions, genericFetch, objectToFormData } from '../helpers/util';
+import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
 import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
 import { ViewMode } from '../constants';
 

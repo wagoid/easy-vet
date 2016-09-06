@@ -11,6 +11,8 @@ namespace EasyVet.Controllers
 {
     public class Employee : BaseController
     {
+        public string EncodePassword { get; private set; }
+
         public Employee() : base()
         {
 
@@ -40,6 +42,7 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostVeterinary([FromBody]Models.Veterinary veterinary)
         {
+            veterinary.Password = PasswordEncoder.EncodePassword(veterinary.Password);
             return this.safelyRespond<int>(() => postEmployee(context.Veterinaries, veterinary));
         }
 
@@ -47,6 +50,12 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> PutVeterinary([FromBody]Models.Veterinary veterinary)
         {
+            var newPassword = PasswordEncoder.EncodePassword(veterinary.Password);
+            if (veterinary.Password != newPassword)
+            {
+                veterinary.Password = newPassword;
+            }
+            veterinary.Password = PasswordEncoder.EncodePassword(veterinary.Password);
             return this.safelyRespond<bool>(() => putEmployee(context.Veterinaries, veterinary));
         }
 
@@ -79,6 +88,7 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostCashier([FromBody]Models.Cashier cashier)
         {
+            cashier.Password = PasswordEncoder.EncodePassword(cashier.Password);
             return this.safelyRespond<int>(() => postEmployee(context.Cashiers, cashier));
         }
 
@@ -86,6 +96,11 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> PutCashier([FromBody]Models.Cashier cashier)
         {
+            var newPassword = PasswordEncoder.EncodePassword(cashier.Password);
+            if (cashier.Password != newPassword)
+            {
+                cashier.Password = newPassword;
+            }
             return this.safelyRespond<bool>(() => putEmployee(context.Cashiers, cashier));
         }
 
@@ -118,6 +133,7 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostSalesPerson([FromBody]Models.SalesPerson salesperson)
         {
+            salesperson.Password = PasswordEncoder.EncodePassword(salesperson.Password);
             return this.safelyRespond<int>(() => postEmployee(context.SalesPeople, salesperson));
         }
 
@@ -125,6 +141,11 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> PutSalesPerson([FromBody]Models.SalesPerson salesperson)
         {
+            var newPassword = PasswordEncoder.EncodePassword(salesperson.Password);
+            if (salesperson.Password != newPassword)
+            {
+                salesperson.Password = newPassword;
+            }
             return this.safelyRespond<bool>(() => putEmployee(context.SalesPeople, salesperson));
         }
 

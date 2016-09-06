@@ -155,6 +155,7 @@
   <ItemGroup>
     <Compile Include="App_Start\DefaultHeaderFilter.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Authentication.cs" />
     <Compile Include="Controllers\Address.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Employee.cs" />
@@ -163,7 +164,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Helpers\Exceptions\EntityNotFoundException.cs" />
+    <Compile Include="Helpers\PasswordEncoder.cs" />
     <Compile Include="Helpers\ResponseHandler.cs" />
     <Compile Include="Migrations\201608202156541_Initial.cs" />
     <Compile Include="Migrations\201608202156541_Initial.Designer.cs">

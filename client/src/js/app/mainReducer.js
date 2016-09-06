@@ -20,4 +20,4 @@ export default function mainReducer(state = initialState, action = {}) {
 	}
 
 	return newState;
-};
+}

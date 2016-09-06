@@ -5,12 +5,14 @@ import { browserHistory } from 'react-router';
 import main from './mainReducer';
 import employee from '../employee/reducer';
 import address from '../address/reducer';
+import auth from '../auth/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
 		main,
 		employee,
 		address,
+		auth,
 		routing: routerReducer
 	});
 
