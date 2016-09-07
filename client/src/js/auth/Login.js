@@ -4,7 +4,7 @@ import { TextField, Paper, RaisedButton, MuiThemeProvider } from 'material-ui';
 import Send from 'material-ui/svg-icons/content/send';
 import { connect } from 'react-redux';
 import * as authActions from './actions';
-import getStyles from '../employee/form/styles';
+import getStyles from './styles';
 import * as validations from '../helpers/validations';
 
 class Login extends Component {
@@ -63,10 +63,9 @@ class Login extends Component {
 		let error = {...this.state.error};
 		this.setErrors(error);
 		let hasError = Object.keys(error).some(errorKey => !!error[errorKey]);
+		this.setState({ error });
 
-		if (hasError) {
-			this.setState({ error });
-		} else {
+		if (!hasError) {
 			this.actions.requestLogin({ Cpf: this.state.Cpf, Password: this.state.Password })
 				.then(responseData => {
 					if (responseData) {
@@ -91,25 +90,31 @@ class Login extends Component {
 						name="Cpf"
 						type="text"
 						style={ { display: 'block' } }
+						errorText={this.state.error.Cpf}
 						floatingLabelText="Cpf"
 						value={this.props.Cpf}
 						onChange={this.handleChange}
 						onBlur={this.onBlur}
+						fullWidth={true}
 					/>
 
 					<TextField
 						name="Password"
 						type="password"
 						style={ { display: 'block' } }
+						errorText={this.state.error.Password}
 						floatingLabelText="Password"
 						value={this.props.Password}
 						onChange={this.handleChange}
 						onBlur={this.onBlur}
+						fullWidth={true}
 					/>
 
 					<RaisedButton
 						label="submit"
-						style={styles.button}
+						fullWidth={true}
+						style={ { marginTop: '20px' } }
+						primary={true}
 						icon={<Send />}
 						onTouchTap={this.submitLogin}
 					/>

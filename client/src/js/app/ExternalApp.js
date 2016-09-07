@@ -1,5 +1,6 @@
 import { MuiThemeProvider } from 'material-ui';
 import React, { Component, PropTypes } from 'react';
+import DialogRoot from '../dialog/DialogRoot';
 
 class ExternalAppProvider extends Component {
 	render() {
@@ -19,6 +20,7 @@ class ExternalApp extends Component {
 	render() {
 		return (
 			<section id="external-content">
+				<DialogRoot />
 				{this.props.children}
 			</section>
 		);

@@ -35,8 +35,7 @@ function getPath(path = '') {
 }
 
 function requireAuth(store, nextState, replace, next) {
-	let userData = store.getState().userData;
-	//using only memory store for now
+	let userData = localStorage.getItem("userData");
 	if (!userData) {
 		replace('/login');
 	}

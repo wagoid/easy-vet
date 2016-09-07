@@ -1,5 +1,9 @@
+import React from 'react';
 import { genericFetch } from '../helpers/util';
 import * as urls from '../app/config/urls';
+import * as dialogActions from '../dialog/actions';
+import Dialog from './Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 export const LOGIN = 'auth/LOGIN';
 function login(userInfo) {
@@ -21,10 +25,10 @@ function loginsuccess(userInfo) {
 }
 
 export const LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
-function loginFailure({ type, message }) {
+function loginFailure({ type, text }) {
 	return {
 		type: LOGIN_FAILURE,
-		payload: { type, message }
+		payload: { type, text }
 	};
 }
 
@@ -46,9 +50,33 @@ function signupSuccess() {
 	};
 }
 export const SIGNUP_FAILURE = 'auth/SIGNUP_FAILURE';
-function signupFailure({ type, message }) {
+function signupFailure({ type, text }) {
 	return {
-		type: SIGNUP_FAILURE, payload: { type, message }
+		type: SIGNUP_FAILURE, payload: { type, text }
+	};
+}
+
+function dialogAction(dispatch) {
+	return ({ type, text }) => {
+		return {
+			type: dialogActions.OPEN,
+			payload: {
+				component: Dialog,
+				props: {
+					message: text,
+					title: "Failed to login",
+					open: true,
+					onRequestClose: dispatchCloseDialog(dispatch),
+					actions: [<FlatButton key={1} label="OK" primary={true} onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
+				}
+			}
+		};
+	};
+}
+
+function dispatchCloseDialog(dispatch, component) {
+	return () => { 
+		dispatch(dialogActions.closeDialog({}, component))
 	};
 }
 
@@ -56,8 +84,8 @@ export function requestLogin(userInfo) {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
 			params: { method: 'post', url: `${urls.api}/auth/login`, data: userInfo },
-			businessErrorActions: [loginFailure],
-			fetchErrorActions: [loginFailure],
+			businessErrorActions: [loginFailure, dialogAction(dispatch)],
+			fetchErrorActions: [loginFailure, dialogAction(dispatch)],
 			successActions: [loginsuccess(userInfo)]
 		});
 	}

@@ -6,6 +6,7 @@ import main from './mainReducer';
 import employee from '../employee/reducer';
 import address from '../address/reducer';
 import auth from '../auth/reducer';
+import dialog from '../dialog/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
@@ -13,6 +14,7 @@ export const configureStore = function (initialState = {}) {
 		employee,
 		address,
 		auth,
+		dialog,
 		routing: routerReducer
 	});
 
