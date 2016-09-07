@@ -169,7 +169,6 @@
     <Compile Include="Helpers\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Helpers\Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Helpers\Encoder.cs" />
-    <Compile Include="Helpers\ObjectMerger.cs" />
     <Compile Include="Helpers\ResponseHandler.cs" />
     <Compile Include="Migrations\201608202156541_Initial.cs" />
     <Compile Include="Migrations\201608202156541_Initial.Designer.cs">
