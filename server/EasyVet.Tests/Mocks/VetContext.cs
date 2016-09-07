@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EasyVet.Models;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace EasyVet.Tests.Mocks
 {
@@ -27,6 +28,11 @@ namespace EasyVet.Tests.Mocks
             this.Stocks = new Mocks.DbSet<Stock>();
             this.Animals = new Mocks.DbSet<Animal>();
             this.Dogs = new Mocks.DbSet<Dog>();
+        }
+
+        public DbEntityEntry Entry<TEntity>(TEntity entity)
+        {
+            return null;
         }
 
         public IDbSet<Address> Addresses { get; set; }

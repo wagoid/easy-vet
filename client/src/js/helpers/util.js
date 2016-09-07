@@ -1,7 +1,10 @@
 import axios from 'axios';
+import { push } from 'react-router-redux';
 
 export const SNACKBAR_HEIGHT = 48;
 export const FLOATING_BUTTON_BOTTOM = 20;
+
+const UNAUTHORIZED_STATUS = 401;
 
 export function floatingActionStyles(hasOpenMessage) {
 	return {
@@ -22,6 +25,8 @@ export function genericFetch(dispatch, config = {}) {
 			} else {
 				dispatchActions(dispatch, response.data.Data, ...config.successActions);
 			}
+
+			return response.data.Data;
 		})
 		.catch(catchFetch(dispatch, ...config.fetchErrorActions));
 }
@@ -34,6 +39,9 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 			text: ~error.message.indexOf('Network Error')? 'Failed to retrieve data from server' : error.message
 		};
 		actionsToDispatch.forEach(actionMethod => dispatch(actionMethod(payload)));
+		if (error.response && error.response.status === UNAUTHORIZED_STATUS) {
+			dispatch(push('/login'));
+		}
 	};
 }
 

@@ -4,6 +4,7 @@ import * as urls from '../app/config/urls';
 import * as dialogActions from '../dialog/actions';
 import Dialog from './Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import { openMessageView } from '../app/messages/actions';
 
 export const LOGIN = 'auth/LOGIN';
 function login(userInfo) {
@@ -14,14 +15,11 @@ function login(userInfo) {
 }
 
 export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
-function loginsuccess(userInfo) {
-	return newUserInfo => {
-		userInfo.Password = newUserInfo.Password;
+function loginsuccess(response) {
 		return {
 			type: LOGIN_SUCCESS,
-			payload: newUserInfo
+			payload: response
 		};
-	};
 }
 
 export const LOGIN_FAILURE = 'auth/LOGIN_FAILURE';
@@ -80,13 +78,17 @@ function dispatchCloseDialog(dispatch, component) {
 	};
 }
 
+function openSuccessMessage() {
+	return openMessageView({ type: 'LoginSuccess', text: 'Login accomplished with success!' });
+}
+
 export function requestLogin(userInfo) {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
 			params: { method: 'post', url: `${urls.api}/auth/login`, data: userInfo },
 			businessErrorActions: [loginFailure, dialogAction(dispatch)],
 			fetchErrorActions: [loginFailure, dialogAction(dispatch)],
-			successActions: [loginsuccess(userInfo)]
+			successActions: [loginsuccess, openSuccessMessage]
 		});
 	}
 }

@@ -7,20 +7,20 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
-namespace EasyVet.Controllers
+namespace EasyVet.Controllers.Generic
 {
-    public class BaseController : ApiController
+    public class Base : ApiController
     {
         protected Models.Interfaces.VetContext context;
         protected ResponseHandler responseHandler;
 
-        public BaseController()
+        public Base()
         {
             this.context = new VetContext();
             this.responseHandler = new ResponseHandler();
         }
 
-        public BaseController(Models.Interfaces.VetContext context)
+        public Base(Models.Interfaces.VetContext context)
         {
             this.context = context;
             this.responseHandler = new ResponseHandler();
@@ -37,42 +37,6 @@ namespace EasyVet.Controllers
                 return this.responseHandler.Error<T>(e);
             }
         }
-
-        protected List<TEntity> getEmployeeList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : Models.Employee
-        {
-            return entityDbSet
-                    .Include(entity => entity.Address)
-                    .ToList();
-        }
-        protected TEntity getEmployeeFirstOrDefault<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Employee
-        {
-            return entityDbSet
-                .Include(entity => entity.Address)
-                .FirstOrDefault();
-        }
-        protected int postEmployee<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : Models.Employee
-        {
-            entityDbSet.Add(entity);
-            context.SaveChanges();
-            return entity.Id;
-        }
-
-        protected bool putEmployee<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : Models.Employee
-        {
-            entityDbSet.Attach(entity);
-            context.SaveChanges();
-            return true;
-        }
-        protected bool deleteEmployee<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Employee
-        {
-            var entity = entityDbSet.FirstOrDefault(e => e.Id == id);
-            throwEntityNotFoundWhenNull(entity, id);
-
-            entityDbSet.Remove(entity);
-            context.SaveChanges();
-            return true;
-        }
-
 
         protected List<TEntity> getList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : class
         {

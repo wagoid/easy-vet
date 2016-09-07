@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 
@@ -9,6 +10,7 @@ namespace EasyVet.Models.Interfaces
     public interface VetContext
     {
         int SaveChanges();
+        DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
         IDbSet<Address> Addresses { get; set; }
         IDbSet<User> Users { get; set; }

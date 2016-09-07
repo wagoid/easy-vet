@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace EasyVet.Controllers
 {
-    public class Employee : BaseController
+    public class Employee : Generic.User
     {
         public string EncodePassword { get; private set; }
 
@@ -42,7 +42,7 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            veterinary.Password = PasswordEncoder.EncodePassword(veterinary.Password);
+            veterinary.Password = Encoder.Encode(veterinary.Password);
             return this.safelyRespond<int>(() => postEmployee(context.Veterinaries, veterinary));
         }
 
@@ -50,13 +50,13 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> PutVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            var newPassword = PasswordEncoder.EncodePassword(veterinary.Password);
-            if (veterinary.Password != newPassword)
+            return this.safelyRespond<bool>(() =>
             {
-                veterinary.Password = newPassword;
-            }
-            veterinary.Password = PasswordEncoder.EncodePassword(veterinary.Password);
-            return this.safelyRespond<bool>(() => putEmployee(context.Veterinaries, veterinary));
+                var veterinaryFromBd = context.Veterinaries.FirstOrDefault(person => person.Id == veterinary.Id);
+                throwEntityNotFoundWhenNull(veterinaryFromBd, veterinary.Id);
+                updatePasswordWhenChanged(veterinaryFromBd, veterinary);
+                return putEmployee(veterinaryFromBd, veterinary);
+            });
         }
 
         [Route("api/employee/veterinary/{id}")]
@@ -88,7 +88,7 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostCashier([FromBody]Models.Cashier cashier)
         {
-            cashier.Password = PasswordEncoder.EncodePassword(cashier.Password);
+            cashier.Password = Encoder.Encode(cashier.Password);
             return this.safelyRespond<int>(() => postEmployee(context.Cashiers, cashier));
         }
 
@@ -96,12 +96,13 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> PutCashier([FromBody]Models.Cashier cashier)
         {
-            var newPassword = PasswordEncoder.EncodePassword(cashier.Password);
-            if (cashier.Password != newPassword)
+            return this.safelyRespond<bool>(() =>
             {
-                cashier.Password = newPassword;
-            }
-            return this.safelyRespond<bool>(() => putEmployee(context.Cashiers, cashier));
+                var cashierFromBd = context.Cashiers.FirstOrDefault(person => person.Id == cashier.Id);
+                throwEntityNotFoundWhenNull(cashierFromBd, cashier.Id);
+                updatePasswordWhenChanged(cashierFromBd, cashier);
+                return putEmployee(cashierFromBd, cashier);
+            });
         }
 
         [Route("api/employee/Cashier/{id}")]
@@ -133,20 +134,21 @@ namespace EasyVet.Controllers
         [HttpPost]
         public Response<int> PostSalesPerson([FromBody]Models.SalesPerson salesperson)
         {
-            salesperson.Password = PasswordEncoder.EncodePassword(salesperson.Password);
+            salesperson.Password = Encoder.Encode(salesperson.Password);
             return this.safelyRespond<int>(() => postEmployee(context.SalesPeople, salesperson));
         }
 
         [Route("api/employee/salesperson")]
         [HttpPut]
-        public Response<bool> PutSalesPerson([FromBody]Models.SalesPerson salesperson)
+        public Response<bool> PutSalesPerson([FromBody]Models.SalesPerson salesPerson)
         {
-            var newPassword = PasswordEncoder.EncodePassword(salesperson.Password);
-            if (salesperson.Password != newPassword)
+            return this.safelyRespond<bool>(() =>
             {
-                salesperson.Password = newPassword;
-            }
-            return this.safelyRespond<bool>(() => putEmployee(context.SalesPeople, salesperson));
+                var salesPersonFromBd = context.SalesPeople.FirstOrDefault(person => person.Id == salesPerson.Id);
+                throwEntityNotFoundWhenNull(salesPersonFromBd, salesPerson.Id);
+                updatePasswordWhenChanged(salesPersonFromBd, salesPerson);
+                return putEmployee(salesPersonFromBd, salesPerson);
+            });
         }
 
         [Route("api/employee/salesperson/{id}")]

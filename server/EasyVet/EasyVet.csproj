@@ -153,20 +153,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\DefaultHeaderFilter.cs" />
+    <Compile Include="App_Start\AuthenticationHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Authentication.cs" />
     <Compile Include="Controllers\Address.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
+    <Compile Include="Controllers\Generic\User.cs" />
     <Compile Include="Controllers\Interfaces\Crud.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Crypt.cs" />
     <Compile Include="Helpers\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Helpers\Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="Helpers\PasswordEncoder.cs" />
+    <Compile Include="Helpers\Encoder.cs" />
+    <Compile Include="Helpers\ObjectMerger.cs" />
     <Compile Include="Helpers\ResponseHandler.cs" />
     <Compile Include="Migrations\201608202156541_Initial.cs" />
     <Compile Include="Migrations\201608202156541_Initial.Designer.cs">

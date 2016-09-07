@@ -51,10 +51,6 @@ class App extends React.Component {
 		return route? route.name : 'Home';
 	}
 
-	_push() {
-
-	}
-
 	render() {
 		let styles = this.getStyles();
 		return (

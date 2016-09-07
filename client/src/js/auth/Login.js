@@ -33,12 +33,10 @@ class Login extends Component {
 
 	handleBlur(event) {
 		let { value, name } = event.target;
-		let errorText = this.getErrorText(evalue, name);
-		staget[name] = value;
+		let errorText = this.getErrorText(value, name);
 		let error = { ...this.state.error, [name]: errorText };
 		
 		this.setState({
-			employee,
 			error
 		});
 	}
@@ -60,8 +58,7 @@ class Login extends Component {
 	}
 
 	submitLogin() {
-		let error = {...this.state.error};
-		this.setErrors(error);
+		let error = this.getError();
 		let hasError = Object.keys(error).some(errorKey => !!error[errorKey]);
 		this.setState({ error });
 
@@ -75,9 +72,11 @@ class Login extends Component {
 		}
 	}
 
-	setErrors(error) {
-		error.Cpf = this.getErrorText(this.state.Cpf, 'Cpf');
-		error.Password = this.getErrorText(this.state.Password, 'Password');
+	getError() {
+		return {
+			Cpf: this.getErrorText(this.state.Cpf, 'Cpf'),
+			Password: this.getErrorText(this.state.Password, 'Password')
+		};
 	}
 
 	render() {
@@ -92,9 +91,9 @@ class Login extends Component {
 						style={ { display: 'block' } }
 						errorText={this.state.error.Cpf}
 						floatingLabelText="Cpf"
-						value={this.props.Cpf}
+						value={this.state.Cpf}
 						onChange={this.handleChange}
-						onBlur={this.onBlur}
+						onBlur={this.handleBlur}
 						fullWidth={true}
 					/>
 
@@ -104,9 +103,9 @@ class Login extends Component {
 						style={ { display: 'block' } }
 						errorText={this.state.error.Password}
 						floatingLabelText="Password"
-						value={this.props.Password}
+						value={this.state.Password}
 						onChange={this.handleChange}
-						onBlur={this.onBlur}
+						onBlur={this.handleBlur}
 						fullWidth={true}
 					/>
 

@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace EasyVet.Controllers
 {
-    public class Address : BaseController
+    public class Address : Generic.Base
     {
         public Address() : base()
         {

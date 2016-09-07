@@ -204,15 +204,17 @@ namespace EasyVet.Tests.Controllers
         public void EnsurePutUpdatesCorrectly()
         {
             var controller = new EasyVet.Controllers.Employee(context);
-            assertPutCorrectlyAdds(context.Veterinaries, controller.PutVeterinary);
-            assertPutCorrectlyAdds(context.Cashiers, controller.PutCashier);
-            assertPutCorrectlyAdds(context.SalesPeople, controller.PutSalesPerson);
+            assertPutCorrectlyUpdates(context.Veterinaries, controller.PutVeterinary);
+            assertPutCorrectlyUpdates(context.Cashiers, controller.PutCashier);
+            assertPutCorrectlyUpdates(context.SalesPeople, controller.PutSalesPerson);
         }
 
-        private void assertPutCorrectlyAdds<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<bool>> putMethod)
+        private void assertPutCorrectlyUpdates<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<bool>> putMethod)
             where TEntity : Employee, new()
         {
-            var entity = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+            var dbEntity = new TEntity() { Id = 1, Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+            collection.Add(dbEntity);
+            var entity = new TEntity() { Id= 1, Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "2", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
 
             var response = putMethod(entity);
 

@@ -4,8 +4,8 @@ export default function authReducer(state = {}, action = {}) {
 	let newState = state;
 	switch (action.type) {
 		case actions.LOGIN_SUCCESS:
-			newState  = { ...state, userData: action.payload };
-			localStorage.setItem("userData", JSON.stringify(newState.userData));
+			newState  = { ...state, ...action.payload };
+			localStorage.setItem("authToken", JSON.stringify(newState.authToken));
 			break;
 
 		default:

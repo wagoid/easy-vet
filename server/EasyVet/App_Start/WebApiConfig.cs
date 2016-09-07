@@ -13,8 +13,10 @@ namespace EasyVet
     {
         public static void Register(HttpConfiguration config)
         {
-            //config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
-            //Format text/plain as json to bypass browser options requests
+            //Intercept all requests and check the user authentication header first
+            config.MessageHandlers.Add(new AuthenticationHandler());
+
+            //Format text/plain as json to avoid browser options requests
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
             // Web API routes

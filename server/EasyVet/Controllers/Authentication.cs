@@ -9,8 +9,9 @@ using System.Data.Entity;
 
 namespace EasyVet.Controllers
 {
-    public class Authentication : BaseController
+    public class Authentication : Generic.Base
     {
+        private const int oneWeekInSeconds = 604800;
         public Authentication() : base()
         {
 
@@ -23,9 +24,9 @@ namespace EasyVet.Controllers
 
         [Route("api/auth/login")]
         [HttpPost]
-        public Response<Models.User> Login([FromBody] Models.User userInfo)
+        public Response<object> Login([FromBody] Models.User userInfo)
         {
-            return this.safelyRespond<Models.User>(() => {
+            return this.safelyRespond<object>(() => {
                 var dbUser = context.Users.FirstOrDefault(user => user.Cpf == userInfo.Cpf);
 
                 if (dbUser == null)
@@ -33,18 +34,24 @@ namespace EasyVet.Controllers
                     throw new Helpers.Exceptions.EntityNotFoundException("User was not found");
                 }
 
-                var encodedPassword = PasswordEncoder.EncodePassword(userInfo.Password);
-
+                var encodedPassword = Encoder.Encode(userInfo.Password);
+                string authToken = null;
                 if (dbUser.Password == encodedPassword)
                 {
-                    dbUser.Password = encodedPassword;
+                    authToken = Crypto.EncryptString(string.Format("{0}|{1}|{2}", dbUser.Id, DateTime.Now, oneWeekInSeconds));
                 } else
                 {
                     throw new Helpers.Exceptions.InvalidPasswordException("User password is not valid");
                 }
 
+                //Omit password from client
+                dbUser.Password = null;
 
-                return dbUser;
+                return new
+                {
+                    user = dbUser,
+                    authToken
+                };
             });
         }
 

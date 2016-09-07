@@ -13,5 +13,6 @@ Promise.config({
 });
 
 axios.defaults.headers.post['Content-Type'] = 'text/plain';
+axios.defaults.headers.put['Content-Type'] = 'text/plain';
 
 render(<Root />, document.getElementById('root'));
