@@ -7,11 +7,13 @@ import employee from '../employee/reducer';
 import address from '../address/reducer';
 import auth from '../auth/reducer';
 import dialog from '../dialog/reducer';
+import client from '../client/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
 		main,
 		employee,
+		client,
 		address,
 		auth,
 		dialog,

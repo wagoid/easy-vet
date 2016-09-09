@@ -4,13 +4,15 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { configureStore } from './app/configureStore';
+import axios from 'axios';
 import Home from './home/Home';
 import App from './app/App';
 import ExternalApp from './app/ExternalApp';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
+import ClientList from './client';
+import ClientForm from './client/form/ClientForm';
 import Login from './auth/Login';
-import axios from 'axios';
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -53,7 +55,9 @@ export default class Root extends Component {
 
 							<Route name="Employees" path={getPath('employee')} component={EmployeeList} />
 							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
-							
+							<Route name="Clients" path={getPath('client')} component={ClientList} />
+							<Route name="Client" path={getPath('client/form')} component={ClientForm} />
+
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>
 					</Router>

@@ -66,7 +66,9 @@ class App extends React.Component {
 					</Drawer>
 
 				<header>
-					<AppBar title={this._getCurrentRouteName()} onLeftIconButtonTouchTap={this.handleToggle} />
+					<AppBar title={this._getCurrentRouteName()} onLeftIconButtonTouchTap={this.handleToggle} >
+						{this.context.store.getState().main.additionalFloatingActions}
+					</AppBar>
 				</header>
 
 				<section id="content">
@@ -89,7 +91,8 @@ App.childContextTypes = {
 
 App.contextTypes = {
 	router: PropTypes.object.isRequired,
-	muiTheme: PropTypes.object.isRequired
+	muiTheme: PropTypes.object.isRequired,
+	store: PropTypes.object.isRequired
 };
 
 export default class AppProvider extends Component {

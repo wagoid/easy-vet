@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { bindActionCreators } from 'redux';
 import { TextField, Paper, RaisedButton, MuiThemeProvider } from 'material-ui';
-import Send from 'material-ui/svg-icons/content/send';
 import { connect } from 'react-redux';
 import * as authActions from './actions';
 import getStyles from './styles';
@@ -114,7 +113,6 @@ class Login extends Component {
 						fullWidth={true}
 						style={ { marginTop: '20px' } }
 						primary={true}
-						icon={<Send />}
 						onTouchTap={this.submitLogin}
 					/>
 

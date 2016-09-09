@@ -3,7 +3,6 @@ import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
 import { EMPLOYEE_TYPES } from '../helpers/valueDecode';
-import { ViewMode } from '../constants';
 
 export const FETCH_EMPLOYEES = 'employee/FETCH';
 export const FETCH_EMPLOYEES_SUCCESS = 'employee/FETCH_SUCCESS';
@@ -79,7 +78,7 @@ export function fetchEmployees() {
 	}
 }
 
-export function createEmployee(employee, currentLocation) {
+export function createEmployee(employee) {
 	return (dispatch, getState) => {
 		let successActionPayload = {
 			type: 'Success',

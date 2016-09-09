@@ -4,23 +4,24 @@ import { connect } from 'react-redux';
 import { FloatingActionButton, Paper, TextField, Divider, Subheader, SelectField, DatePicker, MenuItem } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import ContentEdit from 'material-ui/svg-icons/content/create';
+import Pets from 'material-ui/svg-icons/action/pets';
 import { userType, dateFormat } from '../../helpers/valueDecode';
 import * as validations from '../../helpers/validations';
-import EmployeeTypes from '../EmployeeTypes';
 import getStyles from './styles';
 import { getFieldsValidations, getAddressFieldsValidations } from './validations';
-import * as EmployeeActions from '../actions';
-import { isString } from '../../helpers/util';
-import { addressDefinitions, employeeDefinitions } from './fieldDefinitions';
+import * as ClientActions from '../actions';
+import { setAdditionalFloatingActions } from '../../app/appbar/actions';
+import { isString, additionalFloatingActionStyles } from '../../helpers/util';
+import { addressDefinitions, clientDefinitions } from './fieldDefinitions';
 
-let employeeProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Salary' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
+let clientProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Client' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
 	'Neighbourhood', 'Municipality', 'State', 'ZipCode'].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 
-let defaultEmployee = Object.assign({}, employeeProperties, { Address: addressProperties });
-defaultEmployee.Type = 1;
+let defaultClient = Object.assign({}, clientProperties, { Address: addressProperties });
+defaultClient.Type = 0;
 
-class EmployeeForm extends Component {
+class ClientForm extends Component {
 	
 	constructor (props) {
 		super(props);
@@ -28,19 +29,28 @@ class EmployeeForm extends Component {
 			error: {
 				Address: {}
 			},
-			employee: defaultEmployee,
+			client: defaultClient,
 			inViewMode: false
 		};
 		this.validations = getFieldsValidations();
 		this.addressValidations = getAddressFieldsValidations();
-		this.saveEmployee = this.saveEmployee.bind(this);
-		this.editEmployee = this.editEmployee.bind(this);
+		this.saveClient = this.saveClient.bind(this);
+		this.editClient = this.editClient.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleAddressBlur = this.handleAddressBlur.bind(this);
 		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
-		this.actions = bindActionCreators(EmployeeActions, this.props.dispatch);
+		this.actions = bindActionCreators({ ...ClientActions, setAdditionalFloatingActions }, this.props.dispatch);
+	}
+
+	componentWillMount() {
+		let floatingAction = (
+			<FloatingActionButton style={this.getStyles().additionalFloatingAction} secondary={true}>
+					<Pets />
+			</FloatingActionButton>
+		);
+		this.actions.setAdditionalFloatingActions([floatingAction]);
 	}
 
 	getAddressGenericTextFields() {
@@ -59,7 +69,7 @@ class EmployeeForm extends Component {
 				readOnly={this.state.inViewMode}
 				onChange={this.handleAddressChange}
 				onBlur={this.handleAddressBlur}
-				value={this.state.employee.Address[name]}
+				value={this.state.client.Address[name]}
 				errorText={this.state.error.Address[name]}
 				floatingLabelText={label}
 			/>
@@ -67,8 +77,8 @@ class EmployeeForm extends Component {
 	}
 
 	getGenericTextFields() {
-		return employeeDefinitions.map((employeeDefinitions, key) => {
-			return this.createGenericTextField({ ...employeeDefinitions, key });
+		return clientDefinitions.map((clientDefinition, key) => {
+			return this.createGenericTextField({ ...clientDefinition, key });
 		});
 	}
 
@@ -83,7 +93,7 @@ class EmployeeForm extends Component {
 				onChange={this.handleChange}
 				onBlur={this.handleBlur}
 				hintText={hintText || ''}
-				value={this.state.employee[name]}
+				value={this.state.client[name]}
 				errorText={this.state.error[name]}
 				floatingLabelText={label}
 			/>
@@ -92,16 +102,16 @@ class EmployeeForm extends Component {
 
 	componentWillMount() {
 		let locationState = this.props.location.state;
-		if (locationState && locationState.employeeId && locationState.inViewMode) {
-			let employees = this.props.employees || [];
-			let employee = employees.find(employee => employee.Id === locationState.employeeId);
-			if (employee) {
-				this.setState({ employee, inViewMode: locationState.inViewMode })
+		if (locationState && locationState.clientId && locationState.inViewMode) {
+			let clients = this.props.clients || [];
+			let client = clients.find(client => client.Id === locationState.clientId);
+			if (client) {
+				this.setState({ client, inViewMode: locationState.inViewMode })
 			}
 		}
 	}
 
-	editEmployee() {
+	editClient() {
 		this.setState({ inViewMode: false })
 	}
 
@@ -135,30 +145,30 @@ class EmployeeForm extends Component {
 	}
 
 	handleBirthDateChange(event, value) {
-		let employee = { ...this.state.employee, BirthDate: value };
-		this.setState({ employee });
+		let client = { ...this.state.client, BirthDate: value };
+		this.setState({ client });
 	}
 	
 	updateField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName);
-		let employee = { ...this.state.employee, [fieldName]: value };
+		let client = { ...this.state.client, [fieldName]: value };
 		let error = { ...this.state.error, [fieldName]: errorText };
 		
 		this.setState({
-			employee,
+			client,
 			error
 		});
 	};
 
 	updateAddressField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName, this.addressValidations);
-		let employee = { ...this.state.employee };
-		employee.Address[fieldName] = value;
+		let client = { ...this.state.client };
+		client.Address[fieldName] = value;
 		let error = { ...this.state.error };
 		error.Address[fieldName] = errorText;
 		
 		this.setState({
-			employee,
+			client,
 			error
 		});
 	};
@@ -179,10 +189,10 @@ class EmployeeForm extends Component {
 		return errorText;
 	}
 
-	saveEmployee() {
+	saveClient() {
 		let error = {...this.state.error};
-		this.setEmployeeErrors(error);
-		this.setEmployeeAddressErrors(error);
+		this.setClientErrors(error);
+		this.setClientAddressErrors(error);
 		let hasError = Object.keys(error.Address).some(prop => !!error.Address[prop]);
 		hasError = hasError || Object.keys(error).some(prop => prop !== 'Address' && !!error[prop]);
 
@@ -191,27 +201,27 @@ class EmployeeForm extends Component {
 				error
 			});
 		} else {
-			this.actions.createEmployee(this.state.employee)
+			this.actions.createClient(this.state.client)
 				.then(() => {
-					if (this.state.employee.Id > 0) {
+					if (this.state.client.Id > 0) {
 						this.setState({ inViewMode: true });
 					}
 				});
 		}
 	}
 
-	setEmployeeErrors(error) {
-		Object.keys(this.state.employee).forEach(employeeProp => {
-			if (employeeProp !== 'Address') {
-				let errorText = this.getErrorText(this.state.employee[employeeProp], employeeProp);
-				error[employeeProp] = errorText;
+	setClientErrors(error) {
+		Object.keys(this.state.client).forEach(clientProp => {
+			if (clientProp !== 'Address') {
+				let errorText = this.getErrorText(this.state.client[clientProp], clientProp);
+				error[clientProp] = errorText;
 			}
 		});
 	}
 
-	setEmployeeAddressErrors(error) {
-		Object.keys(this.state.employee.Address).forEach(addressProp => {
-			let errorText = this.getErrorText(this.state.employee.Address[addressProp], addressProp, this.addressValidations);
+	setClientAddressErrors(error) {
+		Object.keys(this.state.client.Address).forEach(addressProp => {
+			let errorText = this.getErrorText(this.state.client.Address[addressProp], addressProp, this.addressValidations);
 			error.Address[addressProp] = errorText;
 		});
 	}
@@ -224,9 +234,9 @@ class EmployeeForm extends Component {
 
 		let birthDateField;
 
-		let birthDate = this.state.employee.BirthDate;
+		let birthDate = this.state.client.BirthDate;
 		if (birthDate && isString(birthDate)) {
-			this.state.employee.BirthDate = new Date(birthDate);
+			this.state.client.BirthDate = new Date(birthDate);
 			birthDateField = (
 				<DatePicker
 							name="BirthDate"
@@ -234,7 +244,7 @@ class EmployeeForm extends Component {
 							onChange={this.handleBirthDateChange}
 							autoOk={false}
 							floatingLabelText="Birth Date"
-							value={this.state.employee.BirthDate}
+							value={this.state.client.BirthDate}
 							maxDate={new Date()}
 						/>
 			);
@@ -252,20 +262,13 @@ class EmployeeForm extends Component {
 		}
 
 		return (
-			<div id='employee-edit'>
+			<div id='client-edit'>
 
 				<Paper style={styles.paper}>
 					{this.getGenericTextFields()}
 
 					{birthDateField}
 					<br />
-
-					<SpecialtyGroup
-						employee={this.state.employee}
-						inViewMode={this.state.inViewMode}
-						onChange={this.handleChange}
-						name="SpecialtyGroup"
-					/>
 					
 					<div id="divider-container" style={styles.dividerContainer}>
 						<Divider />
@@ -279,69 +282,17 @@ class EmployeeForm extends Component {
 
 				<FloatingActionButton
 						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editEmployee : this.saveEmployee}
+						onTouchTap={this.state.inViewMode? this.editClient : this.saveClient}
 					>
 						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
-					</FloatingActionButton>
+				</FloatingActionButton>
 
 			</div>
 		);
 	}
-}
-
-class SpecialtyGroup extends Component {
-	
-	constructor(props) {
-		super(props);
-		this.state = { isVeterinary: this.props.isVeterinary || false };
-		this.handleChange = this.handleChange.bind(this);
-	}
-
-	handleChange(event, index, value) {
-		if (index && value) {
-			if (value === 3) {
-				this.setState({ isVeterinary: true });
-			} else {
-				this.setState({ isVeterinary: false });
-			}
-			if (this.props.onChange) {
-				this.props.onChange(event, value, 'Type');
-			}
-		} else if(this.props.onChange) {
-			this.props.onChange(event, event.target.value, event.target.name);
-		}
-		
-	}
-
-	render() {
-		let specialtyField = (
-			<TextField
-				name="Specialty"
-				type="text"
-				style={ { display: 'block' } }
-				readOnly={this.props.inViewMode}
-				hintText="Brain surgery"
-				floatingLabelText="Specialty"
-				value={this.props.employee.Specialty || ''}
-				onChange={this.handleChange}
-			/>
-		);
-
-		return (
-			<div>
-				<EmployeeTypes disabled={this.props.inViewMode || this.props.employee.Id > 0} onChange={this.handleChange} name="Type" />
-				{this.state.isVeterinary? specialtyField : ''}
-			</div>
-		);
-	}
-}
-
-SpecialtyGroup.propTypes = {
-	inViewMode: PropTypes.bool.isRequired,
-	employee: PropTypes.object.isRequired
 }
 
 export default connect((state, ownProps) => ({
-	employees: state.employee.employees,
+	clients: state.client.clients,
 	hasOpenMessage: !!state.main.message.open
-}))(EmployeeForm);
+}))(ClientForm);

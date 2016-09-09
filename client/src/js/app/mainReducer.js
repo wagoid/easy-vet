@@ -1,4 +1,5 @@
 import { CLOSE_MESSAGE_VIEW, OPEN_MESSAGE_VIEW } from './messages/actions';
+import { SET_ADDITIONAL_FLOATING_ACTIONS } from './appbar/actions';
 
 const initialState = {
 	message: {
@@ -13,9 +14,13 @@ export default function mainReducer(state = initialState, action = {}) {
 		case CLOSE_MESSAGE_VIEW:
 			newState  = { ...state, message: action.payload };
 			break;
+		
+		case SET_ADDITIONAL_FLOATING_ACTIONS:
+			newState = { ...state, additionalFloatingActions: action.payload }
+			break;
 
 		default:
-				newState = state;
+			newState = state;
 			break;
 	}
 
