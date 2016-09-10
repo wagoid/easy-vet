@@ -13,6 +13,7 @@ import EmployeeForm from './employee/form/EmployeeForm';
 import CostumerList from './costumer';
 import CostumerForm from './costumer/form/CostumerForm';
 import SaleList from './sale';
+import SaleForm from './sale/form/SaleForm';
 import Login from './auth/Login';
 
 //Needed for onTouchTap
@@ -59,6 +60,7 @@ export default class Root extends Component {
 							<Route name="Costumers" path={getPath('costumer')} component={CostumerList} />
 							<Route name="Costumer" path={getPath('costumer/form')} component={CostumerForm} />
 							<Route name="Sales" path={getPath('sale')} component={SaleList} />
+							<Route name="Sale" path={getPath('sale/form')} component={SaleForm} />
 
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>

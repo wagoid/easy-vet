@@ -194,6 +194,10 @@
     <Compile Include="Migrations\201609100244275_UpdateAppointmentModel.Designer.cs">
       <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609102122210_AddCostumerRefToSale.cs" />
+    <Compile Include="Migrations\201609102122210_AddCostumerRefToSale.Designer.cs">
+      <DependentUpon>201609102122210_AddCostumerRefToSale.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -247,6 +251,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609100244275_UpdateAppointmentModel.resx">
       <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609102122210_AddCostumerRefToSale.resx">
+      <DependentUpon>201609102122210_AddCostumerRefToSale.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -265,7 +265,7 @@ class CostumerForm extends Component {
 		}
 
 		return (
-			<div id='costumer-edit'>
+			<div id='costumer-form'>
 
 				<Paper style={styles.paper}>
 					{this.getGenericTextFields()}

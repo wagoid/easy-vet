@@ -12,6 +12,8 @@ namespace EasyVet.Models
 
         [Required]
         public Payment Payment;
+        [Required]
+        public Costumer Costumer;
 
         //Properties will be inserted into the objet manually
         [NotMapped]

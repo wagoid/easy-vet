@@ -121,9 +121,12 @@ namespace EasyVet.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Value = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Payment_Id = c.Int(nullable: false),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Payments", t => t.Payment_Id, cascadeDelete: true)
+                .Index(t => t.Payment_Id);
             
             CreateTable(
                 "dbo.Stocks",

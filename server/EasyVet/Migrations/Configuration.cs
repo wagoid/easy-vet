@@ -25,7 +25,7 @@ namespace EasyVet.Migrations
                     BirthDate = DateTime.Now,
                     Cpf = "11769446656",
                     Name = "Wagão admin",
-                    Password = "fAYqnJi3eB1hWhYxGChFLqo7+dhvkgBdGJPoEMWd+xI=",
+                    Password = "TGAVME13emBkFCet7th82nf88v6cpxKfRW10REteYPE=",
                     PhoneNumber = "666",
                     Salary = 11575.58m,
                     Specialty = "Nenhuma",

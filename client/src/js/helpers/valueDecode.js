@@ -34,3 +34,6 @@ export const EMPLOYEE_TYPES = {
 export const ANIMAL_TYPES = {
 	0: 'Dog',
 };
+
+export const PAYMENT_METHOD = ['Card', 'Money', 'Check'];
+export const PAYMENT_STATUS = ['Pending', 'Paid'];
