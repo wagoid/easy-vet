@@ -4,7 +4,25 @@ export function getFieldsValidations() {
 	};
 	return {
 		Name: requiredValidation,
-		Description: requiredValidation,
-		Price: requiredValidation
+		Cpf: requiredValidation,
+		Password: requiredValidation,
+		PhoneNumber: requiredValidation,
+		BirthDate: requiredValidation,
+		Salary: requiredValidation
+	};
+}
+
+export function getAddressFieldsValidations() {
+	let requiredValidation = {
+		required: {}
+	};
+
+	return {
+		StreetType: requiredValidation,
+		StreetName: requiredValidation,
+		Number: requiredValidation,
+		Municipality: requiredValidation,
+		State: requiredValidation,
+		ZipCode: requiredValidation
 	};
 }
