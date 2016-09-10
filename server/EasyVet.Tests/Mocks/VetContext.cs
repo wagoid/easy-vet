@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using EasyVet.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Reflection;
 
 namespace EasyVet.Tests.Mocks
 {
-    class VetContext : DbContext, Models.Interfaces.VetContext 
+    class VetContext : DbContext, DAO.Interfaces.VetContext 
     {
         public VetContext()
         {
@@ -30,9 +31,9 @@ namespace EasyVet.Tests.Mocks
             this.Dogs = new Mocks.DbSet<Dog>();
         }
 
-        public DbEntityEntry Entry<TEntity>(TEntity entity)
+        public new int SaveChanges()
         {
-            return null;
+            return 1;
         }
 
         public IDbSet<Address> Addresses { get; set; }

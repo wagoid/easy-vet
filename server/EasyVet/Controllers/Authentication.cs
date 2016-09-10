@@ -17,7 +17,7 @@ namespace EasyVet.Controllers
 
         }
 
-        public Authentication(Models.Interfaces.VetContext vetContext) : base(vetContext)
+        public Authentication(DAO.Interfaces.VetContext vetContext) : base(vetContext)
         {
 
         }

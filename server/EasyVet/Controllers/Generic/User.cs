@@ -11,7 +11,7 @@ namespace EasyVet.Controllers.Generic
         {
 
         }
-        public User(Models.Interfaces.VetContext vetContext) : base(vetContext) {
+        public User(DAO.Interfaces.VetContext vetContext) : base(vetContext) {
 
         }
         protected List<TEntity> getEmployeeList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : Models.Employee

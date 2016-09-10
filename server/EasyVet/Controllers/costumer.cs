@@ -16,7 +16,7 @@ namespace EasyVet.Controllers
         {
             
         }
-        public Costumer(Models.Interfaces.VetContext context) : base(context)
+        public Costumer(DAO.Interfaces.VetContext context) : base(context)
         {
             this.context = context;
         }

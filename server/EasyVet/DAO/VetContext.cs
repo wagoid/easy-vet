@@ -6,10 +6,11 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using System.Diagnostics;
 using System;
+using EasyVet.Models;
 
-namespace EasyVet.Models
+namespace EasyVet.DAO
 {
-    public class VetContext : DbContext, Models.Interfaces.VetContext
+    public class VetContext : DbContext, Interfaces.VetContext
     {
         public VetContext() : base("DefaultConnection")
         {

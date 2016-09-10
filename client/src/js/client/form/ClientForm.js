@@ -109,6 +109,10 @@ class ClientForm extends Component {
 		this.actions.setAdditionalFloatingActions(floatingAction);
 	}
 
+	componentWillUnmount() {
+		this.actions.setAdditionalFloatingActions([]);
+	}
+
 	editClient() {
 		this.setState({ inViewMode: false })
 	}

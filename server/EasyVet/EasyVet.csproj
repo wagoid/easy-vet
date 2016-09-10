@@ -186,6 +186,10 @@
     <Compile Include="Migrations\201608290050121_UserTypes.Designer.cs">
       <DependentUpon>201608290050121_UserTypes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609100244275_UpdateAppointmentModel.cs" />
+    <Compile Include="Migrations\201609100244275_UpdateAppointmentModel.Designer.cs">
+      <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -195,7 +199,7 @@
     <Compile Include="Models\Costumer.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\Interfaces\VetContext.cs" />
+    <Compile Include="DAO\Interfaces\VetContext.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Sale.cs" />
@@ -204,7 +208,7 @@
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Veterinary.cs" />
-    <Compile Include="Models\VetContext.cs" />
+    <Compile Include="DAO\VetContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -236,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608290050121_UserTypes.resx">
       <DependentUpon>201608290050121_UserTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609100244275_UpdateAppointmentModel.resx">
+      <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

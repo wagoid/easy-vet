@@ -66,7 +66,7 @@ const REMOVE_CLIENT_FAILURE = 'client/REMOVE_FAILURE';
 export function fetchClients() {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
-			params: { method: 'get', url: `${urls.api}/client`},
+			params: { method: 'get', url: `${urls.api}/costumer`},
 			businessErrorActions: [openMessageView, clientsError],
 			fetchErrorActions: [openMessageView, clientsError],
 			successActions: [clientsSuccess]
@@ -82,7 +82,7 @@ export function createClient(client) {
 		};
 		let params = {
 			method:  client.Id > 0? 'put' : 'post',
-			url: `${urls.api}/client`,
+			url: `${urls.api}/costumer`,
 			data: JSON.stringify(client)
 		};
 		return genericFetch(dispatch, {

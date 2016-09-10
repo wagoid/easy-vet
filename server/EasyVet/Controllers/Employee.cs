@@ -18,7 +18,7 @@ namespace EasyVet.Controllers
 
         }
 
-        public Employee(Models.Interfaces.VetContext vetContext) : base(vetContext) {
+        public Employee(DAO.Interfaces.VetContext vetContext) : base(vetContext) {
 
         }
 

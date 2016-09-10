@@ -1,4 +1,5 @@
-﻿using EasyVet.Helpers;
+﻿using EasyVet.DAO;
+using EasyVet.Helpers;
 using EasyVet.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace EasyVet.Controllers.Generic
 {
     public class Base : ApiController
     {
-        protected Models.Interfaces.VetContext context;
+        protected DAO.Interfaces.VetContext context;
         protected ResponseHandler responseHandler;
 
         public Base()
@@ -20,7 +21,7 @@ namespace EasyVet.Controllers.Generic
             this.responseHandler = new ResponseHandler();
         }
 
-        public Base(Models.Interfaces.VetContext context)
+        public Base(DAO.Interfaces.VetContext context)
         {
             this.context = context;
             this.responseHandler = new ResponseHandler();
@@ -55,9 +56,10 @@ namespace EasyVet.Controllers.Generic
             return entity.Id;
         }
 
-        protected bool put<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : BaseEntity
+        protected bool put<TEntity>(TEntity entityFromBd, TEntity entity) where TEntity : BaseEntity
         {
-            entityDbSet.Attach(entity);
+            context.Entry(entityFromBd).CurrentValues.SetValues(entity);
+            context.Entry(entityFromBd).State = EntityState.Modified;
             context.SaveChanges();
             return true;
         }

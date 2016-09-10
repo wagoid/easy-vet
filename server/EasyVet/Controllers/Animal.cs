@@ -17,7 +17,7 @@ namespace EasyVet.Controllers
 
         }
 
-        public Animal(Models.Interfaces.VetContext vetContext) : base(vetContext) {
+        public Animal(DAO.Interfaces.VetContext vetContext) : base(vetContext) {
 
         }
 
@@ -46,9 +46,13 @@ namespace EasyVet.Controllers
 
         [Route("api/animal/Dog")]
         [HttpPut]
-        public Response<bool> PutDog([FromBody]Models.Dog Dog)
+        public Response<bool> PutDog([FromBody]Models.Dog dog)
         {
-            return this.safelyRespond<bool>(() => put(context.Dogs, Dog));
+            return this.safelyRespond<bool>(() => {
+                var dogFromBd = context.Dogs.FirstOrDefault(d => d.Id == dog.Id);
+                throwEntityNotFoundWhenNull(dogFromBd, dog.Id);
+                return put(dogFromBd, dog);
+            });
         }
 
         [Route("api/animal/Dog/{id}")]

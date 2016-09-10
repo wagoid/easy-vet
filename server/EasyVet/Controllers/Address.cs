@@ -16,7 +16,7 @@ namespace EasyVet.Controllers
 
         }
 
-        public Address(Models.Interfaces.VetContext vetContext) : base(vetContext)
+        public Address(DAO.Interfaces.VetContext vetContext) : base(vetContext)
         {
 
         }
@@ -40,7 +40,11 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> Put([FromBody]Models.Address address)
         {
-            return this.safelyRespond<bool>(() => put(context.Addresses, address));
+            return this.safelyRespond<bool>(() => {
+                var addressFromBd = this.context.Addresses.FirstOrDefault(a => a.Id == address.Id);
+                throwEntityNotFoundWhenNull(addressFromBd, address.Id);
+                return put(addressFromBd, address);
+            });
         }
 
         public Response<bool> Delete(int id)
