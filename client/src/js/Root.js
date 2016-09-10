@@ -12,6 +12,10 @@ import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
 import ClientList from './client';
 import ClientForm from './client/form/ClientForm';
+
+import ProductList from './product';
+import ProductForm from './product/form/ProductForm';
+
 import Login from './auth/Login';
 
 //Needed for onTouchTap
@@ -31,12 +35,12 @@ function getPath(path = '') {
 }
 
 function requireAuth(store, nextState, replace, next) {
-	let authToken = JSON.parse(localStorage.getItem("authToken"));
-	if (!authToken) {
-		replace('/login');
-	} else {
-		axios.defaults.headers.common['Authorization'] = authToken;
-	}
+	// let authToken = JSON.parse(localStorage.getItem("authToken"));
+	// if (!authToken) {
+	// 	replace('/login');
+	// } else {
+	// 	axios.defaults.headers.common['Authorization'] = authToken;
+	// }
 
 	next();
 }
@@ -57,6 +61,9 @@ export default class Root extends Component {
 							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
 							<Route name="Clients" path={getPath('client')} component={ClientList} />
 							<Route name="Client" path={getPath('client/form')} component={ClientForm} />
+
+							<Route name="Products" path={getPath('product')} component={ProductList} />
+							<Route name="Product" path={getPath('product/form')} component={ProductForm} />
 
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>
