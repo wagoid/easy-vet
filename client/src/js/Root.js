@@ -11,9 +11,6 @@ import ExternalApp from './app/ExternalApp';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
 
-import ClientList from './client';
-import ClientForm from './client/form/ClientForm';
-
 import ProductList from './product';
 import ProductForm from './product/form/ProductForm';
 

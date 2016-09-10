@@ -9,7 +9,6 @@ import address from '../address/reducer';
 import auth from '../auth/reducer';
 import dialog from '../dialog/reducer';
 import costumer from '../costumer/reducer';
-import product from '../product/reducer';
 import sale from '../sale/reducer';
 
 export const configureStore = function (initialState = {}) {
@@ -17,7 +16,6 @@ export const configureStore = function (initialState = {}) {
 		routing: routerReducer,
 		main,
 		employee,
-		product,
 		address,
 		auth,
 		dialog,

@@ -1,4 +1,4 @@
-	import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton, Paper, TextField, Divider, Subheader, SelectField, DatePicker, MenuItem } from 'material-ui';
@@ -7,15 +7,14 @@ import ContentEdit from 'material-ui/svg-icons/content/create';
 import { userType, dateFormat } from '../../helpers/valueDecode';
 import * as validations from '../../helpers/validations';
 import getStyles from './styles';
-import { getFieldsValidations, getAddressFieldsValidations } from './validations';
+import { getFieldsValidations } from './validations';
 import * as ProductActions from '../actions';
 import { isString } from '../../helpers/util';
 import { productDefinitions } from './fieldDefinitions';
 
-let productProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Type', 'Salary' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
+let productProperties = [ 'Name', 'Description', 'Price' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 
 let defaultProduct = Object.assign({}, productProperties);
-defaultProduct.Type = 1;
 
 class ProductForm extends Component {
 	
@@ -26,32 +25,11 @@ class ProductForm extends Component {
 			inViewMode: false
 		};
 		this.validations = getFieldsValidations();
-		this.addressValidations = getAddressFieldsValidations();
 		this.saveProduct = this.saveProduct.bind(this);
 		this.editProduct = this.editProduct.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
-		this.handleAddressBlur = this.handleAddressBlur.bind(this);
-		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-		this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
 		this.actions = bindActionCreators(ProductActions, this.props.dispatch);
-	}
-
-	createGenericAddressTextField({ name, label, type, key }) {
-		return (
-			<TextField
-				key={key}
-				name={name}
-				type={type || 'text'}
-				style={ { display: 'block' } }
-				readOnly={this.state.inViewMode}
-				onChange={this.handleAddressChange}
-				onBlur={this.handleAddressBlur}
-				value={this.state.product.Address[name]}
-				errorText={this.state.error.Address[name]}
-				floatingLabelText={label}
-			/>
-		);
 	}
 
 	getGenericTextFields() {
@@ -60,7 +38,7 @@ class ProductForm extends Component {
 		});
 	}
 
-	createGenericTextField({ name, label, type, hintText, key }) {
+	createGenericTextField({ name, label, type, key }) {
 		return (
 			<TextField
 				key={key}
@@ -70,9 +48,8 @@ class ProductForm extends Component {
 				readOnly={this.state.inViewMode}
 				onChange={this.handleChange}
 				onBlur={this.handleBlur}
-				hintText={hintText || ''}
+				hintText={''}
 				value={this.state.product[name]}
-				errorText={this.state.error[name]}
 				floatingLabelText={label}
 			/>
 		);
@@ -97,15 +74,6 @@ class ProductForm extends Component {
 		this.updateFieldError(event.target.value, event.target.name);
 	}
 
-	handleAddressBlur(event) {
-		let errorText = this.getErrorText(event.target.value, event.target.name, this.addressValidations);
-		let error = { ...this.state.error };
-		error.Address[event.target.name] = errorText;
-		this.setState({
-			error
-		});
-	}
-
 	updateFieldError(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName);
 		let error = { ...this.state.error, [fieldName]: errorText };
@@ -117,33 +85,11 @@ class ProductForm extends Component {
 	handleChange(event, value, name) {
 		this.updateField(event.target.value || value, event.target.name || name);
 	}
-
-	handleAddressChange(event) {
-		this.updateAddressField(event.target.value, event.target.name);
-	}
-
-	handleBirthDateChange(event, value) {
-		let product = { ...this.state.product, BirthDate: value };
-		this.setState({ product });
-	}
 	
 	updateField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName);
 		let product = { ...this.state.product, [fieldName]: value };
 		let error = { ...this.state.error, [fieldName]: errorText };
-		
-		this.setState({
-			product,
-			error
-		});
-	};
-
-	updateAddressField(value, fieldName) {
-		let errorText = this.getErrorText(value, fieldName, this.addressValidations);
-		let product = { ...this.state.product };
-		product.Address[fieldName] = value;
-		let error = { ...this.state.error };
-		error.Address[fieldName] = errorText;
 		
 		this.setState({
 			product,
@@ -170,37 +116,18 @@ class ProductForm extends Component {
 	saveProduct() {
 		let error = {...this.state.error};
 		this.setProductErrors(error);
-		this.setProductAddressErrors(error);
-		let hasError = Object.keys(error.Address).some(prop => !!error.Address[prop]);
-		hasError = hasError || Object.keys(error).some(prop => prop !== 'Address' && !!error[prop]);
-
-		if (hasError) {
-			this.setState({
-				error
+		this.actions.createProduct(this.state.product)
+			.then(() => {
+				if (this.state.product.Id > 0) {
+					this.setState({ inViewMode: true });
+				}
 			});
-		} else {
-			this.actions.createProduct(this.state.product)
-				.then(() => {
-					if (this.state.product.Id > 0) {
-						this.setState({ inViewMode: true });
-					}
-				});
-		}
 	}
 
 	setProductErrors(error) {
 		Object.keys(this.state.product).forEach(productProp => {
-			if (productProp !== 'Address') {
-				let errorText = this.getErrorText(this.state.product[productProp], productProp);
-				error[productProp] = errorText;
-			}
-		});
-	}
-
-	setProductAddressErrors(error) {
-		Object.keys(this.state.product.Address).forEach(addressProp => {
-			let errorText = this.getErrorText(this.state.product.Address[addressProp], addressProp, this.addressValidations);
-			error.Address[addressProp] = errorText;
+			let errorText = this.getErrorText(this.state.product[productProp], productProp);
+			error[productProp] = errorText;
 		});
 	}
 
@@ -210,42 +137,12 @@ class ProductForm extends Component {
 			required: true
 		};
 
-		let birthDateField;
-
-		let birthDate = this.state.product.BirthDate;
-		if (birthDate && isString(birthDate)) {
-			this.state.product.BirthDate = new Date(birthDate);
-			birthDateField = (
-				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							value={this.state.product.BirthDate}
-							maxDate={new Date()}
-						/>
-			);
-		} else {
-			birthDateField = (
-				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							maxDate={new Date()}
-						/>
-			);
-		}
-
 		return (
 			<div id='product-edit'>
 
 				<Paper style={styles.paper}>
 					{this.getGenericTextFields()}
 
-					{birthDateField}
 					<br />
 
 					<SpecialtyGroup
@@ -254,12 +151,6 @@ class ProductForm extends Component {
 						onChange={this.handleChange}
 						name="SpecialtyGroup"
 					/>
-					
-					<div id="divider-container" style={styles.dividerContainer}>
-						<Divider />
-					</div>
-					
-					<Subheader>Address information</Subheader>
 
 				</Paper>
 

@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace EasyVet.Controllers
 {
-    public class Sale : Generic.GenericProduct
+    public class Sale : Generic.Base
     {
         public string EncodePassword { get; private set; }
 
@@ -31,33 +31,33 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<Models.Sale> Product(int id)
         {
-            return this.safelyRespond<Models.Sale>(() => getSaleFirstOrDefault(this.context.Sales, id));
+            return this.safelyRespond<Models.Sale>(() => getFirstOrDefault(this.context.Sales, id));
         }
 
         [Route("api/sales")]
         [HttpPost]
-        public Response<Models.Sale> PostProduct([FromBody]Models.Sale product)
+        public Response<Models.Sale> PostSale([FromBody]Models.Sale sale)
         {
-            return this.safelyRespond<Models.Sale>(() => postSales(context.Sales, product));
+            return this.safelyRespond<Models.Sale>(() => post(this.context.Sales, sale));
         }
 
         [Route("api/sales")]
         [HttpPut]
-        public Response<bool> PutProduct([FromBody]Models.Sale sale)
+        public Response<bool> put([FromBody]Models.Sale sale)
         {
             return this.safelyRespond<bool>(() =>
             {
                 var productFromBd = context.Sales.FirstOrDefault(person => person.Id == sale.Id);
                 throwEntityNotFoundWhenNull(productFromBd, sale.Id);
-                return putSale(productFromBd, sale);
+                return put(productFromBd, sale);
             });
         }
 
         [Route("api/sales/{id}")]
         [HttpPut]
-        public Response<bool> DeleteProduct(int id)
+        public Response<bool> delete(int id)
         {
-            return this.safelyRespond<bool>(() => deleteSale(context.Sales, id));
+            return this.safelyRespond<bool>(() => delete(context.Sales, id));
         }
 
         #endregion
@@ -72,9 +72,64 @@ namespace EasyVet.Controllers
             {
                 var Sales = new List<Object>();
 
-                Sales.AddRange(getSaleList(context.Sales));
+                Sales.AddRange(getList(context.Sales));
 
                 return Sales;
+            });
+        }
+
+        #endregion
+
+        #region Product HTTP methods
+
+        [Route("api/product/{id}")]
+        [HttpGet]
+        public Response<Models.Product> product(int id)
+        {
+            return this.safelyRespond<Models.Product>(() => getFirstOrDefault(this.context.Products, id));
+        }
+
+        [Route("api/product")]
+        [HttpPost]
+        public Response<Models.Product> PostProduct([FromBody]Models.Product product)
+        {
+            return this.safelyRespond<Models.Product>(() => post(this.context.Products, product));
+        }
+
+        [Route("api/product")]
+        [HttpPut]
+        public Response<bool> put([FromBody]Models.Product product)
+        {
+            return this.safelyRespond<bool>(() =>
+            {
+                var productFromBd = context.Products.FirstOrDefault(person => person.Id == product.Id);
+                throwEntityNotFoundWhenNull(productFromBd, product.Id);
+                return put(productFromBd, product);
+            });
+        }
+
+        [Route("api/product/{id}")]
+        [HttpPut]
+        public Response<bool> DeleteProduct(int id)
+        {
+            return this.safelyRespond<bool>(() => delete(context.Products, id));
+        }
+
+        #endregion
+
+        #region All product Types HTTP methods
+
+        [Route("api/product/all")]
+        [HttpGet]
+        public Response<IList<Object>> All()
+        {
+            return safelyRespond<IList<Object>>(() =>
+            {
+                var products = new List<Object>();
+
+                products.AddRange(getList(context.Products));
+
+                return products;
             });
         }
 
