@@ -5,12 +5,12 @@ export default function reducer(state = {}, action = {}) {
 	let newState = state;
 
 	switch (type) {
-		case actions.FETCH_CLIENTS_SUCCESS:
+		case actions.FETCH_COSTUMERS_SUCCESS:
 			newState = payload;
 			break;
 
-		case actions.CREATE_CLIENTS_SUCCESS:
-			newState.clients = [ ...state.clients, payload.client];
+		case actions.CREATE_COSTUMER_SUCCESS:
+			newState.costumers = [ ...state.costumers, payload.costumer];
 			break;
 
 		default:

@@ -43,7 +43,7 @@ namespace EasyVet.Controllers
         [Route("api/costumer/")]
         [HttpPost]
         // POST api/costumer
-        public Response<int> Post([FromBody]Models.Costumer costumer)
+        public Response<Models.Costumer> Post([FromBody]Models.Costumer costumer)
         {
             return safelyRespond(() => this.costumer.Insert(costumer));
         }

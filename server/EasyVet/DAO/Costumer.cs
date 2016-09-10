@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EasyVet.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -18,7 +20,9 @@ namespace EasyVet.DAO
         }
         public List<Models.Costumer> List()
         {
-            return getList(this.context.Costumers);
+            return this.context.Costumers
+                .Include(c => c.Address)
+                .ToList();
         }
 
         public Models.Costumer FindById(int id)
@@ -26,16 +30,27 @@ namespace EasyVet.DAO
             return getFirstOrDefault(this.context.Costumers, id);
         }
 
-        public int Insert(Models.Costumer costumer)
+        public Models.Costumer Insert(Models.Costumer costumer)
         {
-            return post(this.context.Costumers, costumer);
+            costumer.Password = Encoder.Encode(costumer.Password);
+            this.context.Costumers.Add(costumer);
+            this.context.SaveChanges();
+            return costumer;
         }
 
         public bool Update(Models.Costumer costumer)
         {
             var costumerFromBd = context.Costumers.FirstOrDefault(d => d.Id == costumer.Id);
             throwEntityNotFoundWhenNull(costumerFromBd, costumer.Id);
-            return put(costumerFromBd, costumer);
+            var newPassword = Encoder.Encode(costumer.Password);
+            if (costumerFromBd.Password != newPassword)
+                costumer.Password = newPassword;
+            else
+                costumer.Password = costumerFromBd.Password;
+            context.Entry(costumerFromBd).CurrentValues.SetValues(costumer);
+            context.Entry(costumerFromBd).State = EntityState.Modified;
+            context.SaveChanges();
+            return true;
         }
 
         public bool Delete(int id)

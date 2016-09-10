@@ -10,11 +10,16 @@ import App from './app/App';
 import ExternalApp from './app/ExternalApp';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
+
 import ClientList from './client';
 import ClientForm from './client/form/ClientForm';
 
 import ProductList from './product';
 import ProductForm from './product/form/ProductForm';
+
+import CostumerList from './costumer';
+import CostumerForm from './costumer/form/CostumerForm';
+import SaleList from './sale';
 
 import Login from './auth/Login';
 
@@ -59,8 +64,9 @@ export default class Root extends Component {
 
 							<Route name="Employees" path={getPath('employee')} component={EmployeeList} />
 							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
-							<Route name="Clients" path={getPath('client')} component={ClientList} />
-							<Route name="Client" path={getPath('client/form')} component={ClientForm} />
+							<Route name="Costumers" path={getPath('costumer')} component={CostumerList} />
+							<Route name="Costumer" path={getPath('costumer/form')} component={CostumerForm} />
+							<Route name="Sales" path={getPath('sale')} component={SaleList} />
 
 							<Route name="Products" path={getPath('product')} component={ProductList} />
 							<Route name="Product" path={getPath('product/form')} component={ProductForm} />

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { push } from 'react-router-redux';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
@@ -7,6 +8,15 @@ import { PRODUCT_TYPES } from '../helpers/valueDecode';
 export const FETCH_PRODUCTS = 'product/FETCH';
 export const FETCH_PRODUCTS_SUCCESS = 'product/FETCH_SUCCESS';
 function productsSuccess(products) {
+=======
+import * as urls from '../app/config/urls';
+import { openMessageView } from '../app/messages/actions';
+import { genericFetch, fetchJson, catchFetch } from '../helpers/util';
+
+export const FETCH_PRODUCTS = 'product/FETCH';
+export const FETCH_PRODUCTS_SUCCESS = 'product/FETCH_SUCCESS';
+function productSuccess(products) {
+>>>>>>> c483c15918e160f3404d49ceaceeb95091fa96e6
 	return {
 		type: FETCH_PRODUCTS_SUCCESS,
 		payload: {
@@ -14,7 +24,10 @@ function productsSuccess(products) {
 		}
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> c483c15918e160f3404d49ceaceeb95091fa96e6
 export const FETCH_PRODUCTS_FAILURE = 'product/FETCH_FAILURE';
 function productsError({ type, message }) {
 	return {
@@ -27,6 +40,7 @@ function productsError({ type, message }) {
 }
 
 //Make the others down there
+<<<<<<< HEAD
 export const CREATE_PRODUCT = 'product/CREATE';
 
 export const CREATE_PRODUCT_SUCCESS = 'product/CREATE_SUCCESS';
@@ -94,6 +108,31 @@ export function createProduct(product) {
 			businessErrorActions: [openMessageView, productsCreateError],
 			fetchErrorActions: [openMessageView, productsCreateError],
 			successActions: [openMessageView.bind(null, successActionPayload), productSaveSuccess(product)]
+=======
+const CREATE_EMPLOYEE = 'product/CREATE';
+const CREATE_EMPLOYEE_SUCCESS = 'product/CREATE_SUCCESS';
+const CREATE_EMPLOYEE_FAILURE = 'product/CREATE_FAILURE';
+
+const READ_EMPLOYEE = 'product/READ';
+const READ_EMPLOYEE_SUCCESS = 'product/READ_SUCCESS';
+const READ_EMPLOYEE_FAILURE = 'product/READ_FAILURE';
+
+const UPDATE_EMPLOYEE = 'product/UPDATE';
+const UPDATE_EMPLOYEE_SUCCESS = 'product/UPDATE_SUCCESS';
+const UPDATE_EMPLOYEE_FAILURE = 'product/UPDATE_FAILURE';
+
+const REMOVE_EMPLOYEE = 'product/REMOVE';
+const REMOVE_EMPLOYEE_SUCCESS = 'product/REMOVE_SUCCESS';
+const REMOVE_EMPLOYEE_FAILURE = 'product/REMOVE_FAILURE';
+
+export function fetchProducts() {
+	return (dispatch, getState) => {
+		return genericFetch(dispatch, {
+			url: `${urls.api}/sale/product`,
+			businessErrorActions: [ openMessageView, productsError ],
+			fetchErrorActions: [ openMessageView, productsError ],
+			successAction: productSuccess
+>>>>>>> c483c15918e160f3404d49ceaceeb95091fa96e6
 		});
 	}
 }

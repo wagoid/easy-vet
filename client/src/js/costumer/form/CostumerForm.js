@@ -9,19 +9,20 @@ import { userType, dateFormat } from '../../helpers/valueDecode';
 import * as validations from '../../helpers/validations';
 import getStyles from './styles';
 import { getFieldsValidations, getAddressFieldsValidations } from './validations';
-import * as ClientActions from '../actions';
+import * as CostumerActions from '../actions';
 import { setAdditionalFloatingActions } from '../../app/appbar/actions';
 import { isString, additionalFloatingActionStyles } from '../../helpers/util';
-import { addressDefinitions, clientDefinitions } from './fieldDefinitions';
+import { addressDefinitions, costumerDefinitions } from './fieldDefinitions';
 
-let clientProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Client' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
+let costumerProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Email' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
 	'Neighbourhood', 'Municipality', 'State', 'ZipCode'].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 
-let defaultClient = Object.assign({}, clientProperties, { Address: addressProperties });
-defaultClient.Type = 0;
+let defaultCostumer = Object.assign({}, costumerProperties, { Address: addressProperties });
+defaultCostumer.Type = 0;
+defaultCostumer.Password = 'costumer1234';
 
-class ClientForm extends Component {
+class CostumerForm extends Component {
 	
 	constructor (props) {
 		super(props);
@@ -29,19 +30,19 @@ class ClientForm extends Component {
 			error: {
 				Address: {}
 			},
-			client: defaultClient,
+			costumer: defaultCostumer,
 			inViewMode: false
 		};
 		this.validations = getFieldsValidations();
 		this.addressValidations = getAddressFieldsValidations();
-		this.saveClient = this.saveClient.bind(this);
-		this.editClient = this.editClient.bind(this);
+		this.saveCostumer = this.saveCostumer.bind(this);
+		this.editCostumer = this.editCostumer.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleAddressBlur = this.handleAddressBlur.bind(this);
 		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
-		this.actions = bindActionCreators({ ...ClientActions, setAdditionalFloatingActions }, this.props.dispatch);
+		this.actions = bindActionCreators({ ...CostumerActions, setAdditionalFloatingActions }, this.props.dispatch);
 	}
 
 	getAddressGenericTextFields() {
@@ -60,7 +61,7 @@ class ClientForm extends Component {
 				readOnly={this.state.inViewMode}
 				onChange={this.handleAddressChange}
 				onBlur={this.handleAddressBlur}
-				value={this.state.client.Address[name]}
+				value={this.state.costumer.Address[name]}
 				errorText={this.state.error.Address[name]}
 				floatingLabelText={label}
 			/>
@@ -68,8 +69,8 @@ class ClientForm extends Component {
 	}
 
 	getGenericTextFields() {
-		return clientDefinitions.map((clientDefinition, key) => {
-			return this.createGenericTextField({ ...clientDefinition, key });
+		return costumerDefinitions.map((costumerDefinition, key) => {
+			return this.createGenericTextField({ ...costumerDefinition, key });
 		});
 	}
 
@@ -84,7 +85,7 @@ class ClientForm extends Component {
 				onChange={this.handleChange}
 				onBlur={this.handleBlur}
 				hintText={hintText || ''}
-				value={this.state.client[name]}
+				value={this.state.costumer[name]}
 				errorText={this.state.error[name]}
 				floatingLabelText={label}
 			/>
@@ -93,16 +94,16 @@ class ClientForm extends Component {
 
 	componentDidMount() {
 		let locationState = this.props.location.state;
-		if (locationState && locationState.clientId && locationState.inViewMode) {
-			let clients = this.props.clients || [];
-			let client = clients.find(client => client.Id === locationState.clientId);
-			if (client) {
-				this.setState({ client, inViewMode: locationState.inViewMode })
+		if (locationState && locationState.costumerId && locationState.inViewMode) {
+			let costumers = this.props.costumers || [];
+			let costumer = costumers.find(costumer => costumer.Id === locationState.costumerId);
+			if (costumer) {
+				this.setState({ costumer, inViewMode: locationState.inViewMode })
 			}
 		}
 
 		let floatingAction = (
-			<FloatingActionButton disabled={!this.state.client.Id} key='clientFormPetsAction' style={getStyles().additionalFloatingAction} secondary={true}>
+			<FloatingActionButton disabled={!this.state.costumer.Id} key='costumerFormPetsAction' style={getStyles().additionalFloatingAction} secondary={true}>
 					<Pets />
 			</FloatingActionButton>
 		);
@@ -113,7 +114,7 @@ class ClientForm extends Component {
 		this.actions.setAdditionalFloatingActions([]);
 	}
 
-	editClient() {
+	editCostumer() {
 		this.setState({ inViewMode: false })
 	}
 
@@ -147,30 +148,30 @@ class ClientForm extends Component {
 	}
 
 	handleBirthDateChange(event, value) {
-		let client = { ...this.state.client, BirthDate: value };
-		this.setState({ client });
+		let costumer = { ...this.state.costumer, BirthDate: value };
+		this.setState({ costumer });
 	}
 	
 	updateField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName);
-		let client = { ...this.state.client, [fieldName]: value };
+		let costumer = { ...this.state.costumer, [fieldName]: value };
 		let error = { ...this.state.error, [fieldName]: errorText };
 		
 		this.setState({
-			client,
+			costumer,
 			error
 		});
 	};
 
 	updateAddressField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName, this.addressValidations);
-		let client = { ...this.state.client };
-		client.Address[fieldName] = value;
+		let costumer = { ...this.state.costumer };
+		costumer.Address[fieldName] = value;
 		let error = { ...this.state.error };
 		error.Address[fieldName] = errorText;
 		
 		this.setState({
-			client,
+			costumer,
 			error
 		});
 	};
@@ -191,10 +192,10 @@ class ClientForm extends Component {
 		return errorText;
 	}
 
-	saveClient() {
+	saveCostumer() {
 		let error = {...this.state.error};
-		this.setClientErrors(error);
-		this.setClientAddressErrors(error);
+		this.setCostumerErrors(error);
+		this.setCostumerAddressErrors(error);
 		let hasError = Object.keys(error.Address).some(prop => !!error.Address[prop]);
 		hasError = hasError || Object.keys(error).some(prop => prop !== 'Address' && !!error[prop]);
 
@@ -203,27 +204,27 @@ class ClientForm extends Component {
 				error
 			});
 		} else {
-			this.actions.createClient(this.state.client)
+			this.actions.createCostumer(this.state.costumer)
 				.then(() => {
-					if (this.state.client.Id > 0) {
+					if (this.state.costumer.Id > 0) {
 						this.setState({ inViewMode: true });
 					}
 				});
 		}
 	}
 
-	setClientErrors(error) {
-		Object.keys(this.state.client).forEach(clientProp => {
-			if (clientProp !== 'Address') {
-				let errorText = this.getErrorText(this.state.client[clientProp], clientProp);
-				error[clientProp] = errorText;
+	setCostumerErrors(error) {
+		Object.keys(this.state.costumer).forEach(costumerProp => {
+			if (costumerProp !== 'Address') {
+				let errorText = this.getErrorText(this.state.costumer[costumerProp], costumerProp);
+				error[costumerProp] = errorText;
 			}
 		});
 	}
 
-	setClientAddressErrors(error) {
-		Object.keys(this.state.client.Address).forEach(addressProp => {
-			let errorText = this.getErrorText(this.state.client.Address[addressProp], addressProp, this.addressValidations);
+	setCostumerAddressErrors(error) {
+		Object.keys(this.state.costumer.Address).forEach(addressProp => {
+			let errorText = this.getErrorText(this.state.costumer.Address[addressProp], addressProp, this.addressValidations);
 			error.Address[addressProp] = errorText;
 		});
 	}
@@ -236,9 +237,9 @@ class ClientForm extends Component {
 
 		let birthDateField;
 
-		let birthDate = this.state.client.BirthDate;
+		let birthDate = this.state.costumer.BirthDate;
 		if (birthDate && isString(birthDate)) {
-			this.state.client.BirthDate = new Date(birthDate);
+			this.state.costumer.BirthDate = new Date(birthDate);
 			birthDateField = (
 				<DatePicker
 							name="BirthDate"
@@ -246,7 +247,7 @@ class ClientForm extends Component {
 							onChange={this.handleBirthDateChange}
 							autoOk={false}
 							floatingLabelText="Birth Date"
-							value={this.state.client.BirthDate}
+							value={this.state.costumer.BirthDate}
 							maxDate={new Date()}
 						/>
 			);
@@ -264,7 +265,7 @@ class ClientForm extends Component {
 		}
 
 		return (
-			<div id='client-edit'>
+			<div id='costumer-edit'>
 
 				<Paper style={styles.paper}>
 					{this.getGenericTextFields()}
@@ -284,7 +285,7 @@ class ClientForm extends Component {
 
 				<FloatingActionButton
 						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editClient : this.saveClient}
+						onTouchTap={this.state.inViewMode? this.editCostumer : this.saveCostumer}
 					>
 						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
 				</FloatingActionButton>
@@ -295,6 +296,6 @@ class ClientForm extends Component {
 }
 
 export default connect((state, ownProps) => ({
-	clients: state.client.clients,
+	costumers: state.costumer.costumers,
 	hasOpenMessage: !!state.main.message.open
-}))(ClientForm);
+}))(CostumerForm);

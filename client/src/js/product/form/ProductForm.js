@@ -26,12 +26,32 @@ class ProductForm extends Component {
 			inViewMode: false
 		};
 		this.validations = getFieldsValidations();
+		this.addressValidations = getAddressFieldsValidations();
 		this.saveProduct = this.saveProduct.bind(this);
 		this.editProduct = this.editProduct.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
+		this.handleAddressBlur = this.handleAddressBlur.bind(this);
+		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
 		this.actions = bindActionCreators(ProductActions, this.props.dispatch);
+	}
+
+	createGenericAddressTextField({ name, label, type, key }) {
+		return (
+			<TextField
+				key={key}
+				name={name}
+				type={type || 'text'}
+				style={ { display: 'block' } }
+				readOnly={this.state.inViewMode}
+				onChange={this.handleAddressChange}
+				onBlur={this.handleAddressBlur}
+				value={this.state.product.Address[name]}
+				errorText={this.state.error.Address[name]}
+				floatingLabelText={label}
+			/>
+		);
 	}
 
 	getGenericTextFields() {

@@ -8,18 +8,24 @@ import product from '../product/reducer';
 import address from '../address/reducer';
 import auth from '../auth/reducer';
 import dialog from '../dialog/reducer';
-import client from '../client/reducer';
+import costumer from '../costumer/reducer';
+import product from '../product/reducer';
+import sale from '../sale/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
+		routing: routerReducer,
 		main,
 		employee,
 		product,
-		client,
 		address,
 		auth,
 		dialog,
-		routing: routerReducer
+		employee,
+		costumer,
+		address,
+		sale,
+		product
 	});
 
 	return  createStore(reducer, applyMiddleware(thunk, routerMiddleware(browserHistory)));
