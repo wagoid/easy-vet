@@ -58,5 +58,17 @@ namespace EasyVet.Controllers.Generic
             else
                 entityFromClient.Password = entityFromBd.Password;
         }
+
+        protected List<TEntity> getProductList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : Models.Product
+        {
+            return entityDbSet
+                    .ToList();
+        }
+
+        protected TEntity getProductFirstOrDefault<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Product
+        {
+            return entityDbSet
+                .FirstOrDefault();
+        }
     }
 }
