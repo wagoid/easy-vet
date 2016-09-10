@@ -9,6 +9,10 @@ export default function reducer(state = {}, action = {}) {
 			newState = payload;
 			break;
 
+		case actions.CREATE_PRODUCT_SUCCESS:
+			newState.products = [ ...state.products, payload.product];
+			break;
+
 		default:
 			newState = state;
 			break;

@@ -15,6 +15,7 @@ namespace EasyVet.App_Start
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            return base.SendAsync(request, cancellationToken);
             if (isLoginRoute(request.RequestUri.AbsolutePath))
                 return base.SendAsync(request, cancellationToken);
 
