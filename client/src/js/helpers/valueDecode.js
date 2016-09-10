@@ -30,3 +30,7 @@ export const EMPLOYEE_TYPES = {
 	2: 'Sales Person',
 	3: 'Veterinary'
 };
+
+export const ANIMAL_TYPES = {
+	0: 'Dog',
+};

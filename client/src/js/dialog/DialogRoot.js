@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
-//import getStyles from './styles';
 
 class DialogRoot extends Component {
 	constructor(props = {}) {

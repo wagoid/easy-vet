@@ -2,6 +2,8 @@ import { push } from 'react-router-redux';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
+import * as dialogActions from '../dialog/actions';
+import Dialog from '../animal/Dialog';
 
 export const FETCH_CLIENTS = 'client/FETCH';
 export const FETCH_CLIENTS_SUCCESS = 'client/FETCH_SUCCESS';
@@ -90,4 +92,28 @@ export function createClient(client) {
 			successActions: [openMessageView.bind(null, successActionPayload), clientSaveSuccess(client)]
 		});
 	}
+}
+
+function dialogAction(dispatch) {
+	return ({ type, text }) => {
+		return {
+			type: dialogActions.OPEN,
+			payload: {
+				component: Dialog,
+				props: {
+					message: text,
+					title: "Failed to login",
+					open: true,
+					onRequestClose: dispatchCloseDialog(dispatch, Dialog),
+					actions: [<FlatButton key={1} label="OK" primary={true} onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
+				}
+			}
+		};
+	};
+}
+
+function dispatchCloseDialog(dispatch, component) {
+	return () => { 
+		dispatch(dialogActions.closeDialog({}, component))
+	};
 }

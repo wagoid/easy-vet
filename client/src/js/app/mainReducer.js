@@ -16,7 +16,8 @@ export default function mainReducer(state = initialState, action = {}) {
 			break;
 		
 		case SET_ADDITIONAL_FLOATING_ACTIONS:
-			newState = { ...state, additionalFloatingActions: action.payload }
+			let { additionalFloatingActions } = action.payload;
+			newState = { ...state, additionalFloatingActions }
 			break;
 
 		default:

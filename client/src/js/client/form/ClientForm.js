@@ -44,15 +44,6 @@ class ClientForm extends Component {
 		this.actions = bindActionCreators({ ...ClientActions, setAdditionalFloatingActions }, this.props.dispatch);
 	}
 
-	componentWillMount() {
-		let floatingAction = (
-			<FloatingActionButton style={this.getStyles().additionalFloatingAction} secondary={true}>
-					<Pets />
-			</FloatingActionButton>
-		);
-		this.actions.setAdditionalFloatingActions([floatingAction]);
-	}
-
 	getAddressGenericTextFields() {
 		return addressDefinitions.map((addressDefinition, key) => {
 			return this.createGenericAddressTextField({...addressDefinition, key });
@@ -100,7 +91,7 @@ class ClientForm extends Component {
 		);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		let locationState = this.props.location.state;
 		if (locationState && locationState.clientId && locationState.inViewMode) {
 			let clients = this.props.clients || [];
@@ -109,6 +100,13 @@ class ClientForm extends Component {
 				this.setState({ client, inViewMode: locationState.inViewMode })
 			}
 		}
+
+		let floatingAction = (
+			<FloatingActionButton disabled={!this.state.client.Id} key='clientFormPetsAction' style={getStyles().additionalFloatingAction} secondary={true}>
+					<Pets />
+			</FloatingActionButton>
+		);
+		this.actions.setAdditionalFloatingActions(floatingAction);
 	}
 
 	editClient() {

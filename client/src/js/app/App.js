@@ -5,6 +5,7 @@ import { AppBar,	Drawer,	RaisedButton,	MenuItem,	MuiThemeProvider } from 'materi
 import WorkIcon from 'material-ui/svg-icons/action/work';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import MessageView from './messages/MessageView';
+import { parseToArray } from '../helpers/util';
 
 // Define menu items for LeftNav
 let menuItems = [
@@ -67,7 +68,7 @@ class App extends React.Component {
 
 				<header>
 					<AppBar title={this._getCurrentRouteName()} onLeftIconButtonTouchTap={this.handleToggle} >
-						{this.context.store.getState().main.additionalFloatingActions}
+						{parseToArray(this.props.additionalFloatingActions)}
 					</AppBar>
 				</header>
 
@@ -85,6 +86,10 @@ class App extends React.Component {
 
 }
 
+App.PropTypes = {
+	additionalFloatingActions: PropTypes.array
+};
+
 App.childContextTypes = {
 	muiTheme: PropTypes.object
 };
@@ -95,6 +100,10 @@ App.contextTypes = {
 	store: PropTypes.object.isRequired
 };
 
+const ConnectedApp = connect((state, ownProps) => ({
+	additionalFloatingActions: state.main.additionalFloatingActions
+}))(App);
+
 export default class AppProvider extends Component {
 	constructor(...args) {
 		super(...args);
@@ -103,7 +112,7 @@ export default class AppProvider extends Component {
 	render() {
 		return (
 			<MuiThemeProvider>
-				<App {...this.props} />
+				<ConnectedApp {...this.props} />
 			</MuiThemeProvider>
 		);
 	}

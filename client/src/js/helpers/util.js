@@ -72,3 +72,14 @@ export function isNumber(value) {
 export function isString(value) {
 	return typeof value === 'string';
 }
+
+export function parseToArray(itemToParse) {
+	let parsedItme;
+	if (Array.isArray()) {
+		parsedItme = itemToParse
+	} else {
+		parsedItme = [itemToParse];
+	}
+
+	return parsedItme;
+}
