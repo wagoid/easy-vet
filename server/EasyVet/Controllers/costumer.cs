@@ -9,12 +9,14 @@ using EasyVet.Controllers.Generic;
 
 namespace EasyVet.Controllers
 {
-    
-    public class Costumer : Base, Interfaces.Crud<Models.Costumer>
+
+    public class Costumer : Base
     {
+        private DAO.Costumer costumer;
+
         public Costumer() : base()
         {
-            
+            costumer = new DAO.Costumer(this.context);
         }
         public Costumer(DAO.Interfaces.VetContext context) : base(context)
         {
@@ -24,15 +26,10 @@ namespace EasyVet.Controllers
         [Route("api/costumer")]
         [HttpGet]
         // GET api/costumer
-        public Response<IList<Models.Costumer>> Get()
+        public Response<List<Models.Costumer>> Get()
         {
 
-            return this.safelyRespond<IList<Models.Costumer>>(() =>
-            {
-                return this.context.Costumers
-                    .Include(v => v.Address)
-                    .ToList();
-            });
+            return safelyRespond(() => costumer.List());
         }
 
         [Route("api/costumer/{id}")]
@@ -40,38 +37,23 @@ namespace EasyVet.Controllers
         // GET api/costumer/5
         public Response<Models.Costumer> Get(int id)
         {
-            return this.safelyRespond<Models.Costumer>(() =>
-            {
-                return this.context.Costumers
-                    .Include(v => v.Address)
-                    .FirstOrDefault(v => v.Id == id);
-            });
+            return safelyRespond(() => costumer.FindById(id));
         }
 
         [Route("api/costumer/")]
         [HttpPost]
         // POST api/costumer
-        public Response<Models.Costumer> Post([FromBody]Models.Costumer costumer)
+        public Response<int> Post([FromBody]Models.Costumer costumer)
         {
-            return this.safelyRespond<Models.Costumer>(() =>
-            {
-                this.context.Costumers.Add(costumer);
-                this.context.SaveChanges();
-                return costumer;
-            });
+            return safelyRespond(() => this.costumer.Insert(costumer));
         }
 
         [Route("api/costumer")]
         [HttpPut]
         // PUT api/costumer
-        public Response<int> Put([FromBody]Models.Costumer costumer)
+        public Response<bool> Put([FromBody]Models.Costumer costumer)
         {
-            return this.safelyRespond<int>(() =>
-            {
-                this.context.Costumers.Attach(costumer);
-                this.context.SaveChanges();
-                return costumer.Id;
-            });
+            return safelyRespond(() => this.costumer.Update(costumer));
         }
 
         [Route("api/costumer/{id}")]
@@ -79,17 +61,7 @@ namespace EasyVet.Controllers
         // DELETE api/costumer/5
         public Response<bool> Delete(int id)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var Costumer = this.context.Costumers.FirstOrDefault(v => v.Id == id);
-
-                if (Costumer == null)
-                    throw new Helpers.Exceptions.EntityNotFoundException(String.Format("The Costumer with Id {0} was not found", id));
-
-                this.context.Costumers.Remove(Costumer);
-                this.context.SaveChanges();
-                return true;
-            });
+            return safelyRespond(() => costumer.Delete(id));
         }
     }
 }

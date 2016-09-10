@@ -13,24 +13,24 @@ namespace EasyVet.DAO.Interfaces
         int SaveChanges();
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 
-        IDbSet<Address> Addresses { get; set; }
-        IDbSet<User> Users { get; set; }
-        IDbSet<Employee> Employees { get; set; }
-        IDbSet<Cashier> Cashiers { get; set; }
-        IDbSet<Costumer> Costumers { get; set; }
-        IDbSet<Veterinary> Veterinaries { get; set; }
-        IDbSet<SalesPerson> SalesPeople { get; set; }
+        IDbSet<Models.Address> Addresses { get; set; }
+        IDbSet<Models.User> Users { get; set; }
+        IDbSet<Models.Employee> Employees { get; set; }
+        IDbSet<Models.Cashier> Cashiers { get; set; }
+        IDbSet<Models.Costumer> Costumers { get; set; }
+        IDbSet<Models.Veterinary> Veterinaries { get; set; }
+        IDbSet<Models.SalesPerson> SalesPeople { get; set; }
 
-        IDbSet<Appointment> Appointments { get; set; }
+        IDbSet<Models.Appointment> Appointments { get; set; }
 
-         IDbSet<Sale> Sales { get; set; }
-         IDbSet<SaleProduct> SaleProducts { get; set; }
-         IDbSet<Payment> Payments { get; set; }
-         IDbSet<Product> Products { get; set; }
-         IDbSet<Stock> Stocks { get; set; }
+         IDbSet<Models.Sale> Sales { get; set; }
+         IDbSet<Models.SaleProduct> SaleProducts { get; set; }
+         IDbSet<Models.Payment> Payments { get; set; }
+         IDbSet<Models.Product> Products { get; set; }
+         IDbSet<Models.Stock> Stocks { get; set; }
 
 
-         IDbSet<Animal> Animals { get; set; }
-         IDbSet<Dog> Dogs { get; set; }
+         IDbSet<Models.Animal> Animals { get; set; }
+         IDbSet<Models.Dog> Dogs { get; set; }
     }
 }
