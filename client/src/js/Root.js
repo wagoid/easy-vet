@@ -10,6 +10,10 @@ import App from './app/App';
 import ExternalApp from './app/ExternalApp';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
+
+import ProductList from './product';
+import ProductForm from './product/form/ProductForm';
+
 import CostumerList from './costumer';
 import CostumerForm from './costumer/form/CostumerForm';
 import SaleList from './sale';
@@ -33,12 +37,12 @@ function getPath(path = '') {
 }
 
 function requireAuth(store, nextState, replace, next) {
-	let authToken = JSON.parse(localStorage.getItem("authToken"));
-	if (!authToken) {
-		replace('/login');
-	} else {
-		axios.defaults.headers.common['Authorization'] = authToken;
-	}
+	// let authToken = JSON.parse(localStorage.getItem("authToken"));
+	// if (!authToken) {
+	// 	replace('/login');
+	// } else {
+	// 	axios.defaults.headers.common['Authorization'] = authToken;
+	// }
 
 	next();
 }
@@ -61,6 +65,9 @@ export default class Root extends Component {
 							<Route name="Costumer" path={getPath('costumer/form')} component={CostumerForm} />
 							<Route name="Sales" path={getPath('sale')} component={SaleList} />
 							<Route name="Sale" path={getPath('sale/form')} component={SaleForm} />
+
+							<Route name="Products" path={getPath('product')} component={ProductList} />
+							<Route name="Product" path={getPath('product/form')} component={ProductForm} />
 
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>
