@@ -14,5 +14,10 @@ namespace EasyVet.Models
 
         [Required]
         public Veterinary Veterinary { get; set; }
+        [Required]
+        public Costumer Costumer { get; set; }
+        [Required]
+        public Animal Animal { get; set; }
+
     }
 }

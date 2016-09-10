@@ -6,10 +6,11 @@ using EasyVet.Enumerations;
 using System.Web.Http;
 using EasyVet.Helpers;
 using System.Data.Entity;
+using EasyVet.Controllers.Generic;
 
 namespace EasyVet.Controllers
 {
-    public class Animal : BaseController
+    public class Animal : Base
     {
         public Animal() : base()
         {

@@ -5,11 +5,12 @@ using System.Net;
 using System.Data.Entity;
 using System.Web.Http;
 using EasyVet.Helpers;
+using EasyVet.Controllers.Generic;
 
 namespace EasyVet.Controllers
 {
     
-    public class Costumer : BaseController, Interfaces.Crud<Models.Costumer>
+    public class Costumer : Base, Interfaces.Crud<Models.Costumer>
     {
         public Costumer() : base()
         {
@@ -26,7 +27,7 @@ namespace EasyVet.Controllers
         public Response<IList<Models.Costumer>> Get()
         {
 
-            return this.safeExecute<IList<Models.Costumer>>(() =>
+            return this.safelyRespond<IList<Models.Costumer>>(() =>
             {
                 return this.context.Costumers
                     .Include(v => v.Address)
@@ -39,7 +40,7 @@ namespace EasyVet.Controllers
         // GET api/costumer/5
         public Response<Models.Costumer> Get(int id)
         {
-            return this.safeExecute<Models.Costumer>(() =>
+            return this.safelyRespond<Models.Costumer>(() =>
             {
                 return this.context.Costumers
                     .Include(v => v.Address)
@@ -52,7 +53,7 @@ namespace EasyVet.Controllers
         // POST api/costumer
         public Response<Models.Costumer> Post([FromBody]Models.Costumer costumer)
         {
-            return this.safeExecute<Models.Costumer>(() =>
+            return this.safelyRespond<Models.Costumer>(() =>
             {
                 this.context.Costumers.Add(costumer);
                 this.context.SaveChanges();
@@ -65,9 +66,9 @@ namespace EasyVet.Controllers
         // PUT api/costumer
         public Response<int> Put([FromBody]Models.Costumer costumer)
         {
-            return this.safeExecute<int>(() =>
+            return this.safelyRespond<int>(() =>
             {
-                this.context.Costumers.Attach(Costumer);
+                this.context.Costumers.Attach(costumer);
                 this.context.SaveChanges();
                 return costumer.Id;
             });
@@ -78,7 +79,7 @@ namespace EasyVet.Controllers
         // DELETE api/costumer/5
         public Response<bool> Delete(int id)
         {
-            return this.safeExecute<bool>(() =>
+            return this.safelyRespond<bool>(() =>
             {
                 var Costumer = this.context.Costumers.FirstOrDefault(v => v.Id == id);
 
