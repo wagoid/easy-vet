@@ -28,7 +28,8 @@ namespace EasyVet.Migrations
                     Password = "fAYqnJi3eB1hWhYxGChFLqo7+dhvkgBdGJPoEMWd+xI=",
                     PhoneNumber = "666",
                     Salary = 11575.58m,
-                    Specialty = "Nenhuma" };
+                    Specialty = "Nenhuma",
+                    Type = Enumerations.UserType.Veterinary};
                 context.Veterinaries.Add(veterinary);
             }
            
