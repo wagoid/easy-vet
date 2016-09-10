@@ -6,21 +6,21 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import { userType, dateFormat } from '../helpers/valueDecode';
 import { floatingActionStyles } from '../helpers/util';
 
-import Client from './Client';
-import * as ClientActions from './actions';
+import CostumerCard from './CostumerCard';
+import * as CostumerActions from './actions';
 
-class ClientList extends Component {
+class CostumerList extends Component {
 
 	constructor(...args) {
 		super(...args);
-		this.addClient = this.addClient.bind(this);
-		this.viewClient = this.viewClient.bind(this);
-		this.actions = bindActionCreators(ClientActions, this.props.dispatch);
+		this.addCostumer = this.addCostumer.bind(this);
+		this.viewCostumer = this.viewCostumer.bind(this);
+		this.actions = bindActionCreators(CostumerActions, this.props.dispatch);
 	}
 
 	componentDidMount() {
-		if (!this.props.clients.length) {
-			this.actions.fetchClients();
+		if (!this.props.costumers.length) {
+			this.actions.fetchCostumers();
 		}
 	}
 
@@ -30,12 +30,12 @@ class ClientList extends Component {
 		};
 	}
 
-	addClient() {
-		this.context.router.push('/client/form')
+	addCostumer() {
+		this.context.router.push('/costumer/form')
 	}
 
-	viewClient(client) {
-		let newLocation =  { ...this.props.location, pathname: '/client/form' , state: { clientId: client.Id, inViewMode: true } };
+	viewCostumer(costumer) {
+		let newLocation =  { ...this.props.location, pathname: '/costumer/form' , state: { costumerId: costumer.Id, inViewMode: true } };
 		this.context.router.push(newLocation);
 	}
 
@@ -54,21 +54,21 @@ class ClientList extends Component {
 			}
 		}
 
-		const clientCards = this.props.clients.map((client) => {
-			return (<Client
-				onClick={this.viewClient}
-				key={client.Id}
-				client={client}
+		const costumerCards = this.props.costumers.map((costumer) => {
+			return (<CostumerCard
+				onClick={this.viewCostumer}
+				key={costumer.Id}
+				costumer={costumer}
 				keyReplacements={keyReplacements}
 				valueMasks={valueMasks}
 			/>);
 		});
 		return (
-			<div id='client-view'>
-				{clientCards}
+			<div id='costumer-view'>
+				{costumerCards}
 				<FloatingActionButton
 					style={styles.addContent}
-					onTouchTap={this.addClient}
+					onTouchTap={this.addCostumer}
 				>
 					<ContentAdd />
 				</FloatingActionButton>
@@ -77,22 +77,22 @@ class ClientList extends Component {
 	}
 }
 
-ClientList.defaultProps = {
-	clients: []
+CostumerList.defaultProps = {
+	costumers: []
 }
 
-ClientList.propTypes = {
+CostumerList.propTypes = {
 	dispatch: PropTypes.func.isRequired,
-	clients: PropTypes.array,
+	costumers: PropTypes.array,
 	open: PropTypes.bool,
 }
 
-ClientList.contextTypes = {
+CostumerList.contextTypes = {
 	router: PropTypes.object.isRequired,
 	muiTheme: PropTypes.object.isRequired
 }
 
 export default connect(state => ({
-	clients: state.client.clients,
+	costumers: state.costumer.costumers,
 	hasOpenMessage: !!state.main.message.open
-}))(ClientList);
+}))(CostumerList);

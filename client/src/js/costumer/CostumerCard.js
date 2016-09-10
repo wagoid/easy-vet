@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-class Client extends Component {
+class CostumerCard extends Component {
 
 	constructor(...args) {
 		super(...args);
@@ -29,17 +29,17 @@ class Client extends Component {
 
 	handleClick() {
 		if (this.props.onClick) {
-			this.props.onClick(this.props.client);
+			this.props.onClick(this.props.costumer);
 		}
 	}
 
 	render() {
-		let { client, keyReplacements, valueMasks } = this.props;
-		let address = client.Address;
+		let { costumer, keyReplacements, valueMasks } = this.props;
+		let address = costumer.Address;
 		let styles = this.getStyles();
 		let userTypeMask = valueMasks.Type;
 		
-		let keysToShow = Object.keys(client).filter(prop => !~['Id', 'Name', 'RowVersion', 'Type', 'Password'].indexOf(prop));
+		let keysToShow = Object.keys(costumer).filter(prop => !~['Id', 'Name', 'RowVersion', 'Type', 'Password'].indexOf(prop));
 
 		var cardTexts = keysToShow.map((key, index) => {
 			let keyText = keyReplacements[key] || key;
@@ -53,7 +53,7 @@ class Client extends Component {
 				let valueMask = valueMasks[key];
 				return (
 					<CardText key={index} style={styles.cardText}>
-						{keyText}: {valueMask? valueMask.func(client[key], valueMask.mask) : client[key]}
+						{keyText}: {valueMask? valueMask.func(costumer[key], valueMask.mask) : costumer[key]}
 					</CardText>
 				)
 			}
@@ -63,8 +63,8 @@ class Client extends Component {
 		return (
 			<Card onClick={this.handleClick} style={styles.card}>
 				<CardHeader
-					title={client.Name}
-					subtitle={userTypeMask? userTypeMask.func(client.Type) : client.Type}
+					title={costumer.Name}
+					subtitle={userTypeMask? userTypeMask.func(costumer.Type) : costumer.Type}
 				/>
 
 				{cardTexts}
@@ -73,11 +73,11 @@ class Client extends Component {
 	}
 }
 
-Client.propTypes = {
-	client: PropTypes.object.isRequired,
+CostumerCard.propTypes = {
+	costumer: PropTypes.object.isRequired,
 	keyReplacements: PropTypes.object.isRequired,
 	valueMasks: PropTypes.object.isRequired,
 	onClick: PropTypes.func
 }
 
-export default Client;
+export default CostumerCard;

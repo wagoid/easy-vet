@@ -9,9 +9,9 @@ export const addressDefinitions = [
 	{ name: 'ZipCode', label: 'Zip code'  }
 ];
 
-export const clientDefinitions = [
+export const costumerDefinitions = [
 	{ name: 'Name', label: 'User name' },
 	{ name: 'Cpf', label: 'Cpf', hintText: '999.999.999-99' },
-	{ name: 'Password', label: 'Password', type: 'password'  },
-	{ name: 'PhoneNumber', label: 'Phone number', hintText: '(31) 89999-999' }
+	{ name: 'PhoneNumber', label: 'Phone number', hintText: '(31) 89999-999' },
+	{ name: 'Email', label: 'Email', hintText: 'someone@somewhere.com' }
 ]

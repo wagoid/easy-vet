@@ -64,6 +64,8 @@ class App extends React.Component {
 
 						<MenuItem onTouchTap={this.handleMenuClick('/')} leftIcon={ <HomeIcon /> } primaryText='Home'></MenuItem>
 						<MenuItem onTouchTap={this.handleMenuClick('/employee')} leftIcon={ <WorkIcon /> } primaryText='Employee' ></MenuItem>
+						<MenuItem onTouchTap={this.handleMenuClick('/costumer')} leftIcon={ <WorkIcon /> } primaryText='Costumer' ></MenuItem>
+						<MenuItem onTouchTap={this.handleMenuClick('/sale')} leftIcon={ <WorkIcon /> } primaryText='Sale' ></MenuItem>
 					</Drawer>
 
 				<header>
