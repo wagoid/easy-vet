@@ -31,9 +31,9 @@ namespace EasyVet.Controllers
             return this.safelyRespond<Models.Address>(() => getFirstOrDefault(this.context.Addresses, id));
         }
 
-        public Response<int> Post([FromBody]Models.Address address)
+        public Response<Models.Address> Post([FromBody]Models.Address address)
         {
-            return this.safelyRespond<int>(() => post(context.Addresses, address));
+            return this.safelyRespond<Models.Address>(() => post(this.context.Addresses, address));
         }
 
         [Route("api/employee/address")]

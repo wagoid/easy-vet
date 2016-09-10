@@ -39,9 +39,9 @@ namespace EasyVet.Controllers
 
         [Route("api/animal/Dog")]
         [HttpPost]
-        public Response<int> PostDog([FromBody]Models.Dog Dog)
+        public Response<Models.Dog> PostDog([FromBody]Models.Dog Dog)
         {
-            return this.safelyRespond<int>(() => post(context.Dogs, Dog));
+            return this.safelyRespond<Models.Dog>(() => post(context.Dogs, Dog));
         }
 
         [Route("api/animal/Dog")]

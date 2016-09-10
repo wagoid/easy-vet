@@ -164,10 +164,8 @@
     <Compile Include="Controllers\Costumer.cs" />
     <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
-    <Compile Include="Controllers\Generic\GenericProduct.cs" />
     <Compile Include="Controllers\Generic\User.cs" />
     <Compile Include="Controllers\Interfaces\Crud.cs" />
-    <Compile Include="Controllers\Product.cs" />
     <Compile Include="Controllers\Sale.cs" />
     <Compile Include="DAO\Costumer.cs" />
     <Compile Include="DAO\Dog.cs" />

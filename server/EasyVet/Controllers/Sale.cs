@@ -121,7 +121,7 @@ namespace EasyVet.Controllers
 
         [Route("api/product/all")]
         [HttpGet]
-        public Response<IList<Object>> All()
+        public Response<IList<Object>> AllProducts()
         {
             return safelyRespond<IList<Object>>(() =>
             {
