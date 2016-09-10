@@ -29,7 +29,7 @@ namespace EasyVet.Controllers
 
         [Route("api/product/{id}")]
         [HttpGet]
-        public Response<Models.Product> Product(int id)
+        public Response<Models.Product> product(int id)
         {
             return this.safelyRespond<Models.Product>(() => getProductFirstOrDefault(this.context.Products, id));
         }
