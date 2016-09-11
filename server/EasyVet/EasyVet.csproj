@@ -162,7 +162,6 @@
     <Compile Include="Controllers\Costumer.cs" />
     <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
-    <Compile Include="Controllers\Interfaces\Crud.cs" />
     <Compile Include="Controllers\Sale.cs" />
     <Compile Include="DAO\Appointment.cs" />
     <Compile Include="DAO\Cashier.cs" />
