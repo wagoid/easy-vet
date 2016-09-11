@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { push } from 'react-router-redux';
+import moment from 'moment';
 
 export const SNACKBAR_HEIGHT = 48;
 export const FLOATING_BUTTON_BOTTOM = 20;
@@ -54,6 +55,19 @@ export function catchFetch(dispatch, ...actionsToDispatch) {
 			dispatch(push('/login'));
 		}
 	};
+}
+
+export function weekDaysFromStart(start) {
+	let weekDays = [moment(start)];
+	for (var i = 1; i < 7; i++) {
+		weekDays.push(moment(start).add(i, 'day'));
+	}
+	return weekDays;
+}
+
+export function dayHoursFromMidNight() {
+	return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+		.map(hour => moment().startOf('day').add(hour, 'hour'));
 }
 
 export function dispatchActions(dispatch, payload, ...actions) {

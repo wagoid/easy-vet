@@ -11,6 +11,7 @@
     "bluebird": "^3.4.3",
     "envify": "^3.4.1",
     "material-ui": "^0.15.4",
+    "moment": "^2.14.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",

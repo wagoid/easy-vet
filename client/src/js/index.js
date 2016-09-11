@@ -4,6 +4,7 @@ import Root from './Root';
 import bluebird from 'bluebird';
 import 'isomorphic-fetch';
 import axios from 'axios';
+import moment from 'moment';
 
 //TODO: move these config stuff to a config module
 window.Promise = bluebird;
@@ -11,6 +12,7 @@ Promise.config({
 	longStackTraces: true,
 	warnings: true
 });
+window.moment = moment;
 
 axios.defaults.headers.post['Content-Type'] = 'text/plain';
 axios.defaults.headers.put['Content-Type'] = 'text/plain';

@@ -5,6 +5,7 @@ export function getFieldsValidations() {
 	return {
 		Name: requiredValidation,
 		Cpf: requiredValidation,
+		Password: requiredValidation,
 		PhoneNumber: requiredValidation,
 		BirthDate: requiredValidation,
 		Email: requiredValidation

@@ -10,6 +10,7 @@ import auth from '../auth/reducer';
 import dialog from '../dialog/reducer';
 import costumer from '../costumer/reducer';
 import sale from '../sale/reducer';
+import appointment from '../appointment/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
@@ -23,6 +24,7 @@ export const configureStore = function (initialState = {}) {
 		costumer,
 		address,
 		sale,
+		appointment,
 		product
 	});
 

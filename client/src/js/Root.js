@@ -8,17 +8,17 @@ import axios from 'axios';
 import Home from './home/Home';
 import App from './app/App';
 import ExternalApp from './app/ExternalApp';
+import Login from './auth/Login';
 import EmployeeList from './employee';
 import EmployeeForm from './employee/form/EmployeeForm';
-
 import ProductList from './product';
 import ProductForm from './product/form/ProductForm';
-
 import CostumerList from './costumer';
 import CostumerForm from './costumer/form/CostumerForm';
 import SaleList from './sale';
 import SaleForm from './sale/form/SaleForm';
-import Login from './auth/Login';
+import AppointmentCalendar from './appointment';
+
 
 //Needed for onTouchTap
 //Can go away when react 1.0 release
@@ -68,6 +68,8 @@ export default class Root extends Component {
 
 							<Route name="Products" path={getPath('product')} component={ProductList} />
 							<Route name="Product" path={getPath('product/form')} component={ProductForm} />
+
+							<Route name="Appointments" path={getPath('appointment')} component={AppointmentCalendar} />
 
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>

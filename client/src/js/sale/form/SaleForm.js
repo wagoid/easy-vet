@@ -188,7 +188,7 @@ class SaleForm extends Component {
 						style={ { display: 'block' } }
 						readOnly={true}
 						floatingLabelText="Total cost"
-						value={this.state.sale.Value || 0}
+						value={`R$ ${this.state.sale.Value || 0}`}
 					/>
 
 					<div id="divider-container" style={styles.dividerContainer}>
