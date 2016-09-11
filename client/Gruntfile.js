@@ -14,6 +14,14 @@ module.exports = function(grunt) {
 				src: 'src/js/index.js',
 				dest: 'dist/js/index.js'
 			}
+		},
+		bump: {
+			options: {
+				files: ['package.json'],
+				pushTo: 'origin',
+				commitFiles: ["-a"],
+				push: true
+			}
 		}
 	});
 
