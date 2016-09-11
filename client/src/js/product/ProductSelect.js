@@ -26,7 +26,14 @@ class ProductSelect extends Component {
 	}
 
 	render() {
-		var productOptions = this.props.products.map((product, index) => {
+		let productsToShow;
+		if (Object.keys(this.props.exclusionProductIds).length > 0) {
+			productsToShow = this.props.products.filter(product => !this.props.exclusionProductIds[product.Id]);
+		} else {
+			productsToShow = this.props.products;
+		}
+		
+		let productOptions = productsToShow.map((product, index) => {
 			let productText = `${product.Name} - R$${product.Price}`;
 			return (
 				<MenuItem key={index} value={product.Id} primaryText={productText} />
@@ -49,11 +56,13 @@ class ProductSelect extends Component {
 ProductSelect.PropTypes = {
 	products: PropTypes.array,
 	floatingLabelText: PropTypes.string.isRequired,
-	fullWidth: PropTypes.bool
+	fullWidth: PropTypes.bool,
+	exclusionProductIds: PropTypes.object
 }
 
 ProductSelect.defaultProps = {
-	products: []
+	products: [],
+	exclusionProductIds: {}
 }
 
 

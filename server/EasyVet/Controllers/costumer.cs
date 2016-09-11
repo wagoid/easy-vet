@@ -21,6 +21,7 @@ namespace EasyVet.Controllers
         public Costumer(DAO.Interfaces.VetContext context) : base(context)
         {
             this.context = context;
+            costumer = new DAO.Costumer(this.context);
         }
 
         [Route("api/costumer")]

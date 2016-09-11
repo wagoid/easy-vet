@@ -170,6 +170,7 @@
     <Compile Include="DAO\Costumer.cs" />
     <Compile Include="DAO\Dog.cs" />
     <Compile Include="DAO\Generic\Base.cs" />
+    <Compile Include="DAO\Sale.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -195,9 +196,13 @@
     <Compile Include="Migrations\201609100244275_UpdateAppointmentModel.Designer.cs">
       <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201609102122210_AddCostumerRefToSale.cs" />
-    <Compile Include="Migrations\201609102122210_AddCostumerRefToSale.Designer.cs">
-      <DependentUpon>201609102122210_AddCostumerRefToSale.cs</DependentUpon>
+    <Compile Include="Migrations\201609110118011_AddAmountSaleProduct.cs" />
+    <Compile Include="Migrations\201609110118011_AddAmountSaleProduct.Designer.cs">
+      <DependentUpon>201609110118011_AddAmountSaleProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609110334164_getterSale.cs" />
+    <Compile Include="Migrations\201609110334164_getterSale.Designer.cs">
+      <DependentUpon>201609110334164_getterSale.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
@@ -253,8 +258,11 @@
     <EmbeddedResource Include="Migrations\201609100244275_UpdateAppointmentModel.resx">
       <DependentUpon>201609100244275_UpdateAppointmentModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609102122210_AddCostumerRefToSale.resx">
-      <DependentUpon>201609102122210_AddCostumerRefToSale.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609110118011_AddAmountSaleProduct.resx">
+      <DependentUpon>201609110118011_AddAmountSaleProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609110334164_getterSale.resx">
+      <DependentUpon>201609110334164_getterSale.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -9,7 +9,10 @@ namespace EasyVet.Models
     public class SaleProduct : BaseEntity
     {
         [Required]
+        public int Amount { get; set; }
+        [Required]
         public Product Product { get; set; }
+        
         [Required]
         public Sale Sale { get; set; }
     }

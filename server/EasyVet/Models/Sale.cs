@@ -11,12 +11,11 @@ namespace EasyVet.Models
         public decimal Value { get; set; }
 
         [Required]
-        public Payment Payment;
+        public Payment Payment { get; set; }
         [Required]
-        public Costumer Costumer;
+        public Costumer Costumer { get; set; }
 
         //Properties will be inserted into the objet manually
-        [NotMapped]
-        public ICollection<SaleProduct> SaleProducts { get; set; }
+        public List<SaleProduct> SaleProducts { get; set; }
     }
 }

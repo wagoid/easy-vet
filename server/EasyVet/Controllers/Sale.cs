@@ -11,37 +11,37 @@ namespace EasyVet.Controllers
 {
     public class Sale : Generic.Base
     {
-        public string EncodePassword { get; private set; }
+        private DAO.Sale sale;
 
         public Sale()
             : base()
         {
-
+            sale = new DAO.Sale(this.context);
         }
 
-        public Sale(DAO.Interfaces.VetContext vetContext)
-            : base(vetContext)
+        public Sale(DAO.Interfaces.VetContext context)
+            : base(context)
         {
-
+            sale = new DAO.Sale(this.context);
         }
 
         #region SaleProducts HTTP methods
 
-        [Route("api/sales/{id}")]
+        [Route("api/sale/{id}")]
         [HttpGet]
         public Response<Models.Sale> Product(int id)
         {
             return this.safelyRespond<Models.Sale>(() => getFirstOrDefault(this.context.Sales, id));
         }
 
-        [Route("api/sales")]
+        [Route("api/sale")]
         [HttpPost]
         public Response<Models.Sale> PostSale([FromBody]Models.Sale sale)
         {
-            return this.safelyRespond<Models.Sale>(() => post(this.context.Sales, sale));
+            return this.safelyRespond<Models.Sale>(() => this.sale.Insert(sale));
         }
 
-        [Route("api/sales")]
+        [Route("api/sale")]
         [HttpPut]
         public Response<bool> put([FromBody]Models.Sale sale)
         {
@@ -53,7 +53,7 @@ namespace EasyVet.Controllers
             });
         }
 
-        [Route("api/sales/{id}")]
+        [Route("api/sale/{id}")]
         [HttpPut]
         public Response<bool> delete(int id)
         {
@@ -64,39 +64,32 @@ namespace EasyVet.Controllers
 
         #region All sales Types HTTP methods
 
-        [Route("api/sales/all")]
+        [Route("api/sale")]
         [HttpGet]
-        public Response<IList<Object>> All()
+        public Response<List<Models.Sale>> All()
         {
-            return safelyRespond<IList<Object>>(() =>
-            {
-                var Sales = new List<Object>();
-
-                Sales.AddRange(getList(context.Sales));
-
-                return Sales;
-            });
+            return safelyRespond(() => sale.List());
         }
 
         #endregion
 
         #region Product HTTP methods
 
-        [Route("api/product/{id}")]
+        [Route("api/sale/product/{id}")]
         [HttpGet]
         public Response<Models.Product> product(int id)
         {
             return this.safelyRespond<Models.Product>(() => getFirstOrDefault(this.context.Products, id));
         }
 
-        [Route("api/product")]
+        [Route("api/sale/product")]
         [HttpPost]
         public Response<Models.Product> PostProduct([FromBody]Models.Product product)
         {
             return this.safelyRespond<Models.Product>(() => post(this.context.Products, product));
         }
 
-        [Route("api/product")]
+        [Route("api/sale/product")]
         [HttpPut]
         public Response<bool> put([FromBody]Models.Product product)
         {
@@ -108,7 +101,7 @@ namespace EasyVet.Controllers
             });
         }
 
-        [Route("api/product/{id}")]
+        [Route("api/sale/product/{id}")]
         [HttpPut]
         public Response<bool> DeleteProduct(int id)
         {
@@ -119,18 +112,11 @@ namespace EasyVet.Controllers
 
         #region All product Types HTTP methods
 
-        [Route("api/product/all")]
+        [Route("api/sale/product")]
         [HttpGet]
-        public Response<IList<Object>> AllProducts()
+        public Response<List<Models.Product>> AllProducts()
         {
-            return safelyRespond<IList<Object>>(() =>
-            {
-                var products = new List<Object>();
-
-                products.AddRange(getList(context.Products));
-
-                return products;
-            });
+            return safelyRespond(() => getList(context.Products));
         }
 
         #endregion

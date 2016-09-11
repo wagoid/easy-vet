@@ -7,13 +7,13 @@ namespace EasyVet.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddCostumerRefToSale : IMigrationMetadata
+    public sealed partial class AddAmountSaleProduct : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCostumerRefToSale));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddAmountSaleProduct));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609102122210_AddCostumerRefToSale"; }
+            get { return "201609110118011_AddAmountSaleProduct"; }
         }
         
         string IMigrationMetadata.Source

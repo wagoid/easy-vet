@@ -11,11 +11,11 @@ export default function reducer(state = defaultState, action = {}) {
 
 	switch (type) {
 		case actions.FETCH_SALES_SUCCESS:
-			newState.sales = payload.sales;
+			newState = { ...state, sales: action.payload.sales }
 			break;
 
 		case actions.CREATE_SALE_SUCCESS:
-			newState.sales = [ ...state.sales, payload.sale];
+			newState = { ...state, sales: [ ...state.sales, payload.sale] };
 			break;
 
 		default:

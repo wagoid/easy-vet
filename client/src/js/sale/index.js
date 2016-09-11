@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { userType, dateFormat } from '../helpers/valueDecode';
+import { userType, dateFormat, paymentMethod, paymentStatus } from '../helpers/valueDecode';
 import { floatingActionStyles } from '../helpers/util';
 
 import SaleCard from './SaleCard';
@@ -46,6 +46,8 @@ class SaleList extends Component {
 		};
 		//TODO: add value masks for enums
 		let valueMasks = {
+			Method: { func: paymentMethod },
+			Status: { func: paymentStatus }
 		}
 
 		const saleCards = this.props.sales.map((sale) => {

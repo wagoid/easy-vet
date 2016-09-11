@@ -1,6 +1,9 @@
 import * as actions from './actions';
 
-export default function reducer(state = {}, action = {}) {
+let defaultState = {
+	costumers: []
+}
+export default function reducer(state = defaultState, action = {}) {
 	const { type, payload } = action;
 	let newState = state;
 

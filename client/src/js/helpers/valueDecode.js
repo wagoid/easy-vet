@@ -35,5 +35,13 @@ export const ANIMAL_TYPES = {
 	0: 'Dog',
 };
 
+export function paymentMethod(value) {
+	return PAYMENT_METHOD[value];
+}
+
+export function paymentStatus(value) {
+	return PAYMENT_STATUS[value];
+}
+
 export const PAYMENT_METHOD = ['Card', 'Money', 'Check'];
 export const PAYMENT_STATUS = ['Pending', 'Paid'];

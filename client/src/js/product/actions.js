@@ -31,8 +31,10 @@ export const CREATE_PRODUCT = 'product/CREATE';
 export const CREATE_PRODUCT_SUCCESS = 'product/CREATE_SUCCESS';
 function productSaveSuccess(product) {
 	let actionToUse = product.Id > 0? UPDATE_PRODUCT_SUCCESS : CREATE_PRODUCT_SUCCESS;
-	return productId => {
-		product.Id = productId;
+	return product => {
+		if (actionToUse === CREATE_PRODUCT_SUCCESS) {
+			product.Id = product.Id;
+		}
 		return {
 			type: actionToUse,
 			payload: {
@@ -66,10 +68,10 @@ const REMOVE_PRODUCT = 'product/REMOVE';
 const REMOVE_PRODUCT_SUCCESS = 'product/REMOVE_SUCCESS';
 const REMOVE_PRODUCT_FAILURE = 'product/REMOVE_FAILURE';
 
-export function fetchproducts() {
+export function fetchProducts() {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
-			params: { method: 'get', url: `${urls.api}/product/all`},
+			params: { method: 'get', url: `${urls.api}/sale/product`},
 			businessErrorActions: [openMessageView, productsError],
 			fetchErrorActions: [openMessageView, productsError],
 			successActions: [productsSuccess]
@@ -85,7 +87,7 @@ export function createProduct(product) {
 		};
 		let params = {
 			method:  product.Id > 0? 'put' : 'post',
-			url: `${urls.api}/product`,
+			url: `${urls.api}/sale/product`,
 			data: JSON.stringify(product)
 		};
 		return genericFetch(dispatch, {

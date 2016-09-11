@@ -12,6 +12,7 @@ namespace EasyVet.DAO.Interfaces
     {
         int SaveChanges();
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
+        Database Database { get; }
 
         IDbSet<Models.Address> Addresses { get; set; }
         IDbSet<Models.User> Users { get; set; }
