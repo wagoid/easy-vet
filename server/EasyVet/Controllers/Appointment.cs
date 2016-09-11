@@ -11,8 +11,9 @@ using EasyVet.Models;
 
 namespace EasyVet.Controllers
 {
-    public class Appointment : Base, Interfaces.Crud<Models.Appointment>
+    public class Appointment : Generic.Base
     {
+        private DAO.Appointment appointment;
         public Appointment()
             : base()
         {
@@ -26,52 +27,34 @@ namespace EasyVet.Controllers
 
         [Route("api/appointment")]
         [HttpGet]
-        public Response<IList<Models.Appointment>> Get()
+        public Response<List<Models.Appointment>> Get()
         {
-
-            return this.safelyRespond<IList<Models.Appointment>>(() =>
-            {
-                return this.context.Appointments
-                    .Include(v => v.Costumer)
-                    .Include(a => a.Animal)
-                    .ToList();
-            });
+            return safelyRespond(() => appointment.List());
         }
 
         [Route("api/appointment/{id}")]
         [HttpGet]
         public Response<Models.Appointment> Get(int id)
         {
-            return this.safelyRespond<Models.Appointment>(() =>
-            {
-                return this.context.Appointments
-                    .Include(v => v.Costumer)
-                    .Include(a => a.Animal)                    
-                    .FirstOrDefault(v => v.Id == id);
-            });
+            return safelyRespond(() => appointment.FindById(id));
         }
 
-        [Route("api/appointment/")]
+        [Route("api/appointment")]
         [HttpPost]
         public Response<Models.Appointment> Post([FromBody]Models.Appointment appointment)
         {
-            return this.safelyRespond<Models.Appointment>(() =>
-            {
-                this.context.Appointments.Add(appointment);
-                this.context.SaveChanges();
-                return appointment;
-            });
+            return safelyRespond(() => this.appointment.Insert(appointment));
         }
 
         [Route("api/appointment")]
         [HttpPut]
-        public Response<int> Put([FromBody]Models.Appointment appointment)
+        public Response<bool> Put([FromBody]Models.Appointment appointment)
         {
-            return this.safelyRespond<int>(() =>
+            return this.safelyRespond<bool>(() =>
             {
-                this.context.Appointments.Attach(appointment);
-                this.context.SaveChanges();
-                return appointment.Id;
+                var appointmentFromBd = context.Appointments.FirstOrDefault(app => app.Id == appointment.Id);
+                throwEntityNotFoundWhenNull(appointmentFromBd, appointment.Id);
+                return put(appointmentFromBd, appointment);
             });
         }
 
@@ -79,31 +62,13 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> Delete(int id)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var Appointment = this.context.Appointments.FirstOrDefault(v => v.Id == id);
-
-                if (Appointment == null)
-                    throw new Helpers.Exceptions.EntityNotFoundException(String.Format("The Appointment with Id {0} was not found", id));
-
-                this.context.Appointments.Remove(Appointment);
-                this.context.SaveChanges();
-                return true;
-            });
+            return safelyRespond<bool>(() => this.appointment.Delete(id));
         }
         [Route("api/appointment/fromveterinay/{id}")]
         [HttpGet]
         public Response<List<Models.Appointment>> GetVeterinaryAppoitment(int id)
         {
-            return this.safelyRespond<List<Models.Appointment>>(() =>
-            {
-                return this.context.Appointments
-                    .Include(v => v.Costumer)
-                    .Include(a => a.Animal)
-                    .Include(a => a.Veterinary)
-                    .Where(a => a.Veterinary.Id == id)
-                    .ToList();               
-            });
+            return safelyRespond(() => appointment.GetVeterinaryAppoitment(id));
         }
 
     }
