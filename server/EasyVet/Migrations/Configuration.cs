@@ -20,7 +20,7 @@ namespace EasyVet.Migrations
             {
                 var address = new Address() { StreetName = "Rua dos bobos", Municipality = "Belo Horizonte", Neighbourhood = "Mantiqueira", State = "Minas Gerais", Number = 0, StreetType = "Rua", ZipCode = "31655-155" };
                 context.Addresses.Add(address);
-                var veterinary = new Veterinary() {
+                var veterinary = new Models.Veterinary() {
                     Address = address,
                     BirthDate = DateTime.Now,
                     Cpf = "11769446656",
@@ -32,19 +32,6 @@ namespace EasyVet.Migrations
                     Type = Enumerations.UserType.Veterinary};
                 context.Veterinaries.Add(veterinary);
             }
-           
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }

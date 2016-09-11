@@ -14,15 +14,20 @@ namespace EasyVet.Controllers
     public class Appointment : Generic.Base
     {
         private DAO.Appointment appointment;
+        private DAO.Dog dog;
+
         public Appointment()
             : base()
         {
-
+            appointment = new DAO.Appointment(context);
+            dog = new DAO.Dog(context);
         }
         public Appointment(DAO.Interfaces.VetContext context)
             : base(context)
         {
             this.context = context;
+            appointment = new DAO.Appointment(this.context);
+            dog = new DAO.Dog(this.context);
         }
 
         [Route("api/appointment")]
@@ -50,12 +55,7 @@ namespace EasyVet.Controllers
         [HttpPut]
         public Response<bool> Put([FromBody]Models.Appointment appointment)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var appointmentFromBd = context.Appointments.FirstOrDefault(app => app.Id == appointment.Id);
-                throwEntityNotFoundWhenNull(appointmentFromBd, appointment.Id);
-                return put(appointmentFromBd, appointment);
-            });
+            return safelyRespond<bool>(() => this.appointment.Update(appointment));
         }
 
         [Route("api/appointment/{id}")]
@@ -64,11 +64,25 @@ namespace EasyVet.Controllers
         {
             return safelyRespond<bool>(() => this.appointment.Delete(id));
         }
+
         [Route("api/appointment/fromveterinay/{id}")]
         [HttpGet]
-        public Response<List<Models.Appointment>> GetVeterinaryAppoitment(int id)
+        public Response<List<Models.Appointment>> GetVeterinaryAppoitments(int id)
         {
-            return safelyRespond(() => appointment.GetVeterinaryAppoitment(id));
+            return safelyRespond(() => appointment.GetVeterinaryAppoitments(id));
+        }
+
+        [Route("api/appointment/animal/fromcostumer/{id}")]
+        [HttpGet]
+        public Response<List<Object>> GetCostumerAnimals(int id)
+        {
+            return safelyRespond(() => {
+                var animals = new List<Object>();
+
+                animals.AddRange(dog.ListFromCostumerId(id));
+
+                return animals;
+            });
         }
 
     }

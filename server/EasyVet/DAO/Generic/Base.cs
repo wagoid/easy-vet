@@ -36,11 +36,11 @@ namespace EasyVet.DAO.Generic
                 .FirstOrDefault(entity => entity.Id == id);
         }
 
-        protected int post<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : BaseEntity
+        protected TEntity post<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : BaseEntity
         {
             entityDbSet.Add(entity);
             context.SaveChanges();
-            return entity.Id;
+            return entity;
         }
 
         protected bool put<TEntity>(TEntity entityFromBd, TEntity entity) where TEntity : BaseEntity

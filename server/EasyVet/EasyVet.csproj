@@ -157,21 +157,24 @@
   <ItemGroup>
     <Compile Include="App_Start\AuthenticationHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\Animal.cs" />
     <Compile Include="Controllers\Appointment.cs" />
     <Compile Include="Controllers\Authentication.cs" />
-    <Compile Include="Controllers\Address.cs" />
     <Compile Include="Controllers\Costumer.cs" />
     <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
-    <Compile Include="Controllers\Generic\User.cs" />
     <Compile Include="Controllers\Interfaces\Crud.cs" />
     <Compile Include="Controllers\Sale.cs" />
     <Compile Include="DAO\Appointment.cs" />
+    <Compile Include="DAO\Cashier.cs" />
     <Compile Include="DAO\Costumer.cs" />
     <Compile Include="DAO\Dog.cs" />
+    <Compile Include="DAO\Employee.cs" />
     <Compile Include="DAO\Generic\Base.cs" />
+    <Compile Include="DAO\Generic\Employee.cs" />
+    <Compile Include="DAO\Product.cs" />
     <Compile Include="DAO\Sale.cs" />
+    <Compile Include="DAO\SalesPerson.cs" />
+    <Compile Include="DAO\Veterinary.cs" />
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

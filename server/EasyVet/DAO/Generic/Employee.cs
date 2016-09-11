@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace EasyVet.Controllers.Generic
+namespace EasyVet.DAO.Generic
 {
-    public class User : Base
+    public class Employee : Base
     {
-        public User() : base()
+        public Employee() : base()
         {
 
         }
-        public User(DAO.Interfaces.VetContext vetContext) : base(vetContext) {
+        public Employee(Interfaces.VetContext vetContext) : base(vetContext)
+        {
 
         }
         protected List<TEntity> getEmployeeList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : Models.Employee
@@ -26,26 +27,20 @@ namespace EasyVet.Controllers.Generic
                 .Include(entity => entity.Address)
                 .FirstOrDefault();
         }
-        protected int postEmployee<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : Models.Employee
+        protected TEntity postEmployee<TEntity>(IDbSet<TEntity> entityDbSet, TEntity entity) where TEntity : Models.Employee
         {
             entityDbSet.Add(entity);
             context.SaveChanges();
-            return entity.Id;
+            return entity;
         }
 
-        protected bool putEmployee<TEntity>(TEntity entityFromBd, TEntity entity) where TEntity : Models.Employee
+        protected bool putEmployee<TEntity>(IDbSet<TEntity> collection, TEntity entity) where TEntity : Models.Employee
         {
+            var entityFromBd = collection.FirstOrDefault(d => d.Id == entity.Id);
+            throwEntityNotFoundWhenNull(entityFromBd, entity.Id);
+            updatePasswordWhenChanged(entityFromBd, entity);
             context.Entry(entityFromBd).CurrentValues.SetValues(entity);
             context.Entry(entityFromBd).State = EntityState.Modified;
-            context.SaveChanges();
-            return true;
-        }
-        protected bool deleteEmployee<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Employee
-        {
-            var entity = entityDbSet.FirstOrDefault(e => e.Id == id);
-            throwEntityNotFoundWhenNull(entity, id);
-
-            entityDbSet.Remove(entity);
             context.SaveChanges();
             return true;
         }
@@ -57,18 +52,6 @@ namespace EasyVet.Controllers.Generic
                 entityFromClient.Password = newPassword;
             else
                 entityFromClient.Password = entityFromBd.Password;
-        }
-
-        protected List<TEntity> getProductList<TEntity>(IDbSet<TEntity> entityDbSet) where TEntity : Models.Product
-        {
-            return entityDbSet
-                    .ToList();
-        }
-
-        protected TEntity getProductFirstOrDefault<TEntity>(IDbSet<TEntity> entityDbSet, int id) where TEntity : Models.Product
-        {
-            return entityDbSet
-                .FirstOrDefault();
         }
     }
 }

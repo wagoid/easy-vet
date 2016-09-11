@@ -37,7 +37,7 @@ namespace EasyVet.DAO
             return getFirstOrDefault(this.context.Dogs, id);
         }
 
-        public int Insert(Models.Dog dog)
+        public Models.Dog Insert(Models.Dog dog)
         {
             return post(this.context.Dogs, dog);
         }

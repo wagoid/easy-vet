@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { FloatingActionButton, Paper, Divider } from 'material-ui';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import FilterList from 'material-ui/svg-icons/content/filter-list';
 import moment from 'moment';
-import events from './events';
 import { dateFormat } from '../helpers/valueDecode';
 import getStyles from './styles';
 import { weekDaysFromStart, dayHoursFromMidNight } from '../helpers/util';
@@ -23,18 +23,20 @@ class AppointmentCalendar extends Component {
 			start: moment()
 		}
 		this.actions = bindActionCreators({ ...AppointmentActions, setAdditionalFloatingActions }, this.props.dispatch);
+		this.openFilterDialog = this.openFilterDialog.bind(this);
 		this.handleEventClick = this.handleEventClick.bind(this);
 	}
 
 	handleEventClick(event, appointment) {
-		console.log(appointment);
-		alert(`${appointment.Name}\n${appointment.Description}`);
 		//Dont let the event bubble to handleCellClick;
 		event.stopPropagation();
+		console.log(appointment);
+		alert(`${appointment.Name}\n${appointment.Description}`);
 	}
 
 	handleCellClick(day) {
-		console.log(day);
+		let newLocation =  { ...this.props.location, pathname: '/appointment/form' , state: { day } };
+		this.context.router.push(newLocation)
 	}
 
 	componentDidMount() {
@@ -43,9 +45,9 @@ class AppointmentCalendar extends Component {
 		}
 
 		let styles = getStyles();
-		let nextWeekAction = (
-			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, 1)} key='appointmentNextWeekAction' style={styles.nextWeekAction} secondary={true}>
-					<ArrowForward />
+		let filterAppointmentsAction = (
+			<FloatingActionButton onTouchTap={this.openFilterDialog} key='appointmentFilterAction' style={styles.filterAppointments} secondary={true}>
+					<FilterList />
 			</FloatingActionButton>
 		);
 		let previousWeekAction = (
@@ -53,11 +55,21 @@ class AppointmentCalendar extends Component {
 					<ArrowBack />
 			</FloatingActionButton>
 		);
-		this.actions.setAdditionalFloatingActions([previousWeekAction, nextWeekAction]);
+		let nextWeekAction = (
+			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, 1)} key='appointmentNextWeekAction' style={styles.nextWeekAction} secondary={true}>
+					<ArrowForward />
+			</FloatingActionButton>
+		);
+		
+		this.actions.setAdditionalFloatingActions([filterAppointmentsAction, previousWeekAction, nextWeekAction]);
 	}
 
 	addWeeksToStartDate(weeks) {
 		this.setState({ start: this.state.start.add(weeks, 'week') })
+	}
+
+	openFilterDialog() {
+
 	}
 
 	componentWillUnmount() {

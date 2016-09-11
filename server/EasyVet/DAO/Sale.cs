@@ -39,26 +39,24 @@ namespace EasyVet.DAO
 
         public Models.Sale Insert(Models.Sale sale)
         {
-
-            var payment = sale.Payment;
-            payment.Date = DateTime.Now;
-            this.context.Payments.Add(payment);
+            this.context.Payments.Add(sale.Payment);
             this.context.SaveChanges();
-            //sale.Payment = this.context.Payments.SingleOrDefault(p => p.Id == payment.Id);
-
-
-            //context.Entry(sale.Payment).State = EntityState.Unchanged;
-            //context.Entry(sale).State = EntityState.Added;
-            //this.context.Sales.Add(sale);
-            //this.context.SaveChanges();
+            
             foreach (var saleProduct in sale.SaleProducts)
             {
                 saleProduct.Sale = sale;
                 this.context.SaleProducts.Add(saleProduct);
             }
             this.context.SaveChanges();
-            sale.SaleProducts.ForEach(sp => sp.Sale = null);
             return sale;
+        }
+
+        public bool Update(Models.Sale sale)
+        {
+            var saleFromBd = context.Sales.FirstOrDefault(s => s.Id == sale.Id);
+            throwEntityNotFoundWhenNull(saleFromBd, sale.Id);
+            put(saleFromBd, sale);
+            return true;
         }
 
         public bool Delete(int id)

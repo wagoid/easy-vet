@@ -18,6 +18,5 @@ namespace EasyVet.Models
         public Costumer Costumer { get; set; }
         [Required]
         public Animal Animal { get; set; }
-
     }
 }

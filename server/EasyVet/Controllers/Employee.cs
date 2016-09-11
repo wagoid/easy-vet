@@ -9,61 +9,65 @@ using System.Data.Entity;
 
 namespace EasyVet.Controllers
 {
-    public class Employee : Generic.User
+    public class Employee : Generic.Base
     {
-        public string EncodePassword { get; private set; }
+        private DAO.Cashier cashier;
+        private DAO.SalesPerson salesPerson;
+        private DAO.Veterinary veterinary;
 
+        //As long as there is no use case for Employees,
+        //and no use case mentioning employee management (like creation and deletion) whatsoever,
+        //for now we are using an Employee Controller
         public Employee() : base()
         {
-
+            cashier = new DAO.Cashier(context);
+            salesPerson = new DAO.SalesPerson(context);
+            veterinary = new DAO.Veterinary(context);
         }
 
-        public Employee(DAO.Interfaces.VetContext vetContext) : base(vetContext) {
-
+        public Employee(DAO.Interfaces.VetContext context) : base(context)
+        {
+            this.context = context;
+            cashier = new DAO.Cashier(context);
+            salesPerson = new DAO.SalesPerson(context);
+            veterinary = new DAO.Veterinary(context);
         }
 
         #region Veterinary HTTP methods 
 
         [Route("api/employee/veterinary")]
         [HttpGet]
-        public Response<IList<Models.Veterinary>> Veterinaries()
+        public Response<List<Models.Veterinary>> Veterinaries()
         {
-            return this.safelyRespond<IList<Models.Veterinary>>(() => getEmployeeList(context.Veterinaries));
+            return safelyRespond(() => veterinary.List());
         }
 
         [Route("api/employee/veterinary/{id}")]
         [HttpGet]
         public Response<Models.Veterinary> Veterinary(int id)
         {
-            return this.safelyRespond<Models.Veterinary>(() => getEmployeeFirstOrDefault(this.context.Veterinaries, id));
+            return safelyRespond(() => veterinary.FindById(id));
         }
 
         [Route("api/employee/veterinary")]
         [HttpPost]
-        public Response<int> PostVeterinary([FromBody]Models.Veterinary veterinary)
+        public Response<Models.Veterinary> PostVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            veterinary.Password = Encoder.Encode(veterinary.Password);
-            return this.safelyRespond<int>(() => postEmployee(context.Veterinaries, veterinary));
+            return safelyRespond(() => this.veterinary.Insert(veterinary));
         }
 
         [Route("api/employee/veterinary")]
         [HttpPut]
         public Response<bool> PutVeterinary([FromBody]Models.Veterinary veterinary)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var veterinaryFromBd = context.Veterinaries.FirstOrDefault(person => person.Id == veterinary.Id);
-                throwEntityNotFoundWhenNull(veterinaryFromBd, veterinary.Id);
-                updatePasswordWhenChanged(veterinaryFromBd, veterinary);
-                return putEmployee(veterinaryFromBd, veterinary);
-            });
+            return safelyRespond(() => this.veterinary.Update(veterinary));
         }
 
         [Route("api/employee/veterinary/{id}")]
         [HttpPut]
         public Response<bool> DeleteVeterinary(int id)
         {
-            return this.safelyRespond<bool>(() => deleteEmployee(context.Veterinaries, id));
+            return safelyRespond<bool>(() => veterinary.Delete(id));
         }
 
         #endregion
@@ -72,44 +76,37 @@ namespace EasyVet.Controllers
 
         [Route("api/employee/cashier")]
         [HttpGet]
-        public Response<IList<Models.Cashier>> Cashiers()
+        public Response<List<Models.Cashier>> Cashiers()
         {
-            return this.safelyRespond<IList<Models.Cashier>>(() => getEmployeeList(context.Cashiers));
+            return this.safelyRespond(() => cashier.List());
         }
 
         [Route("api/employee/cashier/{id}")]
         [HttpGet]
         public Response<Models.Cashier> Cashier(int id)
         {
-            return this.safelyRespond<Models.Cashier>(() => getEmployeeFirstOrDefault(this.context.Cashiers, id));
+            return safelyRespond(() => cashier.FindById(id));
         }
 
         [Route("api/employee/cashier")]
         [HttpPost]
-        public Response<int> PostCashier([FromBody]Models.Cashier cashier)
+        public Response<Models.Cashier> PostCashier([FromBody]Models.Cashier cashier)
         {
-            cashier.Password = Encoder.Encode(cashier.Password);
-            return this.safelyRespond<int>(() => postEmployee(context.Cashiers, cashier));
+            return safelyRespond(() => this.cashier.Insert(cashier));
         }
 
         [Route("api/employee/cashier")]
         [HttpPut]
         public Response<bool> PutCashier([FromBody]Models.Cashier cashier)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var cashierFromBd = context.Cashiers.FirstOrDefault(person => person.Id == cashier.Id);
-                throwEntityNotFoundWhenNull(cashierFromBd, cashier.Id);
-                updatePasswordWhenChanged(cashierFromBd, cashier);
-                return putEmployee(cashierFromBd, cashier);
-            });
+            return safelyRespond<bool>(() => this.cashier.Update(cashier));
         }
 
         [Route("api/employee/Cashier/{id}")]
         [HttpPut]
         public Response<bool> DeleteCashier(int id)
         {
-            return this.safelyRespond<bool>(() => deleteEmployee(context.Cashiers, id));
+            return safelyRespond(() => cashier.Delete(id));
         }
 
         #endregion
@@ -118,44 +115,37 @@ namespace EasyVet.Controllers
 
         [Route("api/employee/salesperson")]
         [HttpGet]
-        public Response<IList<Models.SalesPerson>> SalesPeople()
+        public Response<List<Models.SalesPerson>> SalesPeople()
         {
-            return this.safelyRespond<IList<Models.SalesPerson>>(() => getEmployeeList(context.SalesPeople));
+            return safelyRespond(() => salesPerson.List());
         }
 
         [Route("api/employee/salesperson/{id}")]
         [HttpGet]
         public Response<Models.SalesPerson> SalesPerson(int id)
         {
-            return this.safelyRespond<Models.SalesPerson>(() => getEmployeeFirstOrDefault(this.context.SalesPeople, id));
+            return safelyRespond(() => salesPerson.FindById(id));
         }
 
         [Route("api/employee/salesperson")]
         [HttpPost]
-        public Response<int> PostSalesPerson([FromBody]Models.SalesPerson salesperson)
+        public Response<Models.SalesPerson> PostSalesPerson([FromBody]Models.SalesPerson salesPerson)
         {
-            salesperson.Password = Encoder.Encode(salesperson.Password);
-            return this.safelyRespond<int>(() => postEmployee(context.SalesPeople, salesperson));
+            return safelyRespond(() => this.salesPerson.Insert(salesPerson));
         }
 
         [Route("api/employee/salesperson")]
         [HttpPut]
         public Response<bool> PutSalesPerson([FromBody]Models.SalesPerson salesPerson)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var salesPersonFromBd = context.SalesPeople.FirstOrDefault(person => person.Id == salesPerson.Id);
-                throwEntityNotFoundWhenNull(salesPersonFromBd, salesPerson.Id);
-                updatePasswordWhenChanged(salesPersonFromBd, salesPerson);
-                return putEmployee(salesPersonFromBd, salesPerson);
-            });
+            return safelyRespond(() => this.salesPerson.Update(salesPerson));
         }
 
         [Route("api/employee/salesperson/{id}")]
         [HttpPut]
         public Response<bool> DeleteSalesPerson(int id)
         {
-            return this.safelyRespond<bool>(() => deleteEmployee(context.SalesPeople, id));
+            return safelyRespond(() => salesPerson.Delete(id));
         }
 
         #endregion
@@ -170,9 +160,9 @@ namespace EasyVet.Controllers
               {
                   var employees = new List<Object>();
 
-                  employees.AddRange(getEmployeeList(context.Cashiers));
-                  employees.AddRange(getEmployeeList(context.SalesPeople));
-                  employees.AddRange(getEmployeeList(context.Veterinaries));
+                  employees.AddRange(cashier.List());
+                  employees.AddRange(salesPerson.List());
+                  employees.AddRange(veterinary.List());
 
                   return employees;
               });

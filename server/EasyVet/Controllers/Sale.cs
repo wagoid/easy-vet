@@ -12,17 +12,20 @@ namespace EasyVet.Controllers
     public class Sale : Generic.Base
     {
         private DAO.Sale sale;
+        private DAO.Product product;
 
         public Sale()
             : base()
         {
-            sale = new DAO.Sale(this.context);
+            sale = new DAO.Sale(context);
+            product = new DAO.Product(context);
         }
 
         public Sale(DAO.Interfaces.VetContext context)
             : base(context)
         {
             sale = new DAO.Sale(this.context);
+            product = new DAO.Product(this.context);
         }
 
         #region SaleProducts HTTP methods
@@ -31,33 +34,33 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<Models.Sale> Product(int id)
         {
-            return this.safelyRespond<Models.Sale>(() => getFirstOrDefault(this.context.Sales, id));
+            return safelyRespond(() => sale.FindById(id));
         }
 
         [Route("api/sale")]
         [HttpPost]
         public Response<Models.Sale> PostSale([FromBody]Models.Sale sale)
         {
-            return this.safelyRespond<Models.Sale>(() => this.sale.Insert(sale));
+            return this.safelyRespond<Models.Sale>(() => {
+                sale.Payment.Date = DateTime.Now;
+                //Reset the references to Sale to remove the circular references so we can serialize it as JSON
+                sale.SaleProducts.ForEach(sp => sp.Sale = null);
+                return this.sale.Insert(sale);
+            });
         }
 
         [Route("api/sale")]
         [HttpPut]
         public Response<bool> put([FromBody]Models.Sale sale)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var productFromBd = context.Sales.FirstOrDefault(person => person.Id == sale.Id);
-                throwEntityNotFoundWhenNull(productFromBd, sale.Id);
-                return put(productFromBd, sale);
-            });
+            return safelyRespond(() => this.sale.Update(sale));
         }
 
         [Route("api/sale/{id}")]
         [HttpPut]
         public Response<bool> delete(int id)
         {
-            return this.safelyRespond<bool>(() => delete(context.Sales, id));
+            return safelyRespond(() => sale.Delete(id));
         }
 
         #endregion
@@ -77,35 +80,30 @@ namespace EasyVet.Controllers
 
         [Route("api/sale/product/{id}")]
         [HttpGet]
-        public Response<Models.Product> product(int id)
+        public Response<Models.Product> ProductById(int id)
         {
-            return this.safelyRespond<Models.Product>(() => getFirstOrDefault(this.context.Products, id));
+            return safelyRespond(() => product.FindById(id));
         }
 
         [Route("api/sale/product")]
         [HttpPost]
         public Response<Models.Product> PostProduct([FromBody]Models.Product product)
         {
-            return this.safelyRespond<Models.Product>(() => post(this.context.Products, product));
+            return safelyRespond(() => this.product.Insert(product));
         }
 
         [Route("api/sale/product")]
         [HttpPut]
-        public Response<bool> put([FromBody]Models.Product product)
+        public Response<bool> PutProduct([FromBody]Models.Product product)
         {
-            return this.safelyRespond<bool>(() =>
-            {
-                var productFromBd = context.Products.FirstOrDefault(person => person.Id == product.Id);
-                throwEntityNotFoundWhenNull(productFromBd, product.Id);
-                return put(productFromBd, product);
-            });
+            return safelyRespond(() => this.product.Update(product));
         }
 
         [Route("api/sale/product/{id}")]
-        [HttpPut]
+        [HttpDelete]
         public Response<bool> DeleteProduct(int id)
         {
-            return this.safelyRespond<bool>(() => delete(context.Products, id));
+            return safelyRespond(() => product.Delete(id));
         }
 
         #endregion
@@ -116,7 +114,7 @@ namespace EasyVet.Controllers
         [HttpGet]
         public Response<List<Models.Product>> AllProducts()
         {
-            return safelyRespond(() => getList(context.Products));
+            return safelyRespond(() => product.List());
         }
 
         #endregion
