@@ -149,7 +149,7 @@ class SaleForm extends Component {
 	}
 
 	getTotalSaleCost(SaleProducts) {
-		return SaleProducts.reduce((accumulated, saleProduct) => accumulated + saleProduct.Product.Price * saleProduct.amount, 0);
+		return SaleProducts.reduce((accumulated, saleProduct) => accumulated + saleProduct.product.Price * saleProduct.amount, 0);
 	}
 
 	render() {

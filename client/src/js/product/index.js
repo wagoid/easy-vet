@@ -20,7 +20,7 @@ class ProductList extends Component {
 
 	componentDidMount() {
 		if (!this.props.products.length) {
-			this.actions.fetchproducts();
+			this.actions.fetchProducts();
 		}
 	}
 

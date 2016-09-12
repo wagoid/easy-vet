@@ -39,9 +39,9 @@ namespace EasyVet.Tests.Controllers
             var response = controller.All();
 
             assertAllResponsePropertiesAreNull<IList<Object>, Object>(controller.All());
-            assertAllResponsePropertiesAreNull<IList<Veterinary>, Veterinary>(controller.Veterinaries());
-            assertAllResponsePropertiesAreNull<IList<Cashier>, Cashier>(controller.Cashiers());
-            assertAllResponsePropertiesAreNull<IList<SalesPerson>, SalesPerson>(controller.SalesPeople());
+            assertAllResponsePropertiesAreNull<List<Veterinary>, Veterinary>(controller.Veterinaries());
+            assertAllResponsePropertiesAreNull<List<Cashier>, Cashier>(controller.Cashiers());
+            assertAllResponsePropertiesAreNull<List<SalesPerson>, SalesPerson>(controller.SalesPeople());
         }
 
         private void assertAllResponsePropertiesAreNull<T, TEntity>(Response<T> response) where T : IList<TEntity>
@@ -71,7 +71,7 @@ namespace EasyVet.Tests.Controllers
             assertGetAllEmployees(context.SalesPeople, new EasyVet.Controllers.Employee(context).SalesPeople);
         }
 
-        private void assertGetAllEmployees<TEntity>(IDbSet<TEntity> collection, Func<Response<IList<TEntity>>> getMethod) where TEntity : Employee, new()
+        private void assertGetAllEmployees<TEntity>(IDbSet<TEntity> collection, Func<Response<List<TEntity>>> getMethod) where TEntity : Employee, new()
         {
             var controller = new EasyVet.Controllers.Employee(context);
 
@@ -182,12 +182,12 @@ namespace EasyVet.Tests.Controllers
         public void EnsurePostCorrectlyAdds()
         {
             var controller = new EasyVet.Controllers.Employee(context);
-            assertPostCorrectlyAdds(context.Veterinaries, controller.PostVeterinary);
-            assertPostCorrectlyAdds(context.Cashiers, controller.PostCashier);
-            assertPostCorrectlyAdds(context.SalesPeople, controller.PostSalesPerson);
+            assertPostCorrectlyAddsVeterinaries(context.Veterinaries, controller.PostVeterinary);
+            assertPostCorrectlyAddsCashiers(context.Cashiers, controller.PostCashier);
+            assertPostCorrectlyAddsSalesPeople(context.SalesPeople, controller.PostSalesPerson);
         }
 
-        private void assertPostCorrectlyAdds<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<int>> postMethod)
+        private void assertPostCorrectlyAddsVeterinaries<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<Models.Veterinary>> postMethod)
             where TEntity : Employee, new()
         {
             var veterinary = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
@@ -200,8 +200,35 @@ namespace EasyVet.Tests.Controllers
             Assert.AreEqual(veterinary.Id, response.Data);
         }
 
+        private void assertPostCorrectlyAddsCashiers<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<Models.Cashier>> postMethod)
+    where TEntity : Employee, new()
+        {
+            var veterinary = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+
+            var response = postMethod(veterinary);
+
+            Assert.IsNull(response.Type);
+            Assert.IsNull(response.Message);
+            Assert.IsNotNull(response.Data);
+            Assert.AreEqual(veterinary.Id, response.Data);
+        }
+
+
+        private void assertPostCorrectlyAddsSalesPeople<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<Models.SalesPerson>> postMethod)
+    where TEntity : Employee, new()
+        {
+            var veterinary = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+
+            var response = postMethod(veterinary);
+
+            Assert.IsNull(response.Type);
+            Assert.IsNull(response.Message);
+            Assert.IsNotNull(response.Data);
+            Assert.AreEqual(veterinary.Id, response.Data);
+        }
+
         [TestMethod]
-        public void EnsurePutUpdatesCorrectly()
+        public void EnsurePutUpdatesCorrectlyEmployee()
         {
             var controller = new EasyVet.Controllers.Employee(context);
             assertPutCorrectlyUpdates(context.Veterinaries, controller.PutVeterinary);
@@ -212,7 +239,7 @@ namespace EasyVet.Tests.Controllers
         private void assertPutCorrectlyUpdates<TEntity>(IDbSet<TEntity> collection, Func<TEntity, Response<bool>> putMethod)
             where TEntity : Employee, new()
         {
-            var dbEntity = new TEntity() { Id = 1, Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+            var dbEntity = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
             collection.Add(dbEntity);
             var entity = new TEntity() { Id= 1, Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "2", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
 
@@ -236,7 +263,7 @@ namespace EasyVet.Tests.Controllers
         private void assertEntityDeletes<TEntity>(IDbSet<TEntity> collection, Func<int, Response<bool>> deleteMethod)
             where TEntity : Employee, new()
         {
-            var entity = new TEntity() { Address = context.Addresses.First(), BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
+            var entity = new TEntity() { BirthDate = DateTime.Now, Cpf = "1", Name = "2", Password = "4", PhoneNumber = "h", Salary = 1500 };
             collection.Add(entity);
             context.SaveChanges();
 
