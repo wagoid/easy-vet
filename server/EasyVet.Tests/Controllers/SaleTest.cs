@@ -27,7 +27,7 @@ namespace EasyVet.Tests.Controllers
 
             var sale = new Sale()
             {
-                Costumer = new Costumer() { Name = "joao Carlos", BirthDate = new DateTime(), Cpf = "0123456789", Email = "teste@teste.teste.br", PhoneNumber = "33441155" },
+                Costumer = new Costumer() { Name = "joao Carlos", BirthDate = DateTime.Now, Cpf = "0123456789", Email = "teste@teste.teste.br", PhoneNumber = "33441155" },
                 Value = 360
             };
 
@@ -55,7 +55,6 @@ namespace EasyVet.Tests.Controllers
             var response = controller.All();
 
             assertAllResponsePropertiesAreNull<IList<Object>, Object>(controller.All());
-
             assertAllResponsePropertiesAreNull<IList<Object>, Object>(controller.All());
             assertAllResponsePropertiesAreNull<IList<Product>, Product>(controller.Product());
         }
@@ -175,7 +174,7 @@ namespace EasyVet.Tests.Controllers
         }
 
         [TestMethod]
-        public void EnsureVeterinaryIsDeleted()
+        public void EnsureSaleIsDeleted()
         {
             var controller = new EasyVet.Controllers.Sale(context);
             assertEntityDeletes(context.Products, controller.DeleteProduct);

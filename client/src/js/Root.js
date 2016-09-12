@@ -18,6 +18,7 @@ import CostumerForm from './costumer/form/CostumerForm';
 import SaleList from './sale';
 import SaleForm from './sale/form/SaleForm';
 import AppointmentCalendar from './appointment';
+import AppointmentForm from './appointment/form/AppointmentForm';
 
 
 //Needed for onTouchTap
@@ -70,6 +71,7 @@ export default class Root extends Component {
 							<Route name="Product" path={getPath('product/form')} component={ProductForm} />
 
 							<Route name="Appointments" path={getPath('appointment')} component={AppointmentCalendar} />
+							<Route name="Appointments" path={getPath('appointment/form')} component={AppointmentForm} />
 
 							<Route name="Just a test Page" path={getPath('*')} component={Home} />
 						</Route>
