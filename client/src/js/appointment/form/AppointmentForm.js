@@ -10,13 +10,10 @@ import getStyles from './styles';
 import { getFieldsValidations } from './validations';
 import * as AppointmentActions from '../actions';
 import { isString, additionalFloatingActionStyles } from '../../helpers/util';
+import CostumerSelect from '../../costumer/CostumerSelect';
 
-let defaultSale = {
-	Costumer: null,
-	Payment: {
-
-	},
-	Value: 0,
+let defaultAppointment = {
+	Costumer: null
 };
 
 class AppointmentForm extends Component {
@@ -33,7 +30,19 @@ class AppointmentForm extends Component {
 		};
 		this.validations = getFieldsValidations();
 		this.saveAppointment = this.saveAppointment.bind(this);
+		this.handleCostumerChange = this.handleCostumerChange.bind(this);
 		this.actions = bindActionCreators(AppointmentActions, this.props.dispatch);
+	}
+
+	componentWillMount() {
+		let locationState = this.props.location.state;
+		if (locationState && locationState.appointmentId && locationState.inViewMode) {
+			let appointments = this.props.appointments || [];
+			let appointment = appointments.find(appointment => appointment.Id === locationState.appointmentId);
+			if (appointment) {
+				this.setState({ appointment, appointmentProducts: appointment.appointmentProducts, inViewMode: locationState.inViewMode })
+			}
+		}
 	}
 
 	updateFieldError(value, fieldName) {
@@ -42,6 +51,12 @@ class AppointmentForm extends Component {
 		this.setState({
 			error
 		});
+	}
+
+	handleCostumerChange(event, index, value) {
+		let error = { ...this.state.error, Costumer: '' };
+		let appointment = { ...this.state.appointment, Costumer: this.props.costumers[index] }
+		this.setState({ error, appointment });
 	}
 
 	getErrorText(value, fieldName, validationsDefintion = this.validations) {
@@ -61,7 +76,7 @@ class AppointmentForm extends Component {
 	}
 
 	saveAppointment() {
-		let error = this.getSaleErrors(error);
+		let error = this.getAppointmentErrors(error);
 		let hasError = Object.keys(error).some(prop => !!error[prop]);
 
 		if (hasError) {
@@ -79,18 +94,34 @@ class AppointmentForm extends Component {
 		}
 	}
 
+	getAppointmentErrors() {
+		let error = {};
+
+		Object.keys(this.state.appointment).forEach(appointmentProp => {
+			let errorText = this.getErrorText(this.state.appointment[appointmentProp], appointmentProp);
+			error[appointmentProp] = errorText;
+		});
+
+		return error;
+	}
+
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
+		let hasCostumerError = !!this.state.error.Costumer;
 		return (
 			<div id='appointment-form'>
 
 				<Paper style={styles.paper}>
+					<CostumerSelect onChange={this.handleCostumerChange} errorText={this.state.error.Costumer} floatingLabelText="Costumer" defaultValue={this.state.appointment.Costumer? this.state.appointment.Costumer.Id : null} />
+					{ hasCostumerError? (<div style={styles.errorText}>This field is required</div>) : null }
+					<br />
+
 				</Paper>
 
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
 						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editSale : this.saveSale}
+						onTouchTap={this.state.inViewMode? this.editAppointment : this.saveSale}
 					>
 						<ContentSave />
 					</FloatingActionButton>)
@@ -102,5 +133,7 @@ class AppointmentForm extends Component {
 }
 
 export default connect((state, ownProps) => ({
+	appointments: state.appointment.appointments,
 	hasOpenMessage: !!state.main.message.open,
+	costumers: state.costumer.costumers
 }))(AppointmentForm);
