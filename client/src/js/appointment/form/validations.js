@@ -3,8 +3,5 @@ export function getFieldsValidations() {
 		required: {}
 	};
 	return {
-		SaleProducts: requiredValidation,
-		Costumer: requiredValidation,
-		PaymentMethod: requiredValidation
 	};
 }

@@ -81,13 +81,6 @@ class AppointmentForm extends Component {
 
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
-		let exclusionProductIds = {};
-			return (
-				<div key={index}>
-				</div>
-			)
-		});
-
 		return (
 			<div id='appointment-form'>
 
