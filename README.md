@@ -17,5 +17,5 @@
 3. Run `node index.js`
 4. Now go to the client folder.
 5. Run `npm install`
-6. Run `grunt browserify`
+6. Run `grunt browserify`. If you want to use your local backend API, set the environment variable API_URL before running `grunt browserify`. Example: `export API_URL="http://localhost:3000/api" && grunt browserify`.
 7. Now open localhost with the port you specified in process.env.PORT (default is 8080)
