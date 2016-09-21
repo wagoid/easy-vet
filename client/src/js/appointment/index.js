@@ -148,11 +148,13 @@ class AppointmentCalendar extends Component {
 		return (
 			<div>
 				<Paper style={styles.paper}>
-					<div style={styles.header}>
-						{this.getHeaderCells(weekDays, styles)}
+					<div style={ { minWidth: '765px' } }>
+						<div style={styles.header}>
+							{this.getHeaderCells(weekDays, styles)}
+						</div>
+						<Divider style={styles.divider} />
+						{calendarRows}
 					</div>
-					<Divider style={styles.divider} />
-					{calendarRows}
 				</Paper>
 			</div>
 		);
