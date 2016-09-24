@@ -70,7 +70,7 @@ class AppointmentCalendar extends Component {
 	}
 
 	openFilterDialog() {
-		var closeFilterDialog = this.actions.closeFilterDialog.bind(null, FilterDialog);
+		var  { closeFilterDialog } = this.actions;
 		this.actions.filterDialog(FilterDialog, closeFilterDialog , () => console.log("opa"), closeFilterDialog);
 	}
 

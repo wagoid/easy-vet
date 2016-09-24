@@ -60,8 +60,10 @@ function dialogAction(dispatch) {
 			type: dialogActions.OPEN,
 			payload: {
 				component: Dialog,
-				props: {
+				componentProps: {
 					message: text,
+				},
+				props: {
 					title: "Failed to login",
 					open: true,
 					onRequestClose: dispatchCloseDialog(dispatch, Dialog),
