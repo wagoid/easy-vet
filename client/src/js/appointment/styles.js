@@ -60,7 +60,7 @@ export default function getStyles() {
 				padding: '5px'
 			},
 			nextWeekAction: additionalFloatingActionStyles(),
-			previousWeekAction: { ...additionalFloatingActionStyles(), right: '10px' },
-			filterAppointments: { ...additionalFloatingActionStyles(), right: '40px' }
+			previousWeekAction: { ...additionalFloatingActionStyles(), right: '76px' },
+			filterAppointments: { ...additionalFloatingActionStyles(), right: '150px' }
 		};
 }

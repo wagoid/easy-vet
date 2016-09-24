@@ -21,9 +21,17 @@ class AppointmentCalendar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			start: moment()
+			startDate: moment()
 		}
+		this.filter = {
+			startDate: this.state.startDate,
+			veterinaryId: null
+		};
 		this.actions = bindActionCreators({ ...AppointmentActions, setAdditionalFloatingActions }, this.props.dispatch);
+		this.updateStateFromFilter = this.updateStateFromFilter.bind(this);
+		this.resetFilter = this.resetFilter.bind(this);
+		this.setStartDateFilter = this.setStartDateFilter.bind(this);
+		this.setVeterinaryFilter = this.setVeterinaryFilter.bind(this);
 		this.openFilterDialog = this.openFilterDialog.bind(this);
 		this.handleEventClick = this.handleEventClick.bind(this);
 	}
@@ -66,12 +74,46 @@ class AppointmentCalendar extends Component {
 	}
 
 	addWeeksToStartDate(weeks) {
-		this.setState({ start: this.state.start.add(weeks, 'week') })
+		this.setState({ start: this.state.startDate.add(weeks, 'week') })
 	}
 
 	openFilterDialog() {
-		var  { closeFilterDialog } = this.actions;
-		this.actions.filterDialog(FilterDialog, closeFilterDialog , () => console.log("opa"), closeFilterDialog);
+		this.actions.filterDialog({
+			component: FilterDialog,
+			onRequestClose: this.resetFilter,
+			onOk: this.updateStateFromFilter,
+			onCancel: this.resetFilter,
+			componentProps: {
+				onStartDateChange: this.setStartDateFilter,
+				onVeterinaryChange: this.setVeterinaryFilter,
+				defaultStartDate: this.state.startDate._d,
+				defaultVeterinary: this.state.veterinaryId
+			}
+		});
+	}
+
+	updateStateFromFilter() {
+		this.actions.closeFilterDialog();
+		this.setState({
+			startDate: moment(this.filter.startDate),
+			veterinaryId: this.filter.veterinaryId
+		});
+	}
+
+	resetFilter() {
+		this.filter = {
+			startDate: this.state.startDate,
+			veterinaryId: this.state.veterinaryId
+		};
+		this.actions.closeFilterDialog();
+	}
+
+	setStartDateFilter(startDate) {
+		this.filter.startDate = startDate;
+	}
+
+	setVeterinaryFilter(veterinaryId) {
+		this.filter.veterinaryId = veterinaryId;
 	}
 
 	componentWillUnmount() {
@@ -124,7 +166,7 @@ class AppointmentCalendar extends Component {
 
 	render() {
 		let styles = getStyles();
-		let weekDays = weekDaysFromStart(this.state.start);
+		let weekDays = weekDaysFromStart(this.state.startDate);
 		let dayHours = dayHoursFromMidNight();
 		let rows = this.getRows(weekDays, dayHours, this.props.appointments);
 		let calendarRows = rows.map((row, index) => {

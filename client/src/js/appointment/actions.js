@@ -98,9 +98,11 @@ export function createAppointment(appointment) {
 	}
 }
 
-export function filterDialog(component, onRequestClose, onOk, onCancel) {
+export function filterDialog(config) {
+	let { component, onRequestClose, onOk, onCancel, componentProps } = config;
 	return dialogActions.openDialog({
 		component,
+		componentProps,
 		props: {
 			title: "Filter",
 			open: true,

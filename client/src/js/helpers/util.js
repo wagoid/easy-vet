@@ -18,9 +18,9 @@ export function floatingActionStyles(hasOpenMessage) {
 
 export function additionalFloatingActionStyles() {
 	return {
-		position: 'relative',
+		position: 'absolute',
 		top: '30px',
-		right: '0',
+		right: '15px',
 		width: '56px',
 		height: '56px',
 		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 2px 3px, rgba(0, 0, 0, 0.227451) 0px 2px 3px'
