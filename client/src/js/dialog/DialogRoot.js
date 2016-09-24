@@ -10,7 +10,7 @@ class DialogRoot extends Component {
 			Component = this.props.dialog.component;
 
 		if (!Component) {
-			return null;
+			return <div> </div>;
 		} else {
 			return <Component key={1} {...props} />;
 		}

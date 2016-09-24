@@ -12,6 +12,7 @@ import { weekDaysFromStart, dayHoursFromMidNight } from '../helpers/util';
 import { setAdditionalFloatingActions } from '../app/appbar/actions';
 import * as AppointmentActions from './actions';
 import Event from './Event';
+import FilterDialog from './FilterDialog';
 
 let defaultStart = moment();
 
@@ -69,7 +70,8 @@ class AppointmentCalendar extends Component {
 	}
 
 	openFilterDialog() {
-
+		var closeFilterDialog = this.actions.closeFilterDialog.bind(null, FilterDialog);
+		this.actions.filterDialog(FilterDialog, closeFilterDialog , () => console.log("opa"), closeFilterDialog);
 	}
 
 	componentWillUnmount() {
