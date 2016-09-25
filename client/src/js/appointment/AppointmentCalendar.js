@@ -45,13 +45,14 @@ class AppointmentCalendar extends Component {
 		alert(`${appointment.Name}\n${appointment.Description}`);
 	}
 
-	handleCellClick(day) {
+	handleCellClick(day, row) {
 		let { veterinaryId } = this.state;
+		let date = moment(day.momentDay).hour(row.hour).minute(0).second(0)._d;
 		if (veterinaryId) {
 			let newLocation =  {
 				...this.props.location,
 				pathname: '/appointment/form' ,
-				state: { day, veterinaryId }
+				state: { date, veterinaryId }
 			};
 			this.context.router.push(newLocation);
 		} else {
@@ -173,7 +174,7 @@ class AppointmentCalendar extends Component {
 
 		headerWeekDays.unshift((
 			<div key={'calendarheaderspacer'} style={styles.rowHourCell}></div>
-		))
+		));
 
 		return headerWeekDays;
 	}
@@ -199,7 +200,7 @@ class AppointmentCalendar extends Component {
 			let rowDays = row.days.map((day, dayIndex) => {
 				let dayEvents = day.events.map((dayEvent, dayEventIndex) => (<Event onTouchTap={this.handleEventClick} style={styles.eventItem} event={dayEvent} key={`calendarhourdayevent${day.day}${dayEventIndex}`} />));
 				return (
-					<div onTouchTap={this.handleCellClick.bind(this, day)} key={`calendarhourday${day.day}`} style={styles.cell}>
+					<div onTouchTap={this.handleCellClick.bind(this, day, row)} key={`calendarhourday${day.day}`} style={styles.cell}>
 						{dayEvents}
 					</div>
 				);
@@ -218,12 +219,12 @@ class AppointmentCalendar extends Component {
 		return (
 			<div>
 				<Paper style={styles.paper}>
-					<div style={ { minWidth: '765px' } }>
+					<div style={ { minWidth: '900px' } }>
 						<div style={styles.header}>
 							{this.getHeaderCells(weekDays, styles)}
 						</div>
 						<Divider style={styles.divider} />
-						{calendarRows}
+							{calendarRows}
 					</div>
 				</Paper>
 			</div>

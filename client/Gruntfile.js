@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 					debug: true
 				},
 				plugins: [
-					
+
 				],
 				transform: [
 					[
@@ -33,6 +33,16 @@ module.exports = function (grunt) {
 				pushTo: 'origin',
 				commitFiles: ["-a"],
 				push: true
+			}
+		},
+		sass: {
+			dist: {
+				options: {
+					style: 'expanded'
+				},
+				files: {
+					'dist/css/main.css': 'src/scss/main.scss'
+				}
 			}
 		}
 	});

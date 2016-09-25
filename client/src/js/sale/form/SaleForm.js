@@ -9,7 +9,7 @@ import * as validations from '../../helpers/validations';
 import getStyles from './styles';
 import { getFieldsValidations } from './validations';
 import * as SaleActions from '../actions';
-import { isString, additionalFloatingActionStyles } from '../../helpers/util';
+import { isString } from '../../helpers/util';
 import CostumerSelect from '../../costumer/CostumerSelect';
 import PaymentMethodSelect from '../PaymentMethodSelect';
 import ProductSelect from '../../product/ProductSelect';
@@ -207,7 +207,7 @@ class SaleForm extends Component {
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
 						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editSale : this.saveSale}
+						onTouchTap={this.saveSale}
 					>
 						<ContentSave />
 					</FloatingActionButton>)

@@ -6,8 +6,8 @@ import * as dialogActions from '../dialog/actions';
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-const FETCH_APPOINTMENTS = 'appointment/FETCH';
-const FETCH_APPOINTMENTS_SUCCESS = 'appointment/FETCH_SUCCESS';
+export const FETCH_APPOINTMENTS = 'appointment/FETCH';
+export const FETCH_APPOINTMENTS_SUCCESS = 'appointment/FETCH_SUCCESS';
 function appointmentsSuccess(appointments) {
 	return {
 		type: FETCH_APPOINTMENTS_SUCCESS,
@@ -17,7 +17,7 @@ function appointmentsSuccess(appointments) {
 	}
 }
 
-const FETCH_APPOINTMENTS_FAILURE = 'appointment/FETCH_FAILURE';
+export const FETCH_APPOINTMENTS_FAILURE = 'appointment/FETCH_FAILURE';
 function appointmentsError({ type, message }) {
 	return {
 		type: FETCH_APPOINTMENTS_FAILURE,
@@ -28,9 +28,9 @@ function appointmentsError({ type, message }) {
 	}
 }
 
-const CREATE_APPOINTMENTS = 'appointment/CREATE';
+export const CREATE_APPOINTMENTS = 'appointment/CREATE';
 
-const CREATE_APPOINTMENT_SUCCESS = 'appointment/CREATE_SUCCESS';
+export const CREATE_APPOINTMENT_SUCCESS = 'appointment/CREATE_SUCCESS';
 function appointmentSaveSuccess(appointment) {
 	let actionToUse = appointment.Id > 0? UPDATE_APPOINTMENT_SUCCESS : CREATE_APPOINTMENT_SUCCESS;
 	return newAppointment => {
@@ -48,7 +48,7 @@ function appointmentSaveSuccess(appointment) {
 }
 
 
-const CREATE_APPOINTMENT_FAILURE = 'appointment/CREATE_FAILURE';
+export const CREATE_APPOINTMENT_FAILURE = 'appointment/CREATE_FAILURE';
 function appointmentsCreateError({ type, message }) {
 	return {
 		type: CREATE_APPOINTMENT_FAILURE,
@@ -59,13 +59,13 @@ function appointmentsCreateError({ type, message }) {
 	}
 }
 
-const UPDATE_APPOINTMENT = 'appointment/UPDATE';
-const UPDATE_APPOINTMENT_SUCCESS = 'appointment/UPDATE_SUCCESS';
-const UPDATE_APPOINTMENT_FAILURE = 'appointment/UPDATE_FAILURE';
+export const UPDATE_APPOINTMENT = 'appointment/UPDATE';
+export const UPDATE_APPOINTMENT_SUCCESS = 'appointment/UPDATE_SUCCESS';
+export const UPDATE_APPOINTMENT_FAILURE = 'appointment/UPDATE_FAILURE';
 
-const REMOVE_APPOINTMENT = 'appointment/REMOVE';
-const REMOVE_APPOINTMENT_SUCCESS = 'appointment/REMOVE_SUCCESS';
-const REMOVE_APPOINTMENT_FAILURE = 'appointment/REMOVE_FAILURE';
+export const REMOVE_APPOINTMENT = 'appointment/REMOVE';
+export const REMOVE_APPOINTMENT_SUCCESS = 'appointment/REMOVE_SUCCESS';
+export const REMOVE_APPOINTMENT_FAILURE = 'appointment/REMOVE_FAILURE';
 
 export function fetchAppointments() {
 	return (dispatch, getState) => {

@@ -1,4 +1,12 @@
-import { additionalFloatingActionStyles } from '../helpers/util';
+import { additionalFloatingActionStyles } from '../styles/actions';
+
+function getBorderStyle(side) {
+	return {
+		[`border${side}`]: 'rgb(224, 224, 224)',
+		[`border${side}Width`]: 'thin',
+		[`border${side}Style`]: 'solid'
+	};
+}
 
 export default function getStyles() {
 		return {
@@ -20,38 +28,30 @@ export default function getStyles() {
 				display: 'flex'
 			},
 			headerCell: {
-				width: '110px',
+				width: '130px',
 				display: 'inline-block',
 				verticalAlign: 'middle',
 				textAlign: 'center',
-				borderRight: 'rgb(224, 224, 224)',
-				borderRightWidth: 'thin',
-				borderRightStyle: 'solid',
+				...getBorderStyle('Right'),
 				padding: '5px'
 			},
 			rowHourCell: {
-				width: '50px',
+				width: '60px',
 				display: 'inline-block',
 				verticalAlign: 'middle',
 				textAlign: 'center',
-				borderRight: 'rgb(224, 224, 224)',
-				borderRightWidth: 'thin',
-				borderRightStyle: 'solid'
+				...getBorderStyle('Right')
 			},
 			row: {
 				width: 'auto',
 				minHeight: '30px',
-				borderBottom: 'rgb(224, 224, 224)',
-				borderBottomWidth: 'thin',
-				borderBottomStyle: 'solid',
+				...getBorderStyle('Bottom'),
 				display: 'flex'
 			},
 			cell: {
-				width: '110px',
+				width: '130px',
 				display: 'inline-block',
-				borderRight: 'rgb(224, 224, 224)',
-				borderRightWidth: 'thin',
-				borderRightStyle: 'solid',
+				...getBorderStyle('Right'),
 				padding: '5px'
 			},
 			eventItem: {
