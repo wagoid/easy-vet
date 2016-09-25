@@ -13,6 +13,7 @@ import { setAdditionalFloatingActions } from '../app/appbar/actions';
 import * as AppointmentActions from './actions';
 import Event from './Event';
 import FilterDialog from './FilterDialog';
+import { openMessageView } from '../app/messages/actions';
 
 let defaultStart = moment();
 
@@ -34,6 +35,7 @@ class AppointmentCalendar extends Component {
 		this.setVeterinaryFilter = this.setVeterinaryFilter.bind(this);
 		this.openFilterDialog = this.openFilterDialog.bind(this);
 		this.handleEventClick = this.handleEventClick.bind(this);
+		this.filterAppointments = this.filterAppointments.bind(this);
 	}
 
 	handleEventClick(event, appointment) {
@@ -44,8 +46,20 @@ class AppointmentCalendar extends Component {
 	}
 
 	handleCellClick(day) {
-		let newLocation =  { ...this.props.location, pathname: '/appointment/form' , state: { day } };
-		this.context.router.push(newLocation)
+		let { veterinaryId } = this.state;
+		if (veterinaryId) {
+			let newLocation =  {
+				...this.props.location,
+				pathname: '/appointment/form' ,
+				state: { day, veterinaryId }
+			};
+			this.context.router.push(newLocation);
+		} else {
+			this.props.dispatch(openMessageView({
+				type: 'creteAppointmentError',
+				text: 'Please filter by a veterinary before creating an appointment.'
+			}));
+		}
 	}
 
 	componentDidMount() {
@@ -112,7 +126,7 @@ class AppointmentCalendar extends Component {
 		this.filter.startDate = startDate;
 	}
 
-	setVeterinaryFilter(veterinaryId) {
+	setVeterinaryFilter(event, index, veterinaryId) {
 		this.filter.veterinaryId = veterinaryId;
 	}
 
@@ -164,11 +178,23 @@ class AppointmentCalendar extends Component {
 		return headerWeekDays;
 	}
 
+	filterAppointments(appointments) {
+		let filteredAppointments = appointments;
+		if (this.state.veterinaryId) {
+			filteredAppointments = appointments.filter(appointment => {
+				return appointment.Veterinary.Id === this.state.veterinaryId;
+			});
+		}
+		
+
+		return filteredAppointments;
+	}
+
 	render() {
 		let styles = getStyles();
 		let weekDays = weekDaysFromStart(this.state.startDate);
 		let dayHours = dayHoursFromMidNight();
-		let rows = this.getRows(weekDays, dayHours, this.props.appointments);
+		let rows = this.getRows(weekDays, dayHours, this.filterAppointments(this.props.appointments));
 		let calendarRows = rows.map((row, index) => {
 			let rowDays = row.days.map((day, dayIndex) => {
 				let dayEvents = day.events.map((dayEvent, dayEventIndex) => (<Event onTouchTap={this.handleEventClick} style={styles.eventItem} event={dayEvent} key={`calendarhourdayevent${day.day}${dayEventIndex}`} />));

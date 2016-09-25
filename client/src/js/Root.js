@@ -17,7 +17,7 @@ import CostumerList from './costumer';
 import CostumerForm from './costumer/form/CostumerForm';
 import SaleList from './sale';
 import SaleForm from './sale/form/SaleForm';
-import AppointmentCalendar from './appointment';
+import AppointmentCalendar from './appointment/AppointmentCalendar';
 import AppointmentForm from './appointment/form/AppointmentForm';
 
 

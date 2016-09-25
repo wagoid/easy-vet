@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import DatePicker from 'material-ui/DatePicker';
 //TODO: create an EmployeeSelect and use it
-import CostumerSelect from '../costumer/CostumerSelect';
+import EmployeeSelect from '../employee/EmployeeSelect';
 
 class FilterDialog extends Component {
 
@@ -11,6 +11,7 @@ class FilterDialog extends Component {
 			startDate: props.defaultStartDate
 		};
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
+		this.handleEmployeeSelectChange = this.handleEmployeeSelectChange.bind(this);
 	}
 
 	handleStartDateChange(event, startDate) {
@@ -20,10 +21,26 @@ class FilterDialog extends Component {
 		}
 	}
 
+	handleEmployeeSelectChange(event, index, value) {
+		if (this.props.onVeterinaryChange) {
+			this.props.onVeterinaryChange(event, index, value);
+		}
+	}
+
+	filterVeterinaryEmployee(employee) {
+		return employee.Type === 3;
+	}
+
 	render() {
 		return (
 			<div>
-				<CostumerSelect floatingLabelText="Veterinary" />
+				<EmployeeSelect
+					floatingLabelText="Veterinary"
+					optionsFilter={this.filterVeterinaryEmployee} 
+					fullWidth={true}
+					onChange={this.handleEmployeeSelectChange}
+					defaultValue={this.props.defaultVeterinary}
+					/>
 
 				<DatePicker
 					name="StartDate"
@@ -39,6 +56,7 @@ class FilterDialog extends Component {
 
 FilterDialog.propTypes = {
 	defaultStartDate: PropTypes.object.isRequired,
+	defaultVeterinary: PropTypes.number,
 	onStartDateChange: PropTypes.func,
 	onVeterinaryChange: PropTypes.func
 };
