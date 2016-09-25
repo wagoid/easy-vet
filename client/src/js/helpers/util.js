@@ -2,30 +2,7 @@ import axios from 'axios';
 import { push } from 'react-router-redux';
 import moment from 'moment';
 
-export const SNACKBAR_HEIGHT = 48;
-export const FLOATING_BUTTON_BOTTOM = 20;
-
 const UNAUTHORIZED_STATUS = 401;
-
-export function floatingActionStyles(hasOpenMessage) {
-	return {
-		position: 'fixed',
-		right: 20,
-		bottom: hasOpenMessage && window.screen.width < 768? SNACKBAR_HEIGHT + 10 : FLOATING_BUTTON_BOTTOM,
-		zIndex: 100
-	};
-}
-
-export function additionalFloatingActionStyles() {
-	return {
-		position: 'relative',
-		top: '30px',
-		right: '70px',
-		width: '56px',
-		height: '56px',
-		boxShadow: 'rgba(0, 0, 0, 0.156863) 0px 2px 3px, rgba(0, 0, 0, 0.227451) 0px 2px 3px'
-	};
-}
 
 export function genericFetch(dispatch, config = {}) {
 	return axios(config.params)

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { userType, dateFormat } from '../helpers/valueDecode';
-import { floatingActionStyles } from '../helpers/util';
+import { floatingActionStyles } from '../styles/actions';
 
 import Employee from './Employee';
 import * as EmployeeActions from './actions';

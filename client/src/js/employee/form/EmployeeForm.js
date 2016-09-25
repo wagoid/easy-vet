@@ -229,25 +229,25 @@ class EmployeeForm extends Component {
 			this.state.employee.BirthDate = new Date(birthDate);
 			birthDateField = (
 				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							value={this.state.employee.BirthDate}
-							maxDate={new Date()}
-						/>
+					name="BirthDate"
+					disabled={this.state.inViewMode}
+					onChange={this.handleBirthDateChange}
+					autoOk={false}
+					floatingLabelText="Birth Date"
+					value={this.state.employee.BirthDate}
+					maxDate={new Date()}
+				/>
 			);
 		} else {
 			birthDateField = (
 				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							maxDate={new Date()}
-						/>
+					name="BirthDate"
+					disabled={this.state.inViewMode}
+					onChange={this.handleBirthDateChange}
+					autoOk={false}
+					floatingLabelText="Birth Date"
+					maxDate={new Date()}
+				/>
 			);
 		}
 

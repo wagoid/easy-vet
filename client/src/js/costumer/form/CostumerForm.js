@@ -11,7 +11,7 @@ import getStyles from './styles';
 import { getFieldsValidations, getAddressFieldsValidations } from './validations';
 import * as CostumerActions from '../actions';
 import { setAdditionalFloatingActions } from '../../app/appbar/actions';
-import { isString, additionalFloatingActionStyles } from '../../helpers/util';
+import { isString } from '../../helpers/util';
 import { addressDefinitions, costumerDefinitions } from './fieldDefinitions';
 
 let costumerProperties = [ 'Name', 'Cpf', 'PhoneNumber', 'Password', 'BirthDate', 'Address', 'Type', 'Email' ].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
@@ -161,7 +161,7 @@ class CostumerForm extends Component {
 			costumer,
 			error
 		});
-	};
+	}
 
 	updateAddressField(value, fieldName) {
 		let errorText = this.getErrorText(value, fieldName, this.addressValidations);

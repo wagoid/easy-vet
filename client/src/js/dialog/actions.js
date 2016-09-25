@@ -1,8 +1,8 @@
 export const OPEN = 'dialog/SHOW';
-export function openDialog(type, component) {
+export function openDialog(payload) {
 	return {
 		type: OPEN,
-		payload: { type, component }
+		payload
 	};
 }
 

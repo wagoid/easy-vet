@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
 	grunt.initConfig({
 		browserify: {
@@ -8,7 +8,19 @@ module.exports = function(grunt) {
 				browserifyOptions: {
 					debug: true
 				},
-				transform: [["babelify", { presets: ['es2015', 'react'], plugins: ['transform-object-rest-spread'] }], ['envify']]
+				plugins: [
+
+				],
+				transform: [
+					[
+						"babelify",
+						{
+							presets: ['es2015', 'react'],
+							plugins: ['transform-object-rest-spread']
+						}
+					],
+					['envify']
+				]
 			},
 			app: {
 				src: 'src/js/index.js',
@@ -21,6 +33,16 @@ module.exports = function(grunt) {
 				pushTo: 'origin',
 				commitFiles: ["-a"],
 				push: true
+			}
+		},
+		sass: {
+			dist: {
+				options: {
+					style: 'expanded'
+				},
+				files: {
+					'dist/css/main.css': 'src/scss/main.scss'
+				}
 			}
 		}
 	});

@@ -2,6 +2,9 @@ import { push } from 'react-router-redux';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
+import * as dialogActions from '../dialog/actions';
+import React from 'react';
+import FlatButton from 'material-ui/FlatButton';
 
 export const FETCH_APPOINTMENTS = 'appointment/FETCH';
 export const FETCH_APPOINTMENTS_SUCCESS = 'appointment/FETCH_SUCCESS';
@@ -60,9 +63,9 @@ export const UPDATE_APPOINTMENT = 'appointment/UPDATE';
 export const UPDATE_APPOINTMENT_SUCCESS = 'appointment/UPDATE_SUCCESS';
 export const UPDATE_APPOINTMENT_FAILURE = 'appointment/UPDATE_FAILURE';
 
-const REMOVE_APPOINTMENT = 'appointment/REMOVE';
-const REMOVE_APPOINTMENT_SUCCESS = 'appointment/REMOVE_SUCCESS';
-const REMOVE_APPOINTMENT_FAILURE = 'appointment/REMOVE_FAILURE';
+export const REMOVE_APPOINTMENT = 'appointment/REMOVE';
+export const REMOVE_APPOINTMENT_SUCCESS = 'appointment/REMOVE_SUCCESS';
+export const REMOVE_APPOINTMENT_FAILURE = 'appointment/REMOVE_FAILURE';
 
 export function fetchAppointments() {
 	return (dispatch, getState) => {
@@ -93,4 +96,23 @@ export function createAppointment(appointment) {
 			successActions: [openMessageView.bind(null, successActionPayload), appointmentSaveSuccess(appointment)]
 		});
 	}
+}
+
+export function filterDialog(config) {
+	let { component, onRequestClose, onOk, onCancel, componentProps } = config;
+	return dialogActions.openDialog({
+		component,
+		componentProps,
+		props: {
+			title: "Filter",
+			open: true,
+			onRequestClose: onRequestClose,
+			actions: [<FlatButton key={"appointmentFilterCancel"} label="Cancel" onTouchTap={onCancel} />,
+			<FlatButton key={"appointmentFilterOk"} label="OK" primary={true} onTouchTap={onOk} />]
+		}
+	});
+}
+
+export function closeFilterDialog(component) {
+	return dialogActions.closeDialog({}, component);
 }

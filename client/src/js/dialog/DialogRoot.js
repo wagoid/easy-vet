@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
+import Dialog from 'material-ui/Dialog';
 
 class DialogRoot extends Component {
 	constructor(props = {}) {
@@ -7,12 +8,21 @@ class DialogRoot extends Component {
 	}
 	render() {
 		let props = this.props.dialog.props,
-			Component = this.props.dialog.component;
-
+			Component = this.props.dialog.component,
+			componentProps = this.props.dialog.componentProps || {};
+			
 		if (!Component) {
-			return null;
+			return (
+				<Dialog open={false} modal={false}>
+					
+				</Dialog>
+			);
 		} else {
-			return <Component key={1} {...props} />;
+			return (
+				<Dialog {...props}>
+					<Component {...componentProps} />
+				</Dialog>
+			);
 		}
 	}
 }

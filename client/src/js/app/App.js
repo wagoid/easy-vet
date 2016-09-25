@@ -6,6 +6,7 @@ import WorkIcon from 'material-ui/svg-icons/action/work';
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import MessageView from './messages/MessageView';
 import { parseToArray } from '../helpers/util';
+import DialogRoot from '../dialog/DialogRoot';
 
 // Define menu items for LeftNav
 let menuItems = [
@@ -83,6 +84,10 @@ class App extends React.Component {
 
 				<section id="message-view">
 					<MessageView />
+				</section>
+
+				<section id="dialog-root">
+					<DialogRoot />
 				</section>
 
 			</div>
