@@ -67,7 +67,7 @@ function dialogAction(dispatch) {
 					title: "Failed to login",
 					open: true,
 					onRequestClose: dispatchCloseDialog(dispatch, Dialog),
-					actions: [<FlatButton key={"loginFailedOk"} label="OK" primary={true} onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
+					actions: [<FlatButton key={"loginFailedOk"} label='OK' primary onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
 				}
 			}
 		};

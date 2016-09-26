@@ -13,9 +13,7 @@ class DialogRoot extends Component {
 			
 		if (!Component) {
 			return (
-				<Dialog open={false} modal={false}>
-					
-				</Dialog>
+				<Dialog open={false} modal={false} />
 			);
 		} else {
 			return (

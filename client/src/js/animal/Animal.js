@@ -56,7 +56,7 @@ class Animal extends Component {
 			<Card onClick={this.handleClick} style={styles.card}>
 				<CardHeader
 					title={animal.Name}
-					subtitle={ animalTypeMask? animalTypeMask.func(animal.Type) : animal.Type }
+					subtitle={animalTypeMask? animalTypeMask.func(animal.Type) : animal.Type}
 				/>
 
 				{cardTexts}
@@ -71,7 +71,7 @@ Animal.defaultProps = {
 }
 
 Animal.propTypes = {
-	Animal: PropTypes.object.isRequired,
+	animal: PropTypes.object.isRequired,
 	keyReplacements: PropTypes.object.isRequired,
 	valueMasks: PropTypes.object.isRequired,
 	onClick: PropTypes.func,

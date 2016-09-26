@@ -70,18 +70,18 @@ class AppointmentCalendar extends Component {
 
 		let styles = getStyles();
 		let filterAppointmentsAction = (
-			<FloatingActionButton onTouchTap={this.openFilterDialog} key='appointmentFilterAction' style={styles.filterAppointments} secondary={true}>
-					<FilterList />
+			<FloatingActionButton onTouchTap={this.openFilterDialog} key='appointmentFilterAction' style={styles.filterAppointments} secondary>
+				<FilterList />
 			</FloatingActionButton>
 		);
 		let previousWeekAction = (
-			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, -1)} key='appointmentPrevioustWeekAction' style={styles.previousWeekAction} secondary={true}>
-					<ArrowBack />
+			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, -1)} key='appointmentPrevioustWeekAction' style={styles.previousWeekAction} secondary>
+				<ArrowBack />
 			</FloatingActionButton>
 		);
 		let nextWeekAction = (
-			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, 1)} key='appointmentNextWeekAction' style={styles.nextWeekAction} secondary={true}>
-					<ArrowForward />
+			<FloatingActionButton onTouchTap={this.addWeeksToStartDate.bind(this, 1)} key='appointmentNextWeekAction' style={styles.nextWeekAction} secondary>
+				<ArrowForward />
 			</FloatingActionButton>
 		);
 		
@@ -89,7 +89,7 @@ class AppointmentCalendar extends Component {
 	}
 
 	addWeeksToStartDate(weeks) {
-		this.setState({ start: this.state.startDate.add(weeks, 'week') })
+		this.setState({ start: this.state.startDate.add(weeks, 'week') });
 	}
 
 	openFilterDialog() {
@@ -173,7 +173,7 @@ class AppointmentCalendar extends Component {
 		});
 
 		headerWeekDays.unshift((
-			<div key={'calendarheaderspacer'} style={styles.rowHourCell}></div>
+			<div key={'calendarheaderspacer'} style={styles.rowHourCell} />
 		));
 
 		return headerWeekDays;
@@ -219,7 +219,7 @@ class AppointmentCalendar extends Component {
 		return (
 			<div>
 				<Paper style={styles.paper}>
-					<div style={ { minWidth: '900px' } }>
+					<div style={{ minWidth: '900px' }}>
 						<div style={styles.header}>
 							{this.getHeaderCells(weekDays, styles)}
 						</div>

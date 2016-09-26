@@ -35,18 +35,18 @@ class FilterDialog extends Component {
 		return (
 			<div>
 				<EmployeeSelect
-					floatingLabelText="Veterinary"
+					floatingLabelText='Veterinary'
 					optionsFilter={this.filterVeterinaryEmployee} 
-					fullWidth={true}
+					fullWidth
 					onChange={this.handleEmployeeSelectChange}
 					defaultValue={this.props.defaultVeterinary}
 					/>
 
 				<DatePicker
-					name="StartDate"
+					name='StartDate'
 					onChange={this.handleStartDateChange}
-					autoOk={true}
-					floatingLabelText="Start date"
+					autoOk
+					floatingLabelText='Start date'
 					value={this.state.startDate}
 					/>
 			</div>

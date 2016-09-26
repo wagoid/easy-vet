@@ -107,8 +107,8 @@ export function filterDialog(config) {
 			title: "Filter",
 			open: true,
 			onRequestClose: onRequestClose,
-			actions: [<FlatButton key={"appointmentFilterCancel"} label="Cancel" onTouchTap={onCancel} />,
-			<FlatButton key={"appointmentFilterOk"} label="OK" primary={true} onTouchTap={onOk} />]
+			actions: [<FlatButton key={"appointmentFilterCancel"} label='Cancel' onTouchTap={onCancel} />,
+				<FlatButton key={"appointmentFilterOk"} label='OK' primary onTouchTap={onOk} />]
 		}
 	});
 }

@@ -1,0 +1,32 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "jsx": true,
+      "experimentalObjectRestSpread": true
+    },
+    "sourceType": "module"
+  },
+
+  "plugins": [
+    "react"
+  ],
+
+  "extends": [
+    "standard-jsx"
+  ],
+
+  "rules": {
+    "react/jsx-no-bind": [2, {
+      "allowArrowFunctions": true,
+      "allowBind": true,
+      "ignoreRefs": true
+    }],
+    "react/no-did-update-set-state": 2,
+    "react/no-unknown-property": 2,
+    "react/prop-types": 2,
+    "react/react-in-jsx-scope": 2,
+    "react/jsx-indent": [2, "tab"],
+    "react/jsx-indent-props": [2, "tab"]
+  } 
+}

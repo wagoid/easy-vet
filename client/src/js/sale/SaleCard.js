@@ -47,7 +47,7 @@ class SaleCard extends Component {
 			<Card onClick={this.handleClick} style={styles.card}>
 				<CardHeader
 					title={sale.Value}
-					subtitle={ paymentAdditionalInfoText }
+					subtitle={paymentAdditionalInfoText}
 				/>
 			</Card>
 		);

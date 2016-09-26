@@ -55,7 +55,7 @@ class EmployeeForm extends Component {
 				key={key}
 				name={name}
 				type={type || 'text'}
-				style={ { display: 'block' } }
+				style={{ display: 'block' }}
 				readOnly={this.state.inViewMode}
 				onChange={this.handleAddressChange}
 				onBlur={this.handleAddressBlur}
@@ -77,7 +77,7 @@ class EmployeeForm extends Component {
 			<TextField
 				key={key}
 				name={name}
-				style={ { display: 'block' } }
+				style={{ display: 'block' }}
 				type={type || 'text'}
 				readOnly={this.state.inViewMode}
 				onChange={this.handleChange}
@@ -229,11 +229,11 @@ class EmployeeForm extends Component {
 			this.state.employee.BirthDate = new Date(birthDate);
 			birthDateField = (
 				<DatePicker
-					name="BirthDate"
+					name='BirthDate'
 					disabled={this.state.inViewMode}
 					onChange={this.handleBirthDateChange}
 					autoOk={false}
-					floatingLabelText="Birth Date"
+					floatingLabelText='Birth Date'
 					value={this.state.employee.BirthDate}
 					maxDate={new Date()}
 				/>
@@ -241,11 +241,11 @@ class EmployeeForm extends Component {
 		} else {
 			birthDateField = (
 				<DatePicker
-					name="BirthDate"
+					name='BirthDate'
 					disabled={this.state.inViewMode}
 					onChange={this.handleBirthDateChange}
 					autoOk={false}
-					floatingLabelText="Birth Date"
+					floatingLabelText='Birth Date'
 					maxDate={new Date()}
 				/>
 			);
@@ -264,10 +264,10 @@ class EmployeeForm extends Component {
 						employee={this.state.employee}
 						inViewMode={this.state.inViewMode}
 						onChange={this.handleChange}
-						name="SpecialtyGroup"
+						name='SpecialtyGroup'
 					/>
 					
-					<div id="divider-container" style={styles.dividerContainer}>
+					<div id='divider-container' style={styles.dividerContainer}>
 						<Divider />
 					</div>
 					
@@ -278,11 +278,11 @@ class EmployeeForm extends Component {
 				</Paper>
 
 				<FloatingActionButton
-						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editEmployee : this.saveEmployee}
+					style={styles.floatingAction}
+					onTouchTap={this.state.inViewMode? this.editEmployee : this.saveEmployee}
 					>
-						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
-					</FloatingActionButton>
+					{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
+				</FloatingActionButton>
 
 			</div>
 		);
@@ -316,12 +316,12 @@ class SpecialtyGroup extends Component {
 	render() {
 		let specialtyField = (
 			<TextField
-				name="Specialty"
-				type="text"
-				style={ { display: 'block' } }
+				name='Specialty'
+				type='text'
+				style={{ display: 'block' }}
 				readOnly={this.props.inViewMode}
-				hintText="Brain surgery"
-				floatingLabelText="Specialty"
+				hintText='Brain surgery'
+				floatingLabelText='Specialty'
 				value={this.props.employee.Specialty || ''}
 				onChange={this.handleChange}
 			/>
@@ -329,7 +329,7 @@ class SpecialtyGroup extends Component {
 
 		return (
 			<div>
-				<EmployeeTypes disabled={this.props.inViewMode || this.props.employee.Id > 0} onChange={this.handleChange} name="Type" />
+				<EmployeeTypes disabled={this.props.inViewMode || this.props.employee.Id > 0} onChange={this.handleChange} name='Type' />
 				{this.state.isVeterinary? specialtyField : ''}
 			</div>
 		);

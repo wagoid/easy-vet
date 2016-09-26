@@ -43,7 +43,7 @@ class ProductForm extends Component {
 			<TextField
 				key={key}
 				name={name}
-				style={ { display: 'block' } }
+				style={{ display: 'block' }}
 				type={type || 'text'}
 				readOnly={this.state.inViewMode}
 				onChange={this.handleChange}
@@ -149,17 +149,17 @@ class ProductForm extends Component {
 						product={this.state.product}
 						inViewMode={this.state.inViewMode}
 						onChange={this.handleChange}
-						name="SpecialtyGroup"
+						name='SpecialtyGroup'
 					/>
 
 				</Paper>
 
 				<FloatingActionButton
-						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editProduct : this.saveProduct}
+					style={styles.floatingAction}
+					onTouchTap={this.state.inViewMode? this.editProduct : this.saveProduct}
 					>
-						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
-					</FloatingActionButton>
+					{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
+				</FloatingActionButton>
 
 			</div>
 		);
@@ -193,12 +193,12 @@ class SpecialtyGroup extends Component {
 	render() {
 		let specialtyField = (
 			<TextField
-				name="Specialty"
-				type="text"
-				style={ { display: 'block' } }
+				name='Specialty'
+				type='text'
+				style={{ display: 'block' }}
 				readOnly={this.props.inViewMode}
-				hintText="Brain surgery"
-				floatingLabelText="Specialty"
+				hintText='Brain surgery'
+				floatingLabelText='Specialty'
 				value={this.props.product.Specialty || ''}
 				onChange={this.handleChange}
 			/>

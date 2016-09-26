@@ -10,7 +10,7 @@ class AnimalDialog extends Component{
 				modal={this.props.modal}
 				open={this.props.open}
 				onRequestClose={this.props.onRequestClose}
-				autoScrollBodyContent={true}
+				autoScrollBodyContent
 			>
 				{/* TODO: implement dialog content */}
 			</Dialog>

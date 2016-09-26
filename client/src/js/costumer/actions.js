@@ -1,4 +1,6 @@
+import React from 'react';
 import { push } from 'react-router-redux';
+import FlatButton from 'material-ui/FlatButton';
 import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
@@ -108,7 +110,7 @@ function dialogAction(dispatch) {
 					title: "Failed to login",
 					open: true,
 					onRequestClose: dispatchCloseDialog(dispatch, Dialog),
-					actions: [<FlatButton key={1} label="OK" primary={true} onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
+					actions: [<FlatButton key={1} label='OK' primary onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
 				}
 			}
 		};

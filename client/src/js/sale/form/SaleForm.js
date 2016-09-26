@@ -177,31 +177,31 @@ class SaleForm extends Component {
 			<div id='sale-form'>
 
 				<Paper style={styles.paper}>
-					<CostumerSelect onChange={this.handleCostumerChange} errorText={this.state.error.Costumer} floatingLabelText="Costumer" defaultValue={this.state.sale.Costumer? this.state.sale.Costumer.Id : null} />
+					<CostumerSelect onChange={this.handleCostumerChange} errorText={this.state.error.Costumer} floatingLabelText='Costumer' defaultValue={this.state.sale.Costumer? this.state.sale.Costumer.Id : null} />
 					{ hasCostumerError? (<div style={styles.errorText}>This field is required</div>) : null }
 					<br />
-					<PaymentMethodSelect onChange={this.handlePaymentChange} defaultValue={1} floatingLabelText="Payment method" />
+					<PaymentMethodSelect onChange={this.handlePaymentChange} defaultValue={1} floatingLabelText='Payment method' />
 					<br />
 					<TextField
-						name="totalCost"
-						type="text"
-						style={ { display: 'block' } }
-						readOnly={true}
-						floatingLabelText="Total cost"
+						name='totalCost'
+						type='text'
+						style={{ display: 'block' }}
+						readOnly
+						floatingLabelText='Total cost'
 						value={`R$ ${this.state.sale.Value || 0}`}
 					/>
 
-					<div id="divider-container" style={styles.dividerContainer}>
+					<div id='divider-container' style={styles.dividerContainer}>
 						<Divider />
 					</div>
 
-					<Subheader style={ { marginBottom: '-15px' } }>Products list</Subheader>
+					<Subheader style={{ marginBottom: '-15px' }}>Products list</Subheader>
 
 					{ this.state.triedToSave && hasNotRegisteredProduct? (<div style={styles.errorText}>Please provide at least one product</div>) : null }
 					{productItems}
 
-					<ProductSelect exclusionProductIds={exclusionProductIds} floatingLabelText="Select a product to add" onChange={this.handleProductSelectChange}/>
-					<FlatButton style={styles.addShoppingCart} label="Add product" icon={<AddShoppingCart />} onTouchTap={this.addProduct} />
+					<ProductSelect exclusionProductIds={exclusionProductIds} floatingLabelText='Select a product to add' onChange={this.handleProductSelectChange} />
+					<FlatButton style={styles.addShoppingCart} label='Add product' icon={<AddShoppingCart />} onTouchTap={this.addProduct} />
 				</Paper>
 
 				{ this.state.inViewMode? null :
@@ -250,15 +250,15 @@ class SaleProductGroup extends Component {
 		return (
 			<div>
 				<TextField
-					name="product"
-					readOnly={true}
-					type="text"
+					name='product'
+					readOnly
+					type='text'
 					value={productText}
 				/>
 
 				<TextField
-					name="amount"
-					type="number"
+					name='amount'
+					type='number'
 					value={this.state.amount}
 					onChange={this.handleAmountChange}
 				/>

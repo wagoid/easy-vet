@@ -85,34 +85,34 @@ class Login extends Component {
 			<MuiThemeProvider>
 				<Paper style={styles.paper}>
 					<TextField
-						name="Cpf"
-						type="text"
-						style={ { display: 'block' } }
+						name='Cpf'
+						type='text'
+						style={{ display: 'block' }}
 						errorText={this.state.error.Cpf}
-						floatingLabelText="Cpf"
+						floatingLabelText='Cpf'
 						value={this.state.Cpf}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
-						fullWidth={true}
+						fullWidth
 					/>
 
 					<TextField
-						name="Password"
-						type="password"
-						style={ { display: 'block' } }
+						name='Password'
+						type='password'
+						style={{ display: 'block' }}
 						errorText={this.state.error.Password}
-						floatingLabelText="Password"
+						floatingLabelText='Password'
 						value={this.state.Password}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
-						fullWidth={true}
+						fullWidth
 					/>
 
 					<RaisedButton
-						label="submit"
-						fullWidth={true}
-						style={ { marginTop: '20px' } }
-						primary={true}
+						label='submit'
+						fullWidth
+						style={{ marginTop: '20px' }}
+						primary
 						onTouchTap={this.submitLogin}
 					/>
 

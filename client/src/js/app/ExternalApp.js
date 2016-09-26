@@ -6,7 +6,7 @@ class ExternalAppProvider extends Component {
 	render() {
 		return (
 			<MuiThemeProvider>
-				<ExternalApp { ...this.props } />
+				<ExternalApp {...this.props} />
 			</MuiThemeProvider>
 		);
 	}
@@ -19,7 +19,7 @@ class ExternalApp extends Component {
 	}
 	render() {
 		return (
-			<section id="external-content">
+			<section id='external-content'>
 				<DialogRoot />
 				{this.props.children}
 			</section>

@@ -23,11 +23,11 @@ class MessageView extends Component {
 		
 
 		return (
-				<Snackbar
-					open={this.props.open}
-					message={this.props.message || ''}
-					onRequestClose={this._closeMessageView}
-				/>
+			<Snackbar
+				open={this.props.open}
+				message={this.props.message || ''}
+				onRequestClose={this._closeMessageView}
+			/>
 		);
 	}
 }

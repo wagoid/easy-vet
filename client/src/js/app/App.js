@@ -56,21 +56,21 @@ class App extends React.Component {
 	render() {
 		let styles = this.getStyles();
 		return (
-			<div id="page-container">
-					<Drawer
-						docker={false}
-						open={this.state.open}
-						onRequestChange={open => this.setState({open})}
-					>
+			<div id='page-container'>
+				<Drawer
+					docker={false}
+					open={this.state.open}
+					onRequestChange={open => this.setState({open})}
+				>
 
-						<MenuItem onTouchTap={this.handleMenuClick('/')} leftIcon={ <HomeIcon /> } primaryText='Home'></MenuItem>
-						<MenuItem onTouchTap={this.handleMenuClick('/employee')} leftIcon={ <WorkIcon /> } primaryText='Employee' ></MenuItem>
-						<MenuItem onTouchTap={this.handleMenuClick('/product')} leftIcon={ <WorkIcon /> } primaryText='Product' ></MenuItem>
-						<MenuItem onTouchTap={this.handleMenuClick('/costumer')} leftIcon={ <WorkIcon /> } primaryText='Costumer' ></MenuItem>
-						<MenuItem onTouchTap={this.handleMenuClick('/sale')} leftIcon={ <WorkIcon /> } primaryText='Sale' ></MenuItem>
-						<MenuItem onTouchTap={this.handleMenuClick('/appointment')} leftIcon={ <WorkIcon /> } primaryText='Appointment' ></MenuItem>
+					<MenuItem onTouchTap={this.handleMenuClick('/')} leftIcon={<HomeIcon />} primaryText='Home' />
+					<MenuItem onTouchTap={this.handleMenuClick('/employee')} leftIcon={<WorkIcon />} primaryText='Employee'  />
+					<MenuItem onTouchTap={this.handleMenuClick('/product')} leftIcon={<WorkIcon />} primaryText='Product'  />
+					<MenuItem onTouchTap={this.handleMenuClick('/costumer')} leftIcon={<WorkIcon />} primaryText='Costumer'  />
+					<MenuItem onTouchTap={this.handleMenuClick('/sale')} leftIcon={<WorkIcon />} primaryText='Sale'  />
+					<MenuItem onTouchTap={this.handleMenuClick('/appointment')} leftIcon={<WorkIcon />} primaryText='Appointment'  />
 
-					</Drawer>
+				</Drawer>
 
 				<header>
 					<AppBar title={this._getCurrentRouteName()} onLeftIconButtonTouchTap={this.handleToggle} >
@@ -78,15 +78,15 @@ class App extends React.Component {
 					</AppBar>
 				</header>
 
-				<section id="content">
+				<section id='content'>
 					{this.props.children}
 				</section>
 
-				<section id="message-view">
+				<section id='message-view'>
 					<MessageView />
 				</section>
 
-				<section id="dialog-root">
+				<section id='dialog-root'>
 					<DialogRoot />
 				</section>
 

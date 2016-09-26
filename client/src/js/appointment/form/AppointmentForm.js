@@ -151,7 +151,7 @@ class AppointmentForm extends Component {
 					<TextField
 						name='Name'
 						type='text'
-						style={ { display: 'block' } }
+						style={{ display: 'block' }}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
 						value={this.state.appointment.Name}
@@ -162,7 +162,7 @@ class AppointmentForm extends Component {
 					<TextField
 						name='Description'
 						type='text'
-						style={ { display: 'block' } }
+						style={{ display: 'block' }}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
 						value={this.state.appointment.Description}
@@ -171,18 +171,18 @@ class AppointmentForm extends Component {
 					/>
 
 					<TextField
-						name="Date"
+						name='Date'
 						type='Text'
-						readOnly={true}
-						style={ { display: 'block' } }
-						floatingLabelText="Date"
+						readOnly
+						style={{ display: 'block' }}
+						floatingLabelText='Date'
 						value={dateFormat(this.state.Date, 'LLL')}
 					/>
 
 					<CostumerSelect
 						onChange={this.handleCostumerChange}
 						errorText={this.state.error.Costumer}
-						floatingLabelText="Costumer"
+						floatingLabelText='Costumer'
 						defaultValue={costumerId}
 					/>
 					{ hasCostumerError? (<div style={styles.errorText}>This field is required</div>) : null }
@@ -192,7 +192,7 @@ class AppointmentForm extends Component {
 					<AnimalSelect
 						onChange={this.handleAnimalChange}
 						errorText={this.state.error.Animal}
-						floatingLabelText="Animal"
+						floatingLabelText='Animal'
 						fetchUrl={FETCH_ANIMAL_URL}
 						costumerId={costumerId}
 						defaultValue={this.state.appointment.Animal? this.state.appointment.Animal.Id : null}
@@ -217,6 +217,13 @@ class AppointmentForm extends Component {
 
 AppointmentForm.contextTypes = {
 	router: PropTypes.object.isRequired
+}
+
+AppointmentForm.PropTypes = {
+	hasOpenMessage: PropTypes.boolean,
+	employees: PropTypes.array,
+	dispatch: PropTypes.func.isRequired,
+	location: PropTypes.object.isRequired
 }
 
 export default connect((state, ownProps) => ({

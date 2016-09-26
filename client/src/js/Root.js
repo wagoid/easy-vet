@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import injectTapEventPlugin from "react-tap-event-plugin";
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import { configureStore } from './app/configureStore';
 import axios from 'axios';
 import Home from './home/Home';
@@ -38,7 +38,7 @@ function getPath(path = '') {
 }
 
 function requireAuth(store, nextState, replace, next) {
-	// let authToken = JSON.parse(localStorage.getItem("authToken"));
+	// let authToken = JSON.parse(localStorage.getItem('authToken'));
 	// if (!authToken) {
 	// 	replace('/login');
 	// } else {
@@ -55,25 +55,25 @@ export default class Root extends Component {
 				<Provider store={store}>
 					<Router history={history}>
 						<Route component={ExternalApp}>
-							<Route name="Login" path={getPath('login')} component={Login} />
+							<Route name='Login' path={getPath('login')} component={Login} />
 						</Route>
 						
-						<Route onEnter={requireAuth.bind(this, store)} name="Home" path={getPath()} component={App}>
+						<Route onEnter={requireAuth.bind(this, store)} name='Home' path={getPath()} component={App}>
 
-							<Route name="Employees" path={getPath('employee')} component={EmployeeList} />
-							<Route name="Employee" path={getPath('employee/form')} component={EmployeeForm} />
-							<Route name="Costumers" path={getPath('costumer')} component={CostumerList} />
-							<Route name="Costumer" path={getPath('costumer/form')} component={CostumerForm} />
-							<Route name="Sales" path={getPath('sale')} component={SaleList} />
-							<Route name="Sale" path={getPath('sale/form')} component={SaleForm} />
+							<Route name='Employees' path={getPath('employee')} component={EmployeeList} />
+							<Route name='Employee' path={getPath('employee/form')} component={EmployeeForm} />
+							<Route name='Costumers' path={getPath('costumer')} component={CostumerList} />
+							<Route name='Costumer' path={getPath('costumer/form')} component={CostumerForm} />
+							<Route name='Sales' path={getPath('sale')} component={SaleList} />
+							<Route name='Sale' path={getPath('sale/form')} component={SaleForm} />
 
-							<Route name="Products" path={getPath('product')} component={ProductList} />
-							<Route name="Product" path={getPath('product/form')} component={ProductForm} />
+							<Route name='Products' path={getPath('product')} component={ProductList} />
+							<Route name='Product' path={getPath('product/form')} component={ProductForm} />
 
-							<Route name="Appointments" path={getPath('appointment')} component={AppointmentCalendar} />
-							<Route name="Appointments" path={getPath('appointment/form')} component={AppointmentForm} />
+							<Route name='Appointments' path={getPath('appointment')} component={AppointmentCalendar} />
+							<Route name='Appointments' path={getPath('appointment/form')} component={AppointmentForm} />
 
-							<Route name="Just a test Page" path={getPath('*')} component={Home} />
+							<Route name='Just a test Page' path={getPath('*')} component={Home} />
 						</Route>
 					</Router>
 				</Provider>

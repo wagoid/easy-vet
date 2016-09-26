@@ -57,7 +57,7 @@ class CostumerForm extends Component {
 				key={key}
 				name={name}
 				type={type || 'text'}
-				style={ { display: 'block' } }
+				style={{ display: 'block' }}
 				readOnly={this.state.inViewMode}
 				onChange={this.handleAddressChange}
 				onBlur={this.handleAddressBlur}
@@ -79,7 +79,7 @@ class CostumerForm extends Component {
 			<TextField
 				key={key}
 				name={name}
-				style={ { display: 'block' } }
+				style={{ display: 'block' }}
 				type={type || 'text'}
 				readOnly={this.state.inViewMode}
 				onChange={this.handleChange}
@@ -103,7 +103,7 @@ class CostumerForm extends Component {
 		}
 
 		let floatingAction = (
-			<FloatingActionButton disabled={!this.state.costumer.Id} key='costumerFormPetsAction' style={getStyles().additionalFloatingAction} secondary={true}>
+			<FloatingActionButton disabled={!this.state.costumer.Id} key='costumerFormPetsAction' style={getStyles().additionalFloatingAction} secondary>
 					<Pets />
 			</FloatingActionButton>
 		);
@@ -242,24 +242,24 @@ class CostumerForm extends Component {
 			this.state.costumer.BirthDate = new Date(birthDate);
 			birthDateField = (
 				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							value={this.state.costumer.BirthDate}
-							maxDate={new Date()}
+					name='BirthDate'
+					disabled={this.state.inViewMode}
+					onChange={this.handleBirthDateChange}
+					autoOk={false}
+					floatingLabelText='Birth Date'
+					value={this.state.costumer.BirthDate}
+					maxDate={new Date()}
 						/>
 			);
 		} else {
 			birthDateField = (
 				<DatePicker
-							name="BirthDate"
-							disabled={this.state.inViewMode}
-							onChange={this.handleBirthDateChange}
-							autoOk={false}
-							floatingLabelText="Birth Date"
-							maxDate={new Date()}
+					name='BirthDate'
+					disabled={this.state.inViewMode}
+					onChange={this.handleBirthDateChange}
+					autoOk={false}
+					floatingLabelText='Birth Date'
+					maxDate={new Date()}
 						/>
 			);
 		}
@@ -273,7 +273,7 @@ class CostumerForm extends Component {
 					{birthDateField}
 					<br />
 					
-					<div id="divider-container" style={styles.dividerContainer}>
+					<div id='divider-container' style={styles.dividerContainer}>
 						<Divider />
 					</div>
 					
@@ -284,8 +284,8 @@ class CostumerForm extends Component {
 				</Paper>
 
 				<FloatingActionButton
-						style={styles.floatingAction}
-						onTouchTap={this.state.inViewMode? this.editCostumer : this.saveCostumer}
+					style={styles.floatingAction}
+					onTouchTap={this.state.inViewMode? this.editCostumer : this.saveCostumer}
 					>
 						{ this.state.inViewMode? <ContentEdit /> : <ContentSave /> }
 				</FloatingActionButton>
