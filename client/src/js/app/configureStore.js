@@ -12,6 +12,7 @@ import costumer from '../costumer/reducer';
 import sale from '../sale/reducer';
 import appointment from '../appointment/reducer';
 import animal from '../animal/reducer';
+import stock from '../stock/reducer';
 
 export const configureStore = function (initialState = {}) {
 	const reducer = combineReducers({
