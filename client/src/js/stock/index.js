@@ -19,8 +19,8 @@ class StockList extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.stock.length) {
-			this.actions.fetchStock();
+		if (!this.props.stocks.length) {
+			this.actions.fetchStocks();
 		}
 	}
 
@@ -93,6 +93,6 @@ StockList.contextTypes = {
 }
 
 export default connect(state => ({
-	stocks: state.stocks.stocks,
+	stocks: state.stock.stocks,
 	hasOpenMessage: !!state.main.message.open
 }))(StockList);

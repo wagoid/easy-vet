@@ -71,7 +71,7 @@ const REMOVE_STOCK_FAILURE = 'stock/REMOVE_FAILURE';
 export function fetchStocks() {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
-			params: { method: 'get', url: `${urls.api}/sale/stock`},
+			params: { method: 'get', url: `${urls.api}/stock`},
 			businessErrorActions: [openMessageView, stocksError],
 			fetchErrorActions: [openMessageView, stocksError],
 			successActions: [stocksSuccess]
@@ -83,7 +83,7 @@ export function createStock(stock) {
 	return (dispatch, getState) => {
 		let successActionPayload = {
 			type: 'Success',
-			text: 'Product saved with success!'
+			text: 'Stock saved with success!'
 		};
 		let params = {
 			method:  stock.Id > 0? 'put' : 'post',

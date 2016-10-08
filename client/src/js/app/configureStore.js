@@ -28,7 +28,8 @@ export const configureStore = function (initialState = {}) {
 		sale,
 		appointment,
 		animal,
-		product
+		product,
+		stock
 	});
 
 	return  createStore(reducer, applyMiddleware(thunk, routerMiddleware(browserHistory)));

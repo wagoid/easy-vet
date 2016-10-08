@@ -31,12 +31,13 @@ namespace EasyVet.DAO
         {
             return post(context.Stocks, stocks);
         }
-
+        
         public bool Update(Models.Stock stock)
         {
-            return put(this.context.Stocks, stock);
+            //return put(this.context.Stocks, stock);
+            return true;
         }
-
+        
         public bool Delete(int id)
         {
             return delete(context.Stocks, id);
