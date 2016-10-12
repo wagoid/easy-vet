@@ -99,26 +99,21 @@ export function createCostumer(costumer) {
 	}
 }
 
-function dialogAction(dispatch) {
-	return ({ type, text }) => {
-		return {
-			type: dialogActions.OPEN,
-			payload: {
-				component: Dialog,
-				props: {
-					message: text,
-					title: "Failed to login",
-					open: true,
-					onRequestClose: dispatchCloseDialog(dispatch, Dialog),
-					actions: [<FlatButton key={1} label='OK' primary onTouchTap={dispatchCloseDialog(dispatch, Dialog)} />]
-				}
-			}
-		};
-	};
-}
-
 function dispatchCloseDialog(dispatch, component) {
 	return () => { 
 		dispatch(dialogActions.closeDialog({}, component))
 	};
+}
+
+export function openAddAnimalDialog(config) {
+	dialogActions.openDialog({
+		component: Dialog,
+		props: {
+			fullDialog: true
+		}
+	});
+}
+
+export function closeAnimalDialog(component) {
+	return dialogActions.closeDialog({props: {fullDialog: true}}, component);
 }

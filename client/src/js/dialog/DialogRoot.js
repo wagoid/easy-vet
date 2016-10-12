@@ -15,6 +15,8 @@ class DialogRoot extends Component {
 			return (
 				<Dialog open={false} modal={false} />
 			);
+		} else if(props.fullDialog)  {
+			return <Component {...props} />;
 		} else {
 			return (
 				<Dialog {...props}>

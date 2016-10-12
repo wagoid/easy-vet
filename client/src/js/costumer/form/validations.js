@@ -1,7 +1,8 @@
+let requiredValidation = {
+	required: {}
+};
+
 export function getFieldsValidations() {
-	let requiredValidation = {
-		required: {}
-	};
 	return {
 		Name: requiredValidation,
 		Cpf: requiredValidation,
@@ -13,10 +14,6 @@ export function getFieldsValidations() {
 }
 
 export function getAddressFieldsValidations() {
-	let requiredValidation = {
-		required: {}
-	};
-
 	return {
 		StreetType: requiredValidation,
 		StreetName: requiredValidation,
@@ -24,5 +21,12 @@ export function getAddressFieldsValidations() {
 		Municipality: requiredValidation,
 		State: requiredValidation,
 		ZipCode: requiredValidation
+	};
+}
+
+export function getAnimalFieldsValidations() {
+	return {
+		Name: requiredValidation,
+		Breed: requiredValidation
 	};
 }
