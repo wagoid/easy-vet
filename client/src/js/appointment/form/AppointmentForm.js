@@ -5,6 +5,8 @@ import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader
 import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
+import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
+import Done from 'material-ui/svg-icons/action/play-arrow';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
 import getStyles from './styles';
@@ -13,6 +15,7 @@ import * as AppointmentActions from '../actions';
 import { isString } from '../../helpers/util';
 import CostumerSelect from '../../costumer/CostumerSelect';
 import AnimalSelect from '../../animal/AnimalSelect';
+import { setAdditionalFloatingActions } from '../../app/appbar/actions';
 
 const FETCH_ANIMAL_URL = '/appointment/animal/fromcostumer/';
 
@@ -25,11 +28,11 @@ let defaultAppointment = {
 };
 
 class AppointmentForm extends Component {
-	
-	constructor (props) {
+
+	constructor(props) {
 		super(props);
 		this.state = {
-			error: { },
+			error: {},
 			appointment: defaultAppointment
 		};
 		this.validations = getFieldsValidations();
@@ -38,6 +41,8 @@ class AppointmentForm extends Component {
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleCostumerChange = this.handleCostumerChange.bind(this);
 		this.handleAnimalChange = this.handleAnimalChange.bind(this);
+		this.handlePlayClick = this.handlePlayClick.bind(this);
+		this.handleFinishClick = this.handleFinishClick.bind(this);
 		this.actions = bindActionCreators(AppointmentActions, this.props.dispatch);
 	}
 
@@ -46,10 +51,27 @@ class AppointmentForm extends Component {
 		if (!locationState.veterinaryId || !this.props.employees) {
 			this.context.router.push('/appointment');
 		} else {
+			let inViewMode = locationState.employeeId && locationState.inViewMode;
 			this.setState({
+				inViewMode,
 				Date: locationState.date,
 				Veterinary: this.props.employees.find(emp => emp.Id === locationState.veterinaryId)
 			});
+
+			if (inViewMode) {
+				let playAction = (
+					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handlePlayClick} key='appointmentFormPlayAction' style={getStyles().additionalFloatingAction} secondary>
+						<PlayAppointment />
+					</FloatingActionButton>
+				);
+				let finishAction = (
+					<FloatingActionButton disabled={!this.state.costumer.Id} ouTouchTap={this.handleFinishClick} key='appointmentFormDoneAction' style={getStyles().additionalFloatingAction} secondary>
+						<Done />
+					</FloatingActionButton>
+				);
+				this.actions.setAdditionalFloatingActions([playAction, finishAction]);
+			}
+			
 		}
 	}
 
@@ -77,7 +99,7 @@ class AppointmentForm extends Component {
 		let errorText = this.getErrorText(value, fieldName);
 		let appointment = { ...this.state.appointment, [fieldName]: value };
 		let error = { ...this.state.error, [fieldName]: errorText };
-		
+
 		this.setState({
 			appointment,
 			error
@@ -143,7 +165,7 @@ class AppointmentForm extends Component {
 		let styles = getStyles(this.props.hasOpenMessage);
 		let hasCostumerError = !!this.state.error.Costumer;
 		let hasAnimalError = !!this.state.error.Animal;
-		let costumerId = this.state.appointment.Costumer? this.state.appointment.Costumer.Id : null;
+		let costumerId = this.state.appointment.Costumer ? this.state.appointment.Costumer.Id : null;
 		return (
 			<div id='appointment-form'>
 
@@ -157,7 +179,7 @@ class AppointmentForm extends Component {
 						value={this.state.appointment.Name}
 						errorText={this.state.error.Name}
 						floatingLabelText='Name'
-					/>
+						/>
 
 					<TextField
 						name='Description'
@@ -168,7 +190,7 @@ class AppointmentForm extends Component {
 						value={this.state.appointment.Description}
 						errorText={this.state.error.Description}
 						floatingLabelText='Description'
-					/>
+						/>
 
 					<TextField
 						name='Date'
@@ -176,16 +198,16 @@ class AppointmentForm extends Component {
 						readOnly
 						style={{ display: 'block' }}
 						floatingLabelText='Date'
-						value={dateFormat(this.state.Date, 'LLL')}
-					/>
+						value={dateFormat(this.state.Date, 'LLL') }
+						/>
 
 					<CostumerSelect
 						onChange={this.handleCostumerChange}
 						errorText={this.state.error.Costumer}
 						floatingLabelText='Costumer'
 						defaultValue={costumerId}
-					/>
-					{ hasCostumerError? (<div style={styles.errorText}>This field is required</div>) : null }
+						/>
+					{ hasCostumerError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
 					<br />
 
@@ -195,17 +217,17 @@ class AppointmentForm extends Component {
 						floatingLabelText='Animal'
 						fetchUrl={FETCH_ANIMAL_URL}
 						costumerId={costumerId}
-						defaultValue={this.state.appointment.Animal? this.state.appointment.Animal.Id : null}
-					/>
-					{ hasAnimalError? (<div style={styles.errorText}>This field is required</div>) : null }
+						defaultValue={this.state.appointment.Animal ? this.state.appointment.Animal.Id : null}
+						/>
+					{ hasAnimalError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
 				</Paper>
 
-				{ this.state.inViewMode? null :
+				{ this.state.inViewMode ? null :
 					(<FloatingActionButton
 						style={styles.floatingAction}
 						onTouchTap={this.saveAppointment}
-					>
+						>
 						<ContentSave />
 					</FloatingActionButton>)
 				}
