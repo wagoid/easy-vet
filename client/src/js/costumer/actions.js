@@ -105,11 +105,13 @@ function dispatchCloseDialog(dispatch, component) {
 	};
 }
 
-export function openAddAnimalDialog(config) {
-	dialogActions.openDialog({
+export function openAddAnimalDialog(owner) {
+	return dialogActions.openDialog({
 		component: Dialog,
 		props: {
-			fullDialog: true
+			fullDialog: true,
+			open: true,
+			owner
 		}
 	});
 }

@@ -5,8 +5,8 @@ import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader
 import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
-import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
-import Done from 'material-ui/svg-icons/action/play-arrow';
+//import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
+//import Done from 'material-ui/svg-icons/action/play-arrow';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
 import getStyles from './styles';

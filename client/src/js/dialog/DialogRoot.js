@@ -7,7 +7,7 @@ class DialogRoot extends Component {
 		super(props);
 	}
 	render() {
-		let props = this.props.dialog.props,
+		let { fullDialog, ...props} = this.props.dialog.props || {},
 			Component = this.props.dialog.component,
 			componentProps = this.props.dialog.componentProps || {};
 			
@@ -15,7 +15,7 @@ class DialogRoot extends Component {
 			return (
 				<Dialog open={false} modal={false} />
 			);
-		} else if(props.fullDialog)  {
+		} else if(fullDialog)  {
 			return <Component {...props} />;
 		} else {
 			return (

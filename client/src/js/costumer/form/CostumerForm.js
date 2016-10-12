@@ -94,14 +94,15 @@ class CostumerForm extends Component {
 	}
 
 	openAddAnimalDialog() {
-		this.actions.openAddAnimalDialog();
+		this.actions.openAddAnimalDialog(this.state.costumer);
 	}
 
 	componentDidMount() {
 		let locationState = this.props.location.state;
+		let costumer;
 		if (locationState && locationState.costumerId && locationState.inViewMode) {
 			let costumers = this.props.costumers || [];
-			let costumer = costumers.find(costumer => costumer.Id === locationState.costumerId);
+			costumer = costumers.find(costumer => costumer.Id === locationState.costumerId);
 			if (costumer) {
 				this.setState({ costumer, inViewMode: locationState.inViewMode })
 			}
@@ -109,7 +110,7 @@ class CostumerForm extends Component {
 
 		let floatingAction = (
 			<FloatingActionButton
-				disabled={!this.state.costumer.Id}
+				disabled={!costumer || !costumer.Id}
 				key='costumerFormPetsAction'
 				style={getStyles().additionalFloatingAction}
 				secondary
