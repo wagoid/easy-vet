@@ -5,8 +5,8 @@ import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader
 import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
-//import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
-//import Done from 'material-ui/svg-icons/action/play-arrow';
+import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
+import Done from 'material-ui/svg-icons/action/done';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
 import getStyles from './styles';
@@ -43,7 +43,7 @@ class AppointmentForm extends Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this);
 		this.handlePlayClick = this.handlePlayClick.bind(this);
 		this.handleFinishClick = this.handleFinishClick.bind(this);
-		this.actions = bindActionCreators(AppointmentActions, this.props.dispatch);
+		this.actions = bindActionCreators({...AppointmentActions, setAdditionalFloatingActions}, this.props.dispatch);
 	}
 
 	componentDidMount() {
@@ -57,15 +57,15 @@ class AppointmentForm extends Component {
 				Date: locationState.date,
 				Veterinary: this.props.employees.find(emp => emp.Id === locationState.veterinaryId)
 			});
-
+			
 			if (inViewMode) {
 				let playAction = (
-					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handlePlayClick} key='appointmentFormPlayAction' style={getStyles().additionalFloatingAction} secondary>
+					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handleFinishClick} key='appointmentFormPlayAction' style={getStyles().playButton} secondary>
 						<PlayAppointment />
 					</FloatingActionButton>
 				);
 				let finishAction = (
-					<FloatingActionButton disabled={!this.state.costumer.Id} ouTouchTap={this.handleFinishClick} key='appointmentFormDoneAction' style={getStyles().additionalFloatingAction} secondary>
+					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handlePlayClick} key='appointmentFormDoneAction' style={getStyles().finishButton} secondary>
 						<Done />
 					</FloatingActionButton>
 				);
@@ -73,6 +73,14 @@ class AppointmentForm extends Component {
 			}
 			
 		}
+	}
+
+	handleFinishClick() {
+
+	}
+
+	handlePlayClick() {
+		
 	}
 
 	handleChange(event, value, name) {

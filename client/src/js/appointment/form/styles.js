@@ -5,7 +5,8 @@ import errorText from '../../styles/errorText';
 export default function getStyles(hasOpenMessage) {
 	return {
 		floatingAction: floatingActionStyles(hasOpenMessage),
-		additionalFloatingAction: additionalFloatingActionStyles(),
+		finishButton: additionalFloatingActionStyles(),
+		playButton: { ...additionalFloatingActionStyles(), right: '76px' },
 		paper,
 		dividerContainer: {
 			marginTop: '20px'
