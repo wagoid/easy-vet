@@ -42,6 +42,7 @@ class CostumerForm extends Component {
 		this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBirthDateChange = this.handleBirthDateChange.bind(this);
+		this.openAddAnimalDialog = this.openAddAnimalDialog.bind(this);
 		this.actions = bindActionCreators({ ...CostumerActions, setAdditionalFloatingActions }, this.props.dispatch);
 	}
 
@@ -92,6 +93,10 @@ class CostumerForm extends Component {
 		);
 	}
 
+	openAddAnimalDialog() {
+		this.actions.openAddAnimalDialog();
+	}
+
 	componentDidMount() {
 		let locationState = this.props.location.state;
 		if (locationState && locationState.costumerId && locationState.inViewMode) {
@@ -103,7 +108,12 @@ class CostumerForm extends Component {
 		}
 
 		let floatingAction = (
-			<FloatingActionButton disabled={!this.state.costumer.Id} key='costumerFormPetsAction' style={getStyles().additionalFloatingAction} secondary>
+			<FloatingActionButton
+				disabled={!this.state.costumer.Id}
+				key='costumerFormPetsAction'
+				style={getStyles().additionalFloatingAction}
+				secondary
+				onClick={this.openAddAnimalDialog}>
 					<Pets />
 			</FloatingActionButton>
 		);
