@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace EasyVet.Models
@@ -11,12 +12,21 @@ namespace EasyVet.Models
         public string Description { get; set; }
         [Required]
         public DateTime Date { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
-        public Veterinary Veterinary { get; set; }
+        [ForeignKey("Veterinary")]
+        public int VeterinaryId { get; set; }
         [Required]
-        public Costumer Costumer { get; set; }
+        [ForeignKey("Costumer")]
+        public int CostumerId { get; set; }
         [Required]
-        public Animal Animal { get; set; }
+        [ForeignKey("Animal")]
+        public int AnimalId { get; set; }
+
+        public virtual Veterinary Veterinary { get; set; }
+        public virtual Costumer Costumer { get; set; }
+        public virtual Animal Animal { get; set; }
     }
 }

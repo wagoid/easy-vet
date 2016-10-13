@@ -42,6 +42,7 @@ class AnimalSelect extends Component {
 			<SelectField
 				floatingLabelText={this.props.floatingLabelText}
 				fullWidth={this.props.fullWidth}
+				disabled={this.props.disabled}
 				value={this.state.value}
 				onChange={this.handleChange}
 			>
@@ -60,7 +61,8 @@ AnimalSelect.PropTypes = {
 }
 
 AnimalSelect.defaultProps = {
-	animals: []
+	animals: [],
+	disabled: false
 }
 
 

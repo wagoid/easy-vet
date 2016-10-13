@@ -207,6 +207,22 @@
     <Compile Include="Migrations\201609110334164_getterSale.Designer.cs">
       <DependentUpon>201609110334164_getterSale.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610122153348_AppointmentUpdate.cs" />
+    <Compile Include="Migrations\201610122153348_AppointmentUpdate.Designer.cs">
+      <DependentUpon>201610122153348_AppointmentUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610122209017_ChangeDatesToDateTime2.cs" />
+    <Compile Include="Migrations\201610122209017_ChangeDatesToDateTime2.Designer.cs">
+      <DependentUpon>201610122209017_ChangeDatesToDateTime2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610122226293_addVirtual.cs" />
+    <Compile Include="Migrations\201610122226293_addVirtual.Designer.cs">
+      <DependentUpon>201610122226293_addVirtual.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610122302303_AppointmentStartDate.cs" />
+    <Compile Include="Migrations\201610122302303_AppointmentStartDate.Designer.cs">
+      <DependentUpon>201610122302303_AppointmentStartDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -266,6 +282,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609110334164_getterSale.resx">
       <DependentUpon>201609110334164_getterSale.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610122153348_AppointmentUpdate.resx">
+      <DependentUpon>201610122153348_AppointmentUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610122209017_ChangeDatesToDateTime2.resx">
+      <DependentUpon>201610122209017_ChangeDatesToDateTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610122226293_addVirtual.resx">
+      <DependentUpon>201610122226293_addVirtual.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610122302303_AppointmentStartDate.resx">
+      <DependentUpon>201610122302303_AppointmentStartDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
