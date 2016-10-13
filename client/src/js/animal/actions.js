@@ -58,7 +58,7 @@ export function createAnimal(animal) {
 		};
 		let params = {
 			method: 'post',
-			url: `${urls.api}/costumer/animal`,
+			url: `${urls.api}/costumer/dog`,
 			data: JSON.stringify(animal)
 		};
 		return genericFetch(dispatch, {

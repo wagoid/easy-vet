@@ -34,9 +34,10 @@ class CostumerSelect extends Component {
 		});
 
 		return (
-			<SelectField
+			<SelectField 
 				floatingLabelText={this.props.floatingLabelText}
 				fullWidth={this.props.fullWidth}
+				disabled={this.props.disabled}
 				value={this.state.value}
 				onChange={this.handleChange}
 			>
@@ -53,7 +54,8 @@ CostumerSelect.PropTypes = {
 }
 
 CostumerSelect.defaultProps = {
-	costumers: []
+	costumers: [],
+	disabled: false
 }
 
 

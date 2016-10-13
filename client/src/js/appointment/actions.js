@@ -78,11 +78,11 @@ export function fetchAppointments() {
 	}
 }
 
-export function createAppointment(appointment) {
+export function sendAppointment(appointment, successMessage) {
 	return (dispatch, getState) => {
 		let successActionPayload = {
 			type: 'Success',
-			text: 'Appointment saved with success!'
+			text: successMessage ||  'Appointment saved with success!'
 		};
 		let params = {
 			method:  appointment.Id > 0? 'put' : 'post',

@@ -11,8 +11,5 @@ namespace EasyVet.Models
     {
         //public new int Id { get; set; }
         public string Specialty { get; set; }
-
-        public List<Appointment> Appointments { get; set; }
-
     }
 }

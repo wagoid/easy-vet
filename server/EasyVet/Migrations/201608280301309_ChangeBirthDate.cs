@@ -7,13 +7,13 @@ namespace EasyVet.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Users", "BirthDate", c => c.DateTime(nullable: false));
+            AddColumn("dbo.Users", "BirthDate", c => c.DateTime(nullable: false, precision: 7, storeType: "datetime2"));
             DropColumn("dbo.Users", "BirdhDate");
         }
         
         public override void Down()
         {
-            AddColumn("dbo.Users", "BirdhDate", c => c.DateTime(nullable: false));
+            AddColumn("dbo.Users", "BirdhDate", c => c.DateTime(nullable: false, precision: 7, storeType: "datetime2"));
             DropColumn("dbo.Users", "BirthDate");
         }
     }

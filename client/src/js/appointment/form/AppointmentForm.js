@@ -20,11 +20,13 @@ import { setAdditionalFloatingActions } from '../../app/appbar/actions';
 const FETCH_ANIMAL_URL = '/appointment/animal/fromcostumer/';
 
 let defaultAppointment = {
-	Costumer: null,
-	Animal: null,
-	Veterinary: null,
+	CostumerId: null,
+	AnimalId: null,
+	VeterinaryId: null,
 	Name: '',
-	Description: ''
+	Description: '',
+	StartDate: '',
+	EndDate: ''
 };
 
 class AppointmentForm extends Component {
@@ -48,39 +50,30 @@ class AppointmentForm extends Component {
 
 	componentDidMount() {
 		let locationState = this.props.location.state || {};
-		if (!locationState.veterinaryId || !this.props.employees) {
+		if (!locationState.appointment && (!locationState.veterinaryId || !this.props.employees)) {
 			this.context.router.push('/appointment');
 		} else {
-			let inViewMode = locationState.employeeId && locationState.inViewMode;
+			let inViewMode = locationState.appointment && locationState.inViewMode;
+			let	appointment = inViewMode? locationState.appointment : {...this.state.appointment, VeterinaryId: locationState.veterinaryId, Date: locationState.date}
 			this.setState({
 				inViewMode,
-				Date: locationState.date,
-				Veterinary: this.props.employees.find(emp => emp.Id === locationState.veterinaryId)
+				appointment
 			});
-			
-			if (inViewMode) {
-				let playAction = (
-					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handleFinishClick} key='appointmentFormPlayAction' style={getStyles().playButton} secondary>
-						<PlayAppointment />
-					</FloatingActionButton>
-				);
-				let finishAction = (
-					<FloatingActionButton disabled={!this.state.costumer.Id} onTouchTap={this.handlePlayClick} key='appointmentFormDoneAction' style={getStyles().finishButton} secondary>
-						<Done />
-					</FloatingActionButton>
-				);
-				this.actions.setAdditionalFloatingActions([playAction, finishAction]);
-			}
-			
+
+			this.setAppointmentControlActions();
 		}
 	}
 
 	handleFinishClick() {
-
+		let endDate = this.state.appointment.EndDate = new Date();
+		this.saveAppointment(`Appointment ended at ${moment(endDate).format('LT')}`)
+			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
 	}
 
 	handlePlayClick() {
-		
+		let startDate = this.state.appointment.StartDate = new Date();
+		this.saveAppointment(`Started appointment at ${moment(startDate).format('LT')}`)
+			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
 	}
 
 	handleChange(event, value, name) {
@@ -93,13 +86,13 @@ class AppointmentForm extends Component {
 
 	handleCostumerChange(event, index, id, costumer) {
 		let error = { ...this.state.error, Costumer: '' };
-		let appointment = { ...this.state.appointment, Costumer: costumer }
+		let appointment = { ...this.state.appointment, CostumerId: id }
 		this.setState({ error, appointment });
 	}
 
 	handleAnimalChange(event, index, id, animal) {
 		let error = { ...this.state.error, Animal: '' };
-		let appointment = { ...this.state.appointment, Animal: animal }
+		let appointment = { ...this.state.appointment, AnimalId: id }
 		this.setState({ error, appointment });
 	}
 
@@ -138,7 +131,8 @@ class AppointmentForm extends Component {
 		return errorText;
 	}
 
-	saveAppointment() {
+	saveAppointment(successMessage) {
+		let savePromise;
 		let error = this.getErrors(error);
 		let hasError = Object.keys(error).some(prop => !!error[prop]);
 
@@ -147,14 +141,18 @@ class AppointmentForm extends Component {
 				error,
 				triedToSave: true
 			});
+
+			savePromise = Promise.reject();
 		} else {
-			this.actions.createAppointment(this.state.appointment)
+			savePromise = this.actions.sendAppointment(this.state.appointment, isString(successMessage)? successMessage : '')
 				.then(() => {
 					if (this.state.appointment.Id > 0) {
 						this.setState({ inViewMode: true });
 					}
 				});
 		}
+
+		return savePromise;
 	}
 
 	getErrors() {
@@ -168,12 +166,39 @@ class AppointmentForm extends Component {
 		return error;
 	}
 
+	setAppointmentControlActions(state = this.state) {
+		if (state.inViewMode) {
+			let actions = [];
+			if (!state.appointment.StartDate) {
+				actions.push((
+					<FloatingActionButton onTouchTap={this.handlePlayClick} key='appointmentFormPlayAction' style={getStyles().playButton} secondary>
+						<PlayAppointment />
+					</FloatingActionButton>
+				));
+			} else if (!state.appointment.EndDate) {
+				actions.push((
+					<FloatingActionButton onTouchTap={this.handleFinishClick} key='appointmentFormDoneAction' style={getStyles().finishButton} secondary>
+						<Done />
+					</FloatingActionButton>
+				))
+			}
+
+			this.actions.setAdditionalFloatingActions(actions);
+		}
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if (nextState.inViewMode !== this.state.inViewMode || nextState.shouldUpdateActions !== this.state.shouldUpdateActions) {
+			this.setAppointmentControlActions(nextState);
+		}
+	}
+
 
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
 		let hasCostumerError = !!this.state.error.Costumer;
 		let hasAnimalError = !!this.state.error.Animal;
-		let costumerId = this.state.appointment.Costumer ? this.state.appointment.Costumer.Id : null;
+		let costumerId = this.state.appointment.CostumerId || null;
 		return (
 			<div id='appointment-form'>
 
@@ -182,6 +207,7 @@ class AppointmentForm extends Component {
 						name='Name'
 						type='text'
 						style={{ display: 'block' }}
+						readOnly={this.state.inViewMode}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
 						value={this.state.appointment.Name}
@@ -193,6 +219,7 @@ class AppointmentForm extends Component {
 						name='Description'
 						type='text'
 						style={{ display: 'block' }}
+						readOnly={this.state.inViewMode}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
 						value={this.state.appointment.Description}
@@ -206,27 +233,44 @@ class AppointmentForm extends Component {
 						readOnly
 						style={{ display: 'block' }}
 						floatingLabelText='Date'
-						value={dateFormat(this.state.Date, 'LLL') }
+						value={dateFormat(this.state.appointment.Date, 'LLL')}
 						/>
 
-					<CostumerSelect
-						onChange={this.handleCostumerChange}
-						errorText={this.state.error.Costumer}
-						floatingLabelText='Costumer'
-						defaultValue={costumerId}
+					{ this.state.inViewMode?
+						<TextField
+							name='Costumer'
+							floatingLabelText='Costumer'
+							readOnly
+							style={{ display: 'block' }}
+							value={this.state.appointment.Costumer? this.state.appointment.Costumer.Name : ''}
+						/> :
+						<CostumerSelect
+							onChange={this.handleCostumerChange}
+							errorText={this.state.error.Costumer}
+							floatingLabelText='Costumer'
+							defaultValue={costumerId}
 						/>
+					}
 					{ hasCostumerError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
 					<br />
-
-					<AnimalSelect
-						onChange={this.handleAnimalChange}
-						errorText={this.state.error.Animal}
-						floatingLabelText='Animal'
-						fetchUrl={FETCH_ANIMAL_URL}
-						costumerId={costumerId}
-						defaultValue={this.state.appointment.Animal ? this.state.appointment.Animal.Id : null}
+					{ this.state.inViewMode?
+						<TextField
+							name='Animal'
+							floatingLabelText='Animal'
+							readOnly
+							style={{ display: 'block' }}
+							value={this.state.appointment.Animal? this.state.appointment.Animal.Name : ''}
+						/> :
+						<AnimalSelect
+							onChange={this.handleAnimalChange}
+							errorText={this.state.error.Animal}
+							floatingLabelText='Animal'
+							fetchUrl={FETCH_ANIMAL_URL}
+							costumerId={costumerId}
+							defaultValue={this.state.appointment.AnimalId || null}
 						/>
+					}
 					{ hasAnimalError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
 				</Paper>

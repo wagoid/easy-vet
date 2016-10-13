@@ -34,7 +34,7 @@ namespace EasyVet.DAO
 
         public bool Update(Models.Appointment appointment)
         {
-            var appointmentFromBd = context.Costumers.FirstOrDefault(d => d.Id == appointment.Id);
+            var appointmentFromBd = context.Appointments.FirstOrDefault(d => d.Id == appointment.Id);
             throwEntityNotFoundWhenNull(appointmentFromBd, appointment.Id);
             context.Entry(appointmentFromBd).CurrentValues.SetValues(appointment);
             context.Entry(appointmentFromBd).State = EntityState.Modified;
