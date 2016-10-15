@@ -158,6 +158,7 @@
     <Compile Include="App_Start\AuthenticationHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Appointment.cs" />
+    <Compile Include="Controllers\AppointmentConsultation.cs" />
     <Compile Include="Controllers\Authentication.cs" />
     <Compile Include="Controllers\Costumer.cs" />
     <Compile Include="Controllers\Generic\Base.cs" />
@@ -260,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AppointmentConsult\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

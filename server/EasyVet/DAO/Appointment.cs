@@ -70,5 +70,15 @@ namespace EasyVet.DAO
 
             return appointments;
         }
+
+        public List<Models.Appointment> GetAnimalAppointments(int id)
+        {
+            return context.Appointments
+                .Include(a => a.Veterinary)
+                .Include(a => a.Costumer)
+                .Include(a => a.Animal)
+                .Where(a => a.AnimalId == id)
+                .ToList();
+        }
     }
 }

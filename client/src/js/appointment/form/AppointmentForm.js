@@ -6,6 +6,7 @@ import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
+import ListIcon from 'material-ui/svg-icons/action/list';
 import Done from 'material-ui/svg-icons/action/done';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
@@ -16,6 +17,7 @@ import { isString } from '../../helpers/util';
 import CostumerSelect from '../../costumer/CostumerSelect';
 import AnimalSelect from '../../animal/AnimalSelect';
 import { setAdditionalFloatingActions } from '../../app/appbar/actions';
+import AppointmentsSimpleList from './AppointmentsSimpleList';
 
 const FETCH_ANIMAL_URL = '/appointment/animal/fromcostumer/';
 
@@ -45,6 +47,7 @@ class AppointmentForm extends Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this);
 		this.handlePlayClick = this.handlePlayClick.bind(this);
 		this.handleFinishClick = this.handleFinishClick.bind(this);
+		this.handleListClick = this.handleListClick.bind(this);
 		this.actions = bindActionCreators({...AppointmentActions, setAdditionalFloatingActions}, this.props.dispatch);
 	}
 
@@ -65,15 +68,31 @@ class AppointmentForm extends Component {
 	}
 
 	handleFinishClick() {
-		let endDate = this.state.appointment.EndDate = new Date();
-		this.saveAppointment(`Appointment ended at ${moment(endDate).format('LT')}`)
-			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
+		this.saveAppointment('appointmentconsultation/end', `Appointment ended at ${moment().format('LT')}`)
+			.then(newAppointment => {
+				this.setState({
+					shouldUpdateActions: !this.state.shouldUpdateActions,
+					appointment: { ...this.state.appointment, EndDate: newAppointment.EndDate }
+				});
+			});
 	}
 
 	handlePlayClick() {
-		let startDate = this.state.appointment.StartDate = new Date();
-		this.saveAppointment(`Started appointment at ${moment(startDate).format('LT')}`)
-			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
+		this.saveAppointment('appointmentconsultation/start', `Started appointment at ${moment().format('LT')}`)
+			.then(newAppointment => {
+				this.setState({
+					shouldUpdateActions: !this.state.shouldUpdateActions,
+					appointment: { ...this.state.appointment, StartDate: newAppointment.StartDate }
+				});
+			});
+	}
+
+	handleListClick() {
+		this.actions.previousAppointmentsDialog({
+			component: AppointmentsSimpleList,
+			componentProps: { appointment: this.state.appointment },
+			onRequestClose: () => this.actions.closeDialog(AppointmentsSimpleList)
+		})
 	}
 
 	handleChange(event, value, name) {
@@ -131,7 +150,7 @@ class AppointmentForm extends Component {
 		return errorText;
 	}
 
-	saveAppointment(successMessage) {
+	saveAppointment(route, successMessage) {
 		let savePromise;
 		let error = this.getErrors(error);
 		let hasError = Object.keys(error).some(prop => !!error[prop]);
@@ -144,11 +163,12 @@ class AppointmentForm extends Component {
 
 			savePromise = Promise.reject();
 		} else {
-			savePromise = this.actions.sendAppointment(this.state.appointment, isString(successMessage)? successMessage : '')
-				.then(() => {
+			savePromise = this.actions.sendAppointment(this.state.appointment, isString(route)? route : '', isString(successMessage)? successMessage : '')
+				.then(result => {
 					if (this.state.appointment.Id > 0) {
 						this.setState({ inViewMode: true });
 					}
+					return result;
 				});
 		}
 
@@ -182,6 +202,12 @@ class AppointmentForm extends Component {
 					</FloatingActionButton>
 				))
 			}
+
+			actions.push((
+				<FloatingActionButton onTouchTap={this.handleListClick} key='listAppointmentsAction' style={getStyles().listButton} secondary>
+					<ListIcon />
+				</FloatingActionButton>
+			))
 
 			this.actions.setAdditionalFloatingActions(actions);
 		}
@@ -273,6 +299,20 @@ class AppointmentForm extends Component {
 					}
 					{ hasAnimalError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
+					<TextField
+						name='StartDate'
+						floatingLabelText='Start'
+						readOnly
+						style={{ display: 'block' }}
+						value={this.state.appointment.StartDate || ''}
+					/>
+					<TextField
+						name='EndDate'
+						floatingLabelText='End'
+						readOnly
+						style={{ display: 'block' }}
+						value={this.state.appointment.EndDate || ''}
+					/>
 				</Paper>
 
 				{ this.state.inViewMode ? null :

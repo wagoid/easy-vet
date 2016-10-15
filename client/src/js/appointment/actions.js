@@ -67,10 +67,10 @@ export const REMOVE_APPOINTMENT = 'appointment/REMOVE';
 export const REMOVE_APPOINTMENT_SUCCESS = 'appointment/REMOVE_SUCCESS';
 export const REMOVE_APPOINTMENT_FAILURE = 'appointment/REMOVE_FAILURE';
 
-export function fetchAppointments() {
+export function fetchAppointments(route) {
 	return (dispatch, getState) => {
 		return genericFetch(dispatch, {
-			params: { method: 'get', url: `${urls.api}/appointment`},
+			params: { method: 'get', url: `${urls.api}/${route || 'appointment'}`},
 			businessErrorActions: [openMessageView, appointmentsError],
 			fetchErrorActions: [openMessageView, appointmentsError],
 			successActions: [appointmentsSuccess]
@@ -78,15 +78,15 @@ export function fetchAppointments() {
 	}
 }
 
-export function sendAppointment(appointment, successMessage) {
+export function sendAppointment(appointment, route, successMessage) {
 	return (dispatch, getState) => {
 		let successActionPayload = {
 			type: 'Success',
-			text: successMessage ||  'Appointment saved with success!'
+			text: successMessage || 'Appointment saved with success!'
 		};
 		let params = {
-			method:  appointment.Id > 0? 'put' : 'post',
-			url: `${urls.api}/appointment`,
+			method: appointment.Id > 0? 'put' : 'post',
+			url: `${urls.api}/${route || 'appointment'}`,
 			data: JSON.stringify(appointment)
 		};
 		return genericFetch(dispatch, {
@@ -113,6 +113,21 @@ export function filterDialog(config) {
 	});
 }
 
-export function closeFilterDialog(component) {
+export function closeDialog(component) {
 	return dialogActions.closeDialog({}, component);
+}
+
+export function previousAppointmentsDialog(config) {
+	let { component, onRequestClose, componentProps } = config;
+	return dialogActions.openDialog({
+		component,
+		componentProps,
+		props: {
+			title: "Previous appointments",
+			open: true,
+			onRequestClose: onRequestClose,
+			actions: [],
+			autoScrollBodyContent: true
+		}
+	});
 }

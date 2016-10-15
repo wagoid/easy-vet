@@ -7,6 +7,7 @@ export default function getStyles(hasOpenMessage) {
 		floatingAction: floatingActionStyles(hasOpenMessage),
 		finishButton: { ...additionalFloatingActionStyles(), right: '76px' },
 		playButton: { ...additionalFloatingActionStyles(), right: '76px' },
+		listButton: additionalFloatingActionStyles(),
 		paper,
 		dividerContainer: {
 			marginTop: '20px'
