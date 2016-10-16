@@ -1,4 +1,7 @@
 export function dateFormat(date, type) {
+	if (!date) {
+		return '';
+	}
 	date = new Date(date);
 	if (!type || type === 'date') {
 		date = 'L';

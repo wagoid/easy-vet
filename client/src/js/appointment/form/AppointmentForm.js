@@ -6,6 +6,8 @@ import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import PlayAppointment from 'material-ui/svg-icons/av/play-arrow';
+import ListIcon from 'material-ui/svg-icons/action/list';
+import DiagnosisIcon from 'material-ui/svg-icons/editor/format-align-justify';
 import Done from 'material-ui/svg-icons/action/done';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
@@ -16,6 +18,8 @@ import { isString } from '../../helpers/util';
 import CostumerSelect from '../../costumer/CostumerSelect';
 import AnimalSelect from '../../animal/AnimalSelect';
 import { setAdditionalFloatingActions } from '../../app/appbar/actions';
+import AppointmentsSimpleList from './AppointmentsSimpleList';
+import DiagnosisDialog from './diagnosisDialog';
 
 const FETCH_ANIMAL_URL = '/appointment/animal/fromcostumer/';
 
@@ -45,6 +49,8 @@ class AppointmentForm extends Component {
 		this.handleAnimalChange = this.handleAnimalChange.bind(this);
 		this.handlePlayClick = this.handlePlayClick.bind(this);
 		this.handleFinishClick = this.handleFinishClick.bind(this);
+		this.handleListClick = this.handleListClick.bind(this);
+		this.handleDiagnosisClick = this.handleDiagnosisClick.bind(this);
 		this.actions = bindActionCreators({...AppointmentActions, setAdditionalFloatingActions}, this.props.dispatch);
 	}
 
@@ -65,15 +71,36 @@ class AppointmentForm extends Component {
 	}
 
 	handleFinishClick() {
-		let endDate = this.state.appointment.EndDate = new Date();
-		this.saveAppointment(`Appointment ended at ${moment(endDate).format('LT')}`)
-			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
+		this.saveAppointment('appointmentconsultation/end', `Appointment ended at ${moment().format('LT')}`)
+			.then(() => {
+				this.setState({shouldUpdateActions: !this.state.shouldUpdateActions});
+			});
 	}
 
 	handlePlayClick() {
-		let startDate = this.state.appointment.StartDate = new Date();
-		this.saveAppointment(`Started appointment at ${moment(startDate).format('LT')}`)
-			.then(() => this.setState({shouldUpdateActions: !this.state.shouldUpdateActions}));
+		this.saveAppointment('appointmentconsultation/start', `Started appointment at ${moment().format('LT')}`)
+			.then(() => {
+				this.setState({shouldUpdateActions: !this.state.shouldUpdateActions});
+			});
+	}
+
+	handleListClick() {
+		this.actions.previousAppointmentsDialog({
+			component: AppointmentsSimpleList,
+			componentProps: { appointment: this.state.appointment },
+			onRequestClose: () => this.actions.closeDialog(AppointmentsSimpleList)
+		})
+	}
+
+	handleDiagnosisClick() {
+		let closeDiagnosis = () => this.actions.closeDialog(DiagnosisDialog);
+		this.actions.diagnosisDialog({
+			component: DiagnosisDialog,
+			componentProps: { appointment: this.state.appointment, onChange: diagnosis => this.setState({ appointment: { ...this.state.appointment, Diagnosis: diagnosis } }) },
+			onRequestClose: closeDiagnosis,
+			onOk: () => this.saveAppointment('diagnosis', 'Diagnosis saved with success!').then(closeDiagnosis),
+			showActions: this.isOngoingAppointment(this.state.appointment)
+		});
 	}
 
 	handleChange(event, value, name) {
@@ -131,7 +158,7 @@ class AppointmentForm extends Component {
 		return errorText;
 	}
 
-	saveAppointment(successMessage) {
+	saveAppointment(route, successMessage) {
 		let savePromise;
 		let error = this.getErrors(error);
 		let hasError = Object.keys(error).some(prop => !!error[prop]);
@@ -144,10 +171,14 @@ class AppointmentForm extends Component {
 
 			savePromise = Promise.reject();
 		} else {
-			savePromise = this.actions.sendAppointment(this.state.appointment, isString(successMessage)? successMessage : '')
-				.then(() => {
+			savePromise = this.actions.sendAppointment(this.state.appointment, isString(route)? route : '', isString(successMessage)? successMessage : '')
+				.then(newAppointment => {
 					if (this.state.appointment.Id > 0) {
-						this.setState({ inViewMode: true });
+						let newState = { inViewMode: true};
+						if (newAppointment !== true) {
+							newState.appointment = newAppointment;
+						}
+						this.setState(newState);
 					}
 				});
 		}
@@ -171,20 +202,37 @@ class AppointmentForm extends Component {
 			let actions = [];
 			if (!state.appointment.StartDate) {
 				actions.push((
-					<FloatingActionButton onTouchTap={this.handlePlayClick} key='appointmentFormPlayAction' style={getStyles().playButton} secondary>
+					<FloatingActionButton onTouchTap={this.handlePlayClick} key='appointmentFormPlayAction' style={getStyles().secondButton} secondary>
 						<PlayAppointment />
 					</FloatingActionButton>
 				));
 			} else if (!state.appointment.EndDate) {
 				actions.push((
-					<FloatingActionButton onTouchTap={this.handleFinishClick} key='appointmentFormDoneAction' style={getStyles().finishButton} secondary>
+					<FloatingActionButton onTouchTap={this.handleFinishClick} key='appointmentFormDoneAction' style={getStyles().secondButton} secondary>
 						<Done />
 					</FloatingActionButton>
-				))
+				));
 			}
+
+			let diagnosisStyle = this.isOngoingAppointment(state.appointment) || !state.appointment.StartDate? getStyles().thirdButton : getStyles().secondButton;
+			actions.push((
+				<FloatingActionButton onTouchTap={this.handleDiagnosisClick} key='appointmentDiagnosisAction' style={diagnosisStyle} secondary>
+					<DiagnosisIcon />
+				</FloatingActionButton>
+			));
+
+			actions.push((
+				<FloatingActionButton onTouchTap={this.handleListClick} key='listAppointmentsAction' style={getStyles().firstButton} secondary>
+					<ListIcon />
+				</FloatingActionButton>
+			));
 
 			this.actions.setAdditionalFloatingActions(actions);
 		}
+	}
+
+	isOngoingAppointment(appointment) {
+		return appointment.StartDate && !appointment.EndDate;
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -192,7 +240,6 @@ class AppointmentForm extends Component {
 			this.setAppointmentControlActions(nextState);
 		}
 	}
-
 
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
@@ -206,7 +253,7 @@ class AppointmentForm extends Component {
 					<TextField
 						name='Name'
 						type='text'
-						style={{ display: 'block' }}
+						style={styles.block}
 						readOnly={this.state.inViewMode}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
@@ -218,7 +265,7 @@ class AppointmentForm extends Component {
 					<TextField
 						name='Description'
 						type='text'
-						style={{ display: 'block' }}
+						style={styles.block}
 						readOnly={this.state.inViewMode}
 						onChange={this.handleChange}
 						onBlur={this.handleBlur}
@@ -231,7 +278,7 @@ class AppointmentForm extends Component {
 						name='Date'
 						type='Text'
 						readOnly
-						style={{ display: 'block' }}
+						style={styles.block}
 						floatingLabelText='Date'
 						value={dateFormat(this.state.appointment.Date, 'LLL')}
 						/>
@@ -241,7 +288,7 @@ class AppointmentForm extends Component {
 							name='Costumer'
 							floatingLabelText='Costumer'
 							readOnly
-							style={{ display: 'block' }}
+							style={styles.block}
 							value={this.state.appointment.Costumer? this.state.appointment.Costumer.Name : ''}
 						/> :
 						<CostumerSelect
@@ -259,7 +306,7 @@ class AppointmentForm extends Component {
 							name='Animal'
 							floatingLabelText='Animal'
 							readOnly
-							style={{ display: 'block' }}
+							style={styles.block}
 							value={this.state.appointment.Animal? this.state.appointment.Animal.Name : ''}
 						/> :
 						<AnimalSelect
@@ -273,6 +320,20 @@ class AppointmentForm extends Component {
 					}
 					{ hasAnimalError ? (<div style={styles.errorText}>This field is required</div>) : null }
 
+					<TextField
+						name='StartDate'
+						floatingLabelText='Start'
+						readOnly
+						style={styles.block}
+						value={dateFormat(this.state.appointment.StartDate, 'LLL')}
+					/>
+					<TextField
+						name='EndDate'
+						floatingLabelText='End'
+						readOnly
+						style={styles.block}
+						value={dateFormat(this.state.appointment.EndDate, 'LLL')}
+					/>
 				</Paper>
 
 				{ this.state.inViewMode ? null :

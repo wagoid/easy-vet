@@ -122,7 +122,7 @@ class AppointmentCalendar extends Component {
 	}
 
 	updateStateFromFilter() {
-		this.actions.closeFilterDialog();
+		this.actions.closeDialog();
 		this.setState({
 			startDate: moment(this.filter.startDate),
 			veterinaryId: this.filter.veterinaryId
@@ -134,7 +134,7 @@ class AppointmentCalendar extends Component {
 			startDate: this.state.startDate,
 			veterinaryId: this.state.veterinaryId
 		};
-		this.actions.closeFilterDialog();
+		this.actions.closeDialog();
 	}
 
 	setStartDateFilter(startDate) {

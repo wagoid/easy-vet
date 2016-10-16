@@ -5,8 +5,9 @@ import errorText from '../../styles/errorText';
 export default function getStyles(hasOpenMessage) {
 	return {
 		floatingAction: floatingActionStyles(hasOpenMessage),
-		finishButton: { ...additionalFloatingActionStyles(), right: '76px' },
-		playButton: { ...additionalFloatingActionStyles(), right: '76px' },
+		secondButton: { ...additionalFloatingActionStyles(), right: '76px' },
+		thirdButton: { ...additionalFloatingActionStyles(), right: '137px' },
+		firstButton: additionalFloatingActionStyles(),
 		paper,
 		dividerContainer: {
 			marginTop: '20px'
@@ -14,6 +15,9 @@ export default function getStyles(hasOpenMessage) {
 		addShoppingCart: {
 			marginTop: '20px'
 		},
-		errorText
+		errorText,
+		block: {
+			display: 'block'
+		}
 	};
 }

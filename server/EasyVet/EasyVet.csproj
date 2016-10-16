@@ -158,8 +158,10 @@
     <Compile Include="App_Start\AuthenticationHandler.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Appointment.cs" />
+    <Compile Include="Controllers\AppointmentConsultation.cs" />
     <Compile Include="Controllers\Authentication.cs" />
     <Compile Include="Controllers\Costumer.cs" />
+    <Compile Include="Controllers\Diagnosis.cs" />
     <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
     <Compile Include="Controllers\Sale.cs" />
@@ -223,6 +225,10 @@
     <Compile Include="Migrations\201610122302303_AppointmentStartDate.Designer.cs">
       <DependentUpon>201610122302303_AppointmentStartDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610162000351_AddDianosisAppointment.cs" />
+    <Compile Include="Migrations\201610162000351_AddDianosisAppointment.Designer.cs">
+      <DependentUpon>201610162000351_AddDianosisAppointment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -260,6 +266,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AppointmentConsult\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -294,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610122302303_AppointmentStartDate.resx">
       <DependentUpon>201610122302303_AppointmentStartDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610162000351_AddDianosisAppointment.resx">
+      <DependentUpon>201610162000351_AddDianosisAppointment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
