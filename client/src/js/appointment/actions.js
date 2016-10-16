@@ -113,6 +113,22 @@ export function filterDialog(config) {
 	});
 }
 
+export function diagnosisDialog(config) {
+	let { component, onRequestClose, onOk, componentProps , showActions} = config;
+	let actions = showActions? [<FlatButton key={"appointmentDiagnosticCancel"} label='Cancel' onTouchTap={onRequestClose} />,
+		<FlatButton key={"appointmentDiagnosticrSave"} label='Save' primary onTouchTap={onOk} />] : [];
+	return dialogActions.openDialog({
+		component,
+		componentProps,
+		props: {
+			title: "Diagnostic",
+			open: true,
+			onRequestClose: onRequestClose,
+			actions
+		}
+	});
+}
+
 export function closeDialog(component) {
 	return dialogActions.closeDialog({}, component);
 }
