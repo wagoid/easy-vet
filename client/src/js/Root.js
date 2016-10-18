@@ -20,7 +20,7 @@ import SaleForm from './sale/form/SaleForm';
 import AppointmentCalendar from './appointment/AppointmentCalendar';
 import AppointmentForm from './appointment/form/AppointmentForm';
 import StockList from './stock';
-import StockForm from './appointment/form/StockForm';
+import StockForm from './stock/form/StockForm';
 
 
 //Needed for onTouchTap

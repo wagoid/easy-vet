@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader, DatePicker, MenuItem } from 'material-ui';
+import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader, MenuItem } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import * as validations from '../../helpers/validations';
+import { dateFormat } from '../../helpers/valueDecode';
 import getStyles from './styles';
 import { getFieldsValidations } from './validations';
 import * as StockActions from '../actions';
@@ -23,31 +24,39 @@ class StockForm extends Component {
 		super(props);
 		this.state = {
 			error: { },
-			stock: defaultStock,
-			inViewMode: false,
-			PaymentMethod: 1,
-			selectedProductIndex: null,
-			triedToSave: false
+			stock: defaultStock
 		};
 		this.validations = getFieldsValidations();
 		this.saveStock = this.saveStock.bind(this);
-		this.addProduct = this.addProduct.bind(this);
-		this.handleStockProductAmountChange = this.handleStockProductAmountChange.bind(this);
-		this.handleProductSelectChange = this.handleProductSelectChange.bind(this);
-		this.handleCostumerChange = this.handleCostumerChange.bind(this);
-		this.handlePaymentChange = this.handlePaymentChange.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
+		this.handleProductChange = this.handleProductChange.bind(this);
 		this.actions = bindActionCreators(StockActions, this.props.dispatch);
 	}
 
-	componentWillMount() {
-		let locationState = this.props.location.state;
-		if (locationState && locationState.stockId && locationState.inViewMode) {
-			let stock = this.props.stock || [];
-			let stock = stock.find(stock => stock.Id === locationState.stockId);
-			if (stock) {
-				this.setState({ stock, inViewMode: locationState.inViewMode })
-			}
-		}
+	handleChange(event, value, name) {
+		this.updateField(event.target.value || value, event.target.name || name);
+	}
+
+	handleBlur(event) {
+		this.updateFieldError(event.target.value, event.target.name);
+	}
+
+	handleProductChange(event, index, id, product) {
+		let error = { ...this.state.error, Product: '' };
+		let stock = { ...this.state.stock, Product: product }
+		this.setState({ error, stock });
+	}
+
+	updateField(value, fieldName) {
+		let errorText = this.getErrorText(value, fieldName);
+		let stock = { ...this.state.stock, [fieldName]: value };
+		let error = { ...this.state.error, [fieldName]: errorText };
+		
+		this.setState({
+			stock,
+			error
+		});
 	}
 
 	updateFieldError(value, fieldName) {
@@ -75,7 +84,7 @@ class StockForm extends Component {
 	}
 
 	saveStock() {
-		let error = this.getStockErrors(error);
+		let error = this.getErrors(error);
 		let hasError = Object.keys(error).some(prop => !!error[prop]);
 
 		if (hasError) {
@@ -84,9 +93,6 @@ class StockForm extends Component {
 				triedToSave: true
 			});
 		} else {
-			this.state.stock.Payment = {
-				Method: this.state.PaymentMethod
-			};
 			this.actions.createStock(this.state.stock)
 				.then(() => {
 					if (this.state.stock.Id > 0) {
@@ -96,100 +102,50 @@ class StockForm extends Component {
 		}
 	}
 
-	getStockErrors() {
+	getErrors() {
 		let error = {};
 
-		Object.keys(this.state.sale).forEach(saleProp => {
-			let errorText = this.getErrorText(this.state.sale[saleProp], saleProp);
-			error[saleProp] = errorText;
+		Object.keys(this.state.stock).forEach(prop => {
+			let errorText = this.getErrorText(this.state.stock[prop], prop);
+			error[prop] = errorText;
 		});
-
-		if (!this.state.SaleProducts.length) {
-			error.SaleProducts = "Please provide at least one product";
-		}
 
 		return error;
 	}
 
-	addProduct() {
-		if (this.state.selectedProductIndex !== null) {
-			let SaleProducts = [ ...this.state.SaleProducts, { product: this.props.products[this.state.selectedProductIndex], amount: 1 } ];
-			let sale = { ...this.state.sale, Value: this.getTotalSaleCost(SaleProducts)}
-			this.setState({ SaleProducts, selectedProductIndex: null, sale });
-		}
-	}
-
-	handleSaleProductAmountChange(product, amount, index) {
-		let saleProductToChange = this.state.SaleProducts.find(sp => sp.Product === product);
-		saleProductToChange.amount = amount;
-		let sale = { ...this.state.sale, Value: this.getTotalSaleCost(this.state.SaleProducts)}
-		this.setState({ sale })
-	}
-
-	handleProductSelectChange(event, index, value) {
-		this.state.selectedProductIndex = index;
-	}
-
-	getTotalSaleCost(SaleProducts) {
-		return SaleProducts.reduce((accumulated, saleProduct) => accumulated + saleProduct.product.Price * saleProduct.amount, 0);
-	}
 
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
-		let exclusionProductIds = {};
-		let hasCostumerError = !!this.state.error.Costumer;
-		let hasNotRegisteredProduct = !this.state.SaleProducts.length;
-		let productItems = this.state.SaleProducts.map((saleProduct, index) => {
-			if (saleProduct.Product && saleProduct.Product.Id) {
-				exclusionProductIds[saleProduct.Product.Id] = true;
-			}
-			return (
-				<div key={index}>
-					<SaleProductGroup
-						product={saleProduct.Product}
-						amount={saleProduct.amount}
-						index={index}
-						onAmountChange={this.handleSaleProductAmountChange}
-					/>
-				</div>
-			)
-		});
 
 		return (
-			<div id='sale-form'>
+			<div id='StockForm-form'>
 
 				<Paper style={styles.paper}>
-					<CostumerSelect onChange={this.handleCostumerChange} errorText={this.state.error.Costumer} floatingLabelText='Costumer' defaultValue={this.state.sale.Costumer? this.state.sale.Costumer.Id : null} />
-					{ hasCostumerError? (<div style={styles.errorText}>This field is required</div>) : null }
-					<br />
-					<PaymentMethodSelect onChange={this.handlePaymentChange} defaultValue={1} floatingLabelText='Payment method' />
-					<br />
-					<TextField
-						name='totalCost'
-						type='text'
-						style={{ display: 'block' }}
-						readOnly
-						floatingLabelText='Total cost'
-						value={`R$ ${this.state.sale.Value || 0}`}
+
+					<ProductSelect
+						onChange={this.handleProductChange}
+						errorText={this.state.error.Product}
+						floatingLabelText='Product'
+						defaultValue={this.state.stock.Product? this.state.stock.Product.Id : null}
 					/>
 
-					<div id='divider-container' style={styles.dividerContainer}>
-						<Divider />
-					</div>
+					<TextField
+						name='Quantity'
+						type='number'
+						style={{ display: 'block' }}
+						onChange={this.handleChange}
+						onBlur={this.handleBlur}
+						value={this.state.stock.Quantity}
+						errorText={this.state.error.Quantity}
+						floatingLabelText='Quantity'
+					/>
 
-					<Subheader style={{ marginBottom: '-15px' }}>Products list</Subheader>
-
-					{ this.state.triedToSave && hasNotRegisteredProduct? (<div style={styles.errorText}>Please provide at least one product</div>) : null }
-					{productItems}
-
-					<ProductSelect exclusionProductIds={exclusionProductIds} floatingLabelText='Select a product to add' onChange={this.handleProductSelectChange} />
-					<FlatButton style={styles.addShoppingCart} label='Add product' icon={<AddShoppingCart />} onTouchTap={this.addProduct} />
 				</Paper>
 
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
 						style={styles.floatingAction}
-						onTouchTap={this.saveSale}
+						onTouchTap={this.saveStock}
 					>
 						<ContentSave />
 					</FloatingActionButton>)
@@ -200,69 +156,8 @@ class StockForm extends Component {
 	}
 }
 
-class SaleProductGroup extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			product: props.product,
-			amount: props.amount
-		};
-		this.handleAmountChange = this.handleAmountChange.bind(this);
-	}
-
-	handleAmountChange(event) {
-		let value = Number.parseInt(event.target.value);
-		value = value < 1? 1: value;
-		value = value > 9? 10 : value;
-		this.setState({
-			amount: value
-		});
-		if (this.props.onAmountChange) {
-			this.props.onAmountChange(this.props.product, value, this.props.index);
-		}
-	}
-
-	render() {
-		let productText;
-		if (this.state.Product) {
-			productText = `${this.state.product.Name} - R$${this.state.product.Price}`;
-		} else {
-			productText = '';
-		}
-		return (
-			<div>
-				<TextField
-					name='product'
-					readOnly
-					type='text'
-					value={productText}
-				/>
-
-				<TextField
-					name='amount'
-					type='number'
-					value={this.state.amount}
-					onChange={this.handleAmountChange}
-				/>
-			</div>
-		);
-	}
-}
-
-SaleProductGroup.defaultProps = {
-	amount: 0
-}
-
-SaleProductGroup.propTypes = {
-	Prduct: PropTypes.object.isRequired,
-	amount: PropTypes.number,
-	index: PropTypes.number.isRequired,
-	onAmountChange: PropTypes.func
-}
-
 export default connect((state, ownProps) => ({
-	sales: state.sale.sales,
+	stocks: state.stock.stocks,
 	products: state.product.products,
-	hasOpenMessage: !!state.main.message.open,
-	costumers: state.costumer.costumers
-}))(SaleForm);
+	hasOpenMessage: !!state.main.message.open
+}))(StockForm);

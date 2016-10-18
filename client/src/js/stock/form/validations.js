@@ -1,10 +1,10 @@
+const requiredValidation = {
+	required: {}
+};
+
 export function getFieldsValidations() {
-	let requiredValidation = {
-		required: {}
-	};
 	return {
-		SaleProducts: requiredValidation,
-		Costumer: requiredValidation,
-		PaymentMethod: requiredValidation
+		Product: requiredValidation,
+		Quantity: requiredValidation
 	};
 }
