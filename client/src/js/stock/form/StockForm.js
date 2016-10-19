@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton, Paper, TextField, SelectField, Divider, Subheader, MenuItem } from 'material-ui';
 import ContentSave from 'material-ui/svg-icons/content/save';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import ContentRemove from 'material-ui/svg-icons/content/remove';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import * as validations from '../../helpers/validations';
@@ -144,10 +146,19 @@ class StockForm extends Component {
 
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
-						style={styles.floatingAction}
+						
+						onTouchTap={this.removeStock}
+					>
+						<ContentAdd />
+					</FloatingActionButton>)
+				}
+
+				{ this.state.inViewMode? null :
+					(<FloatingActionButton
+						
 						onTouchTap={this.saveStock}
 					>
-						<ContentSave />
+						<ContentRemove />
 					</FloatingActionButton>)
 				}
 
