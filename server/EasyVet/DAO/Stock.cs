@@ -27,11 +27,29 @@ namespace EasyVet.DAO
             return getFirstOrDefault(this.context.Stocks, id);
         }
 
-        public Models.Stock Insert(Models.Stock stocks)
+        public Models.Stock AddProducts(Models.Stock stocks)
         {
             return post(context.Stocks, stocks);
         }
-        
+
+        public bool RemoveProducts(Models.Stock stocks)
+        {
+            var stocksFromBd = context.Stocks.FirstOrDefault(d => d.Id == stocks.Id);
+            throwEntityNotFoundWhenNull(stocksFromBd, stocks.Id);
+            stocksFromBd.Quantity = stocksFromBd.Quantity - stocks.Quantity;
+            context.SaveChanges();
+            return true;
+        }
+
+        public bool ProductAdd(Models.Stock stocks)
+        {
+            var stocksFromBd = context.Stocks.FirstOrDefault(d => d.Id == stocks.Id);
+            throwEntityNotFoundWhenNull(stocksFromBd, stocks.Id);
+            stocksFromBd.Quantity = stocksFromBd.Quantity + stocks.Quantity;
+            context.SaveChanges();
+            return true;
+        }
+
         public bool Update(Models.Stock stock)
         {
             //return put(this.context.Stocks, stock);

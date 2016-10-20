@@ -36,18 +36,25 @@ namespace EasyVet.Controllers
             return safelyRespond(() => stock.List());
         }
 
-        [Route("api/stock")]
+        [Route("api/stock/add")]
         [HttpPost]
-        public Response<Models.Stock> PostProduct([FromBody]Models.Stock stock)
+        public Response<Models.Stock> PostProductAdd([FromBody]Models.Stock stock)
         {
-            return safelyRespond(() => this.stock.Insert(stock));
+            return safelyRespond(() => this.stock.AddProducts(stock));
         }
 
-        [Route("api/stock")]
+        [Route("api/stock/remove")]
         [HttpPut]
-        public Response<bool> PutProduct([FromBody]Models.Stock stock)
+        public Response<bool> PutProductRemove([FromBody]Models.Stock stock)
         {
-            return safelyRespond(() => this.stock.Update(stock));
+            return safelyRespond(() => this.stock.RemoveProducts(stock));
+        }
+
+        [Route("api/stock/add")]
+        [HttpPut]
+        public Response<bool> PutProductAdd([FromBody]Models.Stock stock)
+        {
+            return safelyRespond(() => this.stock.ProductAdd(stock));
         }
 
         [Route("api/stock/{id}")]

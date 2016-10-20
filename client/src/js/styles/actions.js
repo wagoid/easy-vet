@@ -10,6 +10,15 @@ export function floatingActionStyles(hasOpenMessage) {
 	};
 }
 
+export function floatingSecondActionStyles(hasOpenMessage) {
+	return {
+		position: 'fixed',
+		right: 90,
+		bottom: hasOpenMessage && window.screen.width < 768? SNACKBAR_HEIGHT + 10 : FLOATING_BUTTON_BOTTOM,
+		zIndex: 100
+	};
+}
+
 export function additionalFloatingActionStyles() {
 	return {
 		position: 'absolute',

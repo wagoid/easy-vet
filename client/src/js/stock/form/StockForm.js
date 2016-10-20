@@ -15,9 +15,12 @@ import * as StockActions from '../actions';
 import { isString } from '../../helpers/util';
 import ProductSelect from '../../product/ProductSelect';
 
+let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
+	'Neighbourhood', 'Municipality', 'State', 'ZipCode'].reduce((prev, prop) => ({ ...prev, [prop]: '' }), {});
 let defaultStock = {
 	Product: null,
-	Quantity: 0
+	Quantity: 0,
+	Address: addressProperties
 };
 
 class StockForm extends Component {
@@ -25,15 +28,41 @@ class StockForm extends Component {
 	constructor (props) {
 		super(props);
 		this.state = {
-			error: { },
+			error: {
+				Address: {}
+			},
 			stock: defaultStock
 		};
 		this.validations = getFieldsValidations();
+		this.removeStock = this.removeStock.bind(this);
 		this.saveStock = this.saveStock.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleProductChange = this.handleProductChange.bind(this);
 		this.actions = bindActionCreators(StockActions, this.props.dispatch);
+	}
+
+	getAddressGenericTextFields() {
+		return addressDefinitions.map((addressDefinition, key) => {
+			return this.createGenericAddressTextField({...addressDefinition, key });
+		});
+	}
+
+	createGenericAddressTextField({ name, label, type, key }) {
+		return (
+			<TextField
+				key={key}
+				name={name}
+				type={type || 'text'}
+				style={{ display: 'block' }}
+				readOnly={this.state.inViewMode}
+				onChange={this.handleAddressChange}
+				onBlur={this.handleAddressBlur}
+				value={this.state.employee.Address[name]}
+				errorText={this.state.error.Address[name]}
+				floatingLabelText={label}
+			/>
+		);
 	}
 
 	handleChange(event, value, name) {
@@ -51,7 +80,10 @@ class StockForm extends Component {
 	}
 
 	updateField(value, fieldName) {
+		console.log(value);
+		console.log(fieldName);
 		let errorText = this.getErrorText(value, fieldName);
+
 		let stock = { ...this.state.stock, [fieldName]: value };
 		let error = { ...this.state.error, [fieldName]: errorText };
 		
@@ -104,6 +136,25 @@ class StockForm extends Component {
 		}
 	}
 
+	removeStock() {
+		let error = this.getErrors(error);
+		let hasError = Object.keys(error).some(prop => !!error[prop]);
+
+		if (hasError) {
+			this.setState({
+				error,
+				triedToSave: true
+			});
+		} else {
+			this.actions.removeStock(this.state.stock)
+				.then(() => {
+					if (this.state.stock.Id > 0) {
+						this.setState({ inViewMode: true });
+					}
+				});
+		}
+	}
+
 	getErrors() {
 		let error = {};
 
@@ -118,7 +169,7 @@ class StockForm extends Component {
 
 	render() {
 		let styles = getStyles(this.props.hasOpenMessage);
-
+		let hasProductError = !!this.state.error.Product;
 		return (
 			<div id='StockForm-form'>
 
@@ -130,6 +181,7 @@ class StockForm extends Component {
 						floatingLabelText='Product'
 						defaultValue={this.state.stock.Product? this.state.stock.Product.Id : null}
 					/>
+					{ hasProductError? (<div style={styles.errorText}>This field is required</div>) : null }
 
 					<TextField
 						name='Quantity'
@@ -142,23 +194,31 @@ class StockForm extends Component {
 						floatingLabelText='Quantity'
 					/>
 
+					<div id='divider-container' style={styles.dividerContainer}>
+						<Divider />
+					</div>
+					
+					<Subheader>Address information</Subheader>
+
+					{ this.getAddressGenericTextFields() }
+
 				</Paper>
 
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
-						
+						style={styles.floatingSecondAction}
 						onTouchTap={this.removeStock}
 					>
-						<ContentAdd />
+						<ContentRemove />
 					</FloatingActionButton>)
 				}
 
 				{ this.state.inViewMode? null :
 					(<FloatingActionButton
-						
+						style={styles.floatingAction}
 						onTouchTap={this.saveStock}
 					>
-						<ContentRemove />
+						<ContentAdd />
 					</FloatingActionButton>)
 				}
 

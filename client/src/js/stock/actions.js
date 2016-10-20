@@ -87,7 +87,27 @@ export function createStock(stock) {
 		};
 		let params = {
 			method:  stock.Id > 0? 'put' : 'post',
-			url: `${urls.api}/stock`,
+			url: `${urls.api}/stock/add`,
+			data: JSON.stringify(stock)
+		};
+		return genericFetch(dispatch, {
+			params,
+			businessErrorActions: [openMessageView, stocksCreateError],
+			fetchErrorActions: [openMessageView, stocksCreateError],
+			successActions: [openMessageView.bind(null, successActionPayload), stockSaveSuccess(stock)]
+		});
+	}
+}
+
+export function removeStock(stock) {
+	return (dispatch, getState) => {
+		let successActionPayload = {
+			type: 'Success',
+			text: 'Stock saved with success!'
+		};
+		let params = {
+			method:  stock.Id > 0? 'put' : 'post',
+			url: `${urls.api}/stock/remove`,
 			data: JSON.stringify(stock)
 		};
 		return genericFetch(dispatch, {
