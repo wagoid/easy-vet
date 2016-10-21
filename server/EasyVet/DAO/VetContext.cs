@@ -27,6 +27,12 @@ namespace EasyVet.DAO
             return new VetContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Properties<DateTime>()
+                .Configure(c => c.HasColumnType("datetime2"));
+        }
+
         public IDbSet<Models.Address> Addresses { get; set; }
         public IDbSet<Models.User> Users { get; set; }
         public IDbSet<Models.Employee> Employees { get; set; }

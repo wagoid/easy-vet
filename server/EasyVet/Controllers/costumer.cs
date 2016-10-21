@@ -13,10 +13,12 @@ namespace EasyVet.Controllers
     public class Costumer : Base
     {
         private DAO.Costumer costumer;
+        private DAO.Dog dog;
 
         public Costumer() : base()
         {
             costumer = new DAO.Costumer(this.context);
+            dog = new DAO.Dog(this.context);
         }
         public Costumer(DAO.Interfaces.VetContext context) : base(context)
         {
@@ -63,6 +65,13 @@ namespace EasyVet.Controllers
         public Response<bool> Delete(int id)
         {
             return safelyRespond(() => costumer.Delete(id));
+        }
+
+        [Route("api/costumer/dog")]
+        [HttpPost]
+        public Response<Models.Dog> PostDog([FromBody]Models.Dog dog)
+        {
+            return safelyRespond(() => this.dog.Insert(dog));
         }
     }
 }

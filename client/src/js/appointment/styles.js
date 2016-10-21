@@ -29,35 +29,42 @@ export default function getStyles() {
 			},
 			headerCell: {
 				width: '130px',
+				minWidth: '130px',
 				display: 'inline-block',
 				verticalAlign: 'middle',
 				textAlign: 'center',
 				...getBorderStyle('Right'),
+				...getBorderStyle('Bottom'),
 				padding: '5px'
 			},
 			rowHourCell: {
 				width: '60px',
+				minWidth: '60px',
 				display: 'inline-block',
 				verticalAlign: 'middle',
 				textAlign: 'center',
-				...getBorderStyle('Right')
+				...getBorderStyle('Right'),
+				...getBorderStyle('Bottom'),
 			},
 			row: {
 				width: 'auto',
 				minHeight: '30px',
-				...getBorderStyle('Bottom'),
 				display: 'flex'
 			},
 			cell: {
 				width: '130px',
+				minWidth: '130px',
 				display: 'inline-block',
 				...getBorderStyle('Right'),
+				...getBorderStyle('Bottom'),
 				padding: '5px'
 			},
 			eventItem: {
 				backgroundColor: 'rgb(0, 188, 212)',
 				borderRadius: '6px',
-				padding: '5px'
+				padding: '5px',
+				marginBottom: '5px',
+				wordWrap: 'break-word'
 			},
 			nextWeekAction: additionalFloatingActionStyles(),
 			previousWeekAction: { ...additionalFloatingActionStyles(), right: '76px' },

@@ -34,7 +34,7 @@ namespace EasyVet.DAO
 
         public bool Update(Models.Appointment appointment)
         {
-            var appointmentFromBd = context.Costumers.FirstOrDefault(d => d.Id == appointment.Id);
+            var appointmentFromBd = context.Appointments.FirstOrDefault(d => d.Id == appointment.Id);
             throwEntityNotFoundWhenNull(appointmentFromBd, appointment.Id);
             context.Entry(appointmentFromBd).CurrentValues.SetValues(appointment);
             context.Entry(appointmentFromBd).State = EntityState.Modified;
@@ -44,14 +44,18 @@ namespace EasyVet.DAO
 
         public Models.Appointment FindById(int id)
         {
-            return getFirstOrDefault(this.context.Appointments, id);
+            return this.context.Appointments
+                .Include(a => a.Veterinary)
+                .Include(a => a.Costumer)
+                .Include(a => a.Animal)
+                .FirstOrDefault(a => a.Id == id);
         }
 
         public Models.Appointment Insert(Models.Appointment appointment)
         {
             this.context.Appointments.Add(appointment);
             this.context.SaveChanges();
-            return appointment;
+            return this.FindById(appointment.Id);
         }
 
         public bool Delete(int id)
@@ -69,6 +73,16 @@ namespace EasyVet.DAO
                 .ToList();
 
             return appointments;
+        }
+
+        public List<Models.Appointment> GetAnimalAppointments(int id)
+        {
+            return context.Appointments
+                .Include(a => a.Veterinary)
+                .Include(a => a.Costumer)
+                .Include(a => a.Animal)
+                .Where(a => a.AnimalId == id)
+                .ToList();
         }
     }
 }

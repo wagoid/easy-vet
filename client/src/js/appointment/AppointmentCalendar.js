@@ -42,25 +42,39 @@ class AppointmentCalendar extends Component {
 		//Dont let the event bubble to handleCellClick;
 		event.stopPropagation();
 		console.log(appointment);
-		alert(`${appointment.Name}\n${appointment.Description}`);
+		let newLocation =  { ...this.props.location, pathname: '/appointment/form' , state: { appointment, inViewMode: true } };
+		this.context.router.push(newLocation);
 	}
 
 	handleCellClick(day, row) {
 		let { veterinaryId } = this.state;
 		let date = moment(day.momentDay).hour(row.hour).minute(0).second(0)._d;
 		if (veterinaryId) {
-			let newLocation =  {
-				...this.props.location,
-				pathname: '/appointment/form' ,
-				state: { date, veterinaryId }
-			};
-			this.context.router.push(newLocation);
+			var rowDayEvents = row.days.find(rowDay => rowDay.day === day.day).events;
+			if (rowDayEvents.length) {
+				this.props.dispatch(openMessageView({
+					type: 'creteAppointmentError',
+					text: 'There is already an appointment scheduled for the selected time.'
+				}));
+			} else {
+				this.createNewAppointment(date, veterinaryId);
+			}
+			
 		} else {
 			this.props.dispatch(openMessageView({
 				type: 'creteAppointmentError',
 				text: 'Please filter by a veterinary before creating an appointment.'
 			}));
 		}
+	}
+
+	createNewAppointment(date, veterinaryId) {
+		let newLocation =  {
+			...this.props.location,
+			pathname: '/appointment/form' ,
+			state: { date, veterinaryId }
+		};
+		this.context.router.push(newLocation);
 	}
 
 	componentDidMount() {
@@ -108,7 +122,7 @@ class AppointmentCalendar extends Component {
 	}
 
 	updateStateFromFilter() {
-		this.actions.closeFilterDialog();
+		this.actions.closeDialog();
 		this.setState({
 			startDate: moment(this.filter.startDate),
 			veterinaryId: this.filter.veterinaryId
@@ -120,7 +134,7 @@ class AppointmentCalendar extends Component {
 			startDate: this.state.startDate,
 			veterinaryId: this.state.veterinaryId
 		};
-		this.actions.closeFilterDialog();
+		this.actions.closeDialog();
 	}
 
 	setStartDateFilter(startDate) {
@@ -139,6 +153,9 @@ class AppointmentCalendar extends Component {
 		let rows = [];
 		let eventsMap = {};
 		events.forEach(event => {
+			if (!event.Date.format) {
+				event.Date = moment(event.Date);
+			}
 			let eventKey = `${event.Date.format('L')}|${event.Date.hour()}`;
 			if (!eventsMap[eventKey]) {
 				eventsMap[eventKey] = [];
