@@ -165,7 +165,10 @@
     <Compile Include="Controllers\Generic\Base.cs" />
     <Compile Include="Controllers\Employee.cs" />
     <Compile Include="Controllers\Sale.cs" />
+    <Compile Include="Controllers\Stock.cs" />
     <Compile Include="DAO\Appointment.cs" />
+    <Compile Include="DAO\Generic\Stock.cs" />
+    <Compile Include="DAO\Stock.cs" />
     <Compile Include="DAO\Cashier.cs" />
     <Compile Include="DAO\Costumer.cs" />
     <Compile Include="DAO\Dog.cs" />

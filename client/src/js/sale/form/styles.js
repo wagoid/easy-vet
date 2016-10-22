@@ -1,4 +1,4 @@
-import { floatingActionStyles, additionalFloatingActionStyles } from '../../helpers/util';
+import { floatingActionStyles, additionalFloatingActionStyles } from '../../styles/actions';
 
 export default function getStyles(hasOpenMessage) {
 	return {

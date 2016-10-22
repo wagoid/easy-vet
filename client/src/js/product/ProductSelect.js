@@ -21,7 +21,7 @@ class ProductSelect extends Component {
 	handleChange(event, index, value) {
 		this.setState({value});
 		if (this.props.onChange) {
-			this.props.onChange(event, index, value);
+			this.props.onChange(event, index, value, this.props.products[index]);
 		}
 	}
 
