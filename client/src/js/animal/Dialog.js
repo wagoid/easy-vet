@@ -16,7 +16,7 @@ class AnimalDialog extends Component {
 				Type: 0,
 				Gender: 'Male',
 				Breed: '',
-				Owner: props.owner
+				OwnerId: props.owner.Id
 			}
 		};
 		this.validations = {

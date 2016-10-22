@@ -229,6 +229,10 @@
     <Compile Include="Migrations\201610162000351_AddDianosisAppointment.Designer.cs">
       <DependentUpon>201610162000351_AddDianosisAppointment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610220227472_AddCostumerIdToAnimal.cs" />
+    <Compile Include="Migrations\201610220227472_AddCostumerIdToAnimal.Designer.cs">
+      <DependentUpon>201610220227472_AddCostumerIdToAnimal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -304,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610162000351_AddDianosisAppointment.resx">
       <DependentUpon>201610162000351_AddDianosisAppointment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610220227472_AddCostumerIdToAnimal.resx">
+      <DependentUpon>201610220227472_AddCostumerIdToAnimal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

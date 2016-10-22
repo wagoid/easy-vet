@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,9 @@ namespace EasyVet.Models
         public int Age { get; set; }
 
         [Required]
-        public Costumer Owner { get; set; }
+        [ForeignKey("Owner")]
+        public int OwnerId { get; set; }
+
+        public virtual Costumer Owner { get; set; }
     }
 }
