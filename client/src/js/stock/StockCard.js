@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 
-class Stock extends Component {
+class StockCard extends Component {
 
 	constructor(...args) {
 		super(...args);
@@ -20,9 +20,6 @@ class Stock extends Component {
 			},
 			cardText: {
 				display: 'inline-block'
-			},
-			addressCardText: {
-				paddingTop: 0
 			}
 		};
 	}
@@ -35,41 +32,24 @@ class Stock extends Component {
 
 	render() {
 		let { stock, keyReplacements, valueMasks } = this.props;
-		let address = stock.Address;
 		let styles = this.getStyles();
-		let userTypeMask = valueMasks.Type;
-		
-		let keysToShow = Object.keys(stock).filter(prop => !~['Id', 'Name', 'RowVersion'].indexOf(prop));
-
-		var cardTexts = keysToShow.map((key, index) => {
-			let keyText = keyReplacements[key] || key;
-			let valueMask = valueMasks[key];
-			return (
-				<CardText key={index} style={styles.cardText}>
-					{keyText}: {valueMask? valueMask.func(stock[key], valueMask.mask) : stock[key]}
-				</CardText>
-			)
-			
-		});
 
 		return (
 			<Card onClick={this.handleClick} style={styles.card}>
 				<CardHeader
-					title={stock.product.Name}
-					subtitle={userTypeMask? userTypeMask.func(stock.product.Type) : stock.product.Type}
+					title={stock.Product.Name}
+					subtitle={stock.Quantity}
 				/>
-
-				{cardTexts}
 			</Card>
 		);
 	}
 }
 
-Stock.propTypes = {
+StockCard.propTypes = {
 	stock: PropTypes.object.isRequired,
 	keyReplacements: PropTypes.object.isRequired,
 	valueMasks: PropTypes.object.isRequired,
 	onClick: PropTypes.func
 }
 
-export default Stock;
+export default StockCard;

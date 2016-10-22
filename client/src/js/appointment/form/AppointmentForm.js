@@ -77,6 +77,10 @@ class AppointmentForm extends Component {
 			});
 	}
 
+	componentWillUnmount() {
+		this.actions.setAdditionalFloatingActions([]);
+	}
+
 	handlePlayClick() {
 		this.saveAppointment('appointmentconsultation/start', `Started appointment at ${moment().format('LT')}`)
 			.then(() => {

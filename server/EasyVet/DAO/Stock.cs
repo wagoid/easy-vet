@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
 namespace EasyVet.DAO
 {
-    public class Stock : Generic.Base
+    public class Stock : Generic.Stock
     {
         public Stock() : base()
         {
@@ -19,7 +21,12 @@ namespace EasyVet.DAO
 
         public List<Models.Stock> List()
         {
-            return getList(this.context.Stocks);
+            var stocks = context.Stocks
+                .Include(p => p.Product)
+                .Include(l => l.Location)
+                .ToList();
+
+            return stocks;
         }
 
         public Models.Stock FindById(int id)
@@ -29,7 +36,7 @@ namespace EasyVet.DAO
 
         public Models.Stock AddProducts(Models.Stock stocks)
         {
-            return post(context.Stocks, stocks);
+            return postStock(context.Stocks, stocks);
         }
 
         public bool RemoveProducts(Models.Stock stocks)

@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { userType, dateFormat } from '../helpers/valueDecode';
 import { floatingActionStyles } from '../styles/actions';
 
-import Stock from './Stock';
+import StockCard from './StockCard';
 import * as StockActions from './actions';
 
 class StockList extends Component {
@@ -42,20 +41,14 @@ class StockList extends Component {
 	render() {
 		const styles = this.getStyles();
 		let keyReplacements = {
-			BirthDate: 'Birth Date'
+			
 		};
+		//TODO: add value masks for enums
 		let valueMasks = {
-			BirthDate: {
-				func: dateFormat,
-				mask: 'date'
-			},
-			Type: {
-				func: userType
-			}
 		}
 
 		const stockCards = this.props.stocks.map((stock) => {
-			return (<Stock
+			return (<StockCard
 				onClick={this.viewStock}
 				key={stock.Id}
 				stock={stock}

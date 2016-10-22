@@ -10,7 +10,7 @@ import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import * as validations from '../../helpers/validations';
 import { dateFormat } from '../../helpers/valueDecode';
 import getStyles from './styles';
-import { getFieldsValidations } from './validations';
+import { getFieldsValidations, getAddressFieldsValidations, addressDefinitions } from './validations';
 import * as StockActions from '../actions';
 import { isString } from '../../helpers/util';
 import ProductSelect from '../../product/ProductSelect';
@@ -20,7 +20,7 @@ let addressProperties = ['StreetType', 'StreetName', 'Number', 'Complement',
 let defaultStock = {
 	Product: null,
 	Quantity: 0,
-	Address: addressProperties
+	Location: addressProperties
 };
 
 class StockForm extends Component {
@@ -29,7 +29,7 @@ class StockForm extends Component {
 		super(props);
 		this.state = {
 			error: {
-				Address: {}
+				Location: {}
 			},
 			stock: defaultStock
 		};
@@ -40,6 +40,18 @@ class StockForm extends Component {
 		this.handleBlur = this.handleBlur.bind(this);
 		this.handleProductChange = this.handleProductChange.bind(this);
 		this.actions = bindActionCreators(StockActions, this.props.dispatch);
+		this.addressValidations = getAddressFieldsValidations();
+		this.handleAddressBlur = this.handleAddressBlur.bind(this);
+		this.handleAddressChange = this.handleAddressChange.bind(this);
+	}
+
+	handleAddressBlur(event) {
+		let errorText = this.getErrorText(event.target.value, event.target.name, this.addressValidations);
+		let error = { ...this.state.error };
+		error.Location[event.target.name] = errorText;
+		this.setState({
+			error
+		});
 	}
 
 	getAddressGenericTextFields() {
@@ -47,6 +59,24 @@ class StockForm extends Component {
 			return this.createGenericAddressTextField({...addressDefinition, key });
 		});
 	}
+
+	handleAddressChange(event) {
+		this.updateAddressField(event.target.value, event.target.name);
+	}
+
+	updateAddressField(value, fieldName) {
+		let errorText = this.getErrorText(value, fieldName, this.addressValidations);
+		let stock = { ...this.state.stock };
+		stock.Location[fieldName] = value;
+		let error = { ...this.state.error };
+		error.Location[fieldName] = errorText;
+		
+		this.setState({
+			stock,
+			error
+		});
+	};
+
 
 	createGenericAddressTextField({ name, label, type, key }) {
 		return (
@@ -58,8 +88,8 @@ class StockForm extends Component {
 				readOnly={this.state.inViewMode}
 				onChange={this.handleAddressChange}
 				onBlur={this.handleAddressBlur}
-				value={this.state.employee.Address[name]}
-				errorText={this.state.error.Address[name]}
+				value={this.state.stock.Location[name]}
+				errorText={this.state.error.Location[name]}
 				floatingLabelText={label}
 			/>
 		);
@@ -80,8 +110,6 @@ class StockForm extends Component {
 	}
 
 	updateField(value, fieldName) {
-		console.log(value);
-		console.log(fieldName);
 		let errorText = this.getErrorText(value, fieldName);
 
 		let stock = { ...this.state.stock, [fieldName]: value };
