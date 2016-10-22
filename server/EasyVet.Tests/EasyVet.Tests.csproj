@@ -101,6 +101,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AppointmentConsultationTest.cs" />
     <Compile Include="Controllers\AppointmentTest.cs" />
     <Compile Include="Mocks\DbSet.cs" />
     <Compile Include="Mocks\VetContext.cs" />

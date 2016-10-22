@@ -31,6 +31,12 @@ namespace EasyVet.Tests.Mocks
             this.Dogs = new Mocks.DbSet<Dog>();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<VetContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
+
         public new int SaveChanges()
         {
             return 1;
