@@ -19,7 +19,7 @@ import CostumerSelect from '../../costumer/CostumerSelect';
 import AnimalSelect from '../../animal/AnimalSelect';
 import { setAdditionalFloatingActions } from '../../app/appbar/actions';
 import AppointmentsSimpleList from './AppointmentsSimpleList';
-import DiagnosisDialog from './diagnosisDialog';
+import DiagnosisDialog from './DiagnosisDialog';
 
 const FETCH_ANIMAL_URL = '/appointment/animal/fromcostumer/';
 
@@ -30,7 +30,8 @@ let defaultAppointment = {
 	Name: '',
 	Description: '',
 	StartDate: '',
-	EndDate: ''
+	EndDate: '',
+	Justification: ''
 };
 
 class AppointmentForm extends Component {
@@ -152,9 +153,9 @@ class AppointmentForm extends Component {
 		let validation = validationsDefintion[fieldName];
 		if (validation) {
 			Object.keys(validation).forEach(validationName => {
-				let validationParams = validations[validationName];
+				let validationParams = validation[validationName] || validations[validationName];
 				if (!validations[validationName](value, validationParams)) {
-					errorText = validations.DEFAULT_MESSAGES[validationName](validationParams);
+					errorText = validationParams.message || validations.DEFAULT_MESSAGES[validationName](validationParams);
 				}
 			});
 		}
@@ -250,6 +251,20 @@ class AppointmentForm extends Component {
 		let hasCostumerError = !!this.state.error.Costumer;
 		let hasAnimalError = !!this.state.error.Animal;
 		let costumerId = this.state.appointment.CostumerId || null;
+		let justification = false;
+		if(this.props.location.state.date) {
+			let actualDate = new Date();
+			actualDate.setHours(actualDate.getHours() + 4);
+			justification = actualDate > this.props.location.state.date;
+			if(justification) {
+				this.validations.Justification = {
+					required: {
+						message: 'Justification is required for appointments that are scheduled up to 4 hours from now'
+					}
+				};
+			}
+		}
+		
 		return (
 			<div id='appointment-form'>
 
@@ -323,6 +338,21 @@ class AppointmentForm extends Component {
 						/>
 					}
 					{ hasAnimalError ? (<div style={styles.errorText}>This field is required</div>) : null }
+
+					{ justification ? (
+						<TextField
+							name='Justification'
+							type='text'
+							style={styles.block}
+							readOnly={this.state.inViewMode}
+							onChange={this.handleChange}
+							onBlur={this.handleBlur}
+							value={this.state.appointment.Justification}
+							errorText={this.state.error.Justification}
+							floatingLabelText='Justification'
+							/>
+						) : null
+					}
 
 					<TextField
 						name='StartDate'
