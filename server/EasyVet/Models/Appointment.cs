@@ -15,6 +15,7 @@ namespace EasyVet.Models
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Diagnosis { get; set; }
+        public string Justification { get; set; }
 
         [Required]
         [ForeignKey("Veterinary")]

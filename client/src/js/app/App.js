@@ -58,7 +58,7 @@ class App extends React.Component {
 		return (
 			<div id='page-container'>
 				<Drawer
-					docker={false}
+					docked={false}
 					open={this.state.open}
 					onRequestChange={open => this.setState({open})}
 				>
