@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201610220227472_AddCostumerIdToAnimal.Designer.cs">
       <DependentUpon>201610220227472_AddCostumerIdToAnimal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610291158376_Add-Justification-Appointment.cs" />
+    <Compile Include="Migrations\201610291158376_Add-Justification-Appointment.Designer.cs">
+      <DependentUpon>201610291158376_Add-Justification-Appointment.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Animal.cs" />
@@ -314,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610220227472_AddCostumerIdToAnimal.resx">
       <DependentUpon>201610220227472_AddCostumerIdToAnimal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291158376_Add-Justification-Appointment.resx">
+      <DependentUpon>201610291158376_Add-Justification-Appointment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
