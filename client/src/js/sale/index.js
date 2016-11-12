@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { userType, dateFormat, paymentMethod, paymentStatus } from '../helpers/valueDecode';
-import { floatingActionStyles } from '../styles/actions';
+import { floatingActionStyles, additionalFloatingActionStyles } from '../styles/actions';
+import { setAdditionalFloatingActions } from '../app/appbar/actions';
+import Pets from 'material-ui/svg-icons/action/pets';
 
 import SaleCard from './SaleCard';
 import * as SaleActions from './actions';
@@ -15,13 +17,28 @@ class SaleList extends Component {
 		super(...args);
 		this.addSale = this.addSale.bind(this);
 		this.viewSale = this.viewSale.bind(this);
-		this.actions = bindActionCreators(SaleActions, this.props.dispatch);
+		this.actions = bindActionCreators({ ...SaleActions, setAdditionalFloatingActions }, this.props.dispatch);
 	}
 
 	componentDidMount() {
 		if (!this.props.sales.length) {
 			this.actions.fetchSales();
 		}
+
+		let floatingAction = (
+			<FloatingActionButton
+				key='salesGenerateReportAction'
+				style={additionalFloatingActionStyles()}
+				secondary
+				onClick={() => this.actions.openGenerateReportDialog()}>
+					<Pets />
+			</FloatingActionButton>
+		);
+		this.actions.setAdditionalFloatingActions(floatingAction);
+	}
+
+	componentWillUnmount() {
+		this.actions.setAdditionalFloatingActions([]);
 	}
 
 	getStyles() {

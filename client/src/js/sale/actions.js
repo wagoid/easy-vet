@@ -3,6 +3,7 @@ import * as urls from '../app/config/urls';
 import { openMessageView } from '../app/messages/actions';
 import { catchFetch, dispatchErrorActions, genericFetch } from '../helpers/util';
 import * as dialogActions from '../dialog/actions';
+import GenerateReportDialog from './GenerateReportDialog'
 
 export const FETCH_SALES = 'sale/FETCH';
 export const FETCH_SALES_SUCCESS = 'sale/FETCH_SUCCESS';
@@ -87,4 +88,18 @@ export function createSale(sale) {
 			successActions: [openMessageView.bind(null, successActionPayload), saleCreateSuccess(sale)]
 		});
 	}
+}
+
+export function closeGenerateReportDialog(component) {
+	return dialogActions.closeDialog({props: {fullDialog: true, open: false}}, component);
+}
+
+export function openGenerateReportDialog() {
+	return dialogActions.openDialog({
+		component: GenerateReportDialog,
+		props: {
+			fullDialog: true,
+			open: true
+		}
+	});
 }
