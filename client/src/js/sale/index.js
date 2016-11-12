@@ -6,7 +6,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import { userType, dateFormat, paymentMethod, paymentStatus } from '../helpers/valueDecode';
 import { floatingActionStyles, additionalFloatingActionStyles } from '../styles/actions';
 import { setAdditionalFloatingActions } from '../app/appbar/actions';
-import Pets from 'material-ui/svg-icons/action/pets';
+import Archive from 'material-ui/svg-icons/content/archive';
 
 import SaleCard from './SaleCard';
 import * as SaleActions from './actions';
@@ -31,7 +31,7 @@ class SaleList extends Component {
 				style={additionalFloatingActionStyles()}
 				secondary
 				onClick={() => this.actions.openGenerateReportDialog()}>
-					<Pets />
+					<Archive />
 			</FloatingActionButton>
 		);
 		this.actions.setAdditionalFloatingActions(floatingAction);

@@ -87,13 +87,19 @@ class GenerateReportDialog extends Component {
   saveWorkSheet() {
     let data = [['Date', 'Product', 'Item value', 'Final value']];
     this.props.sales.forEach(sale => {
-      data.push([new Date(sale.Payment.Date), '', 1, sale.Value, ]);
+      data.push([moment(sale.Payment.Date).format('DD/MM/YYYY'), '', 1, sale.Value, ]);
     });
     const wb = new WorkBook();
     wb.SheetNames.push('Sales report');
     wb.Sheets['Sales report'] = sheetFromArrayofArrays(data)
     const wbBinary = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
-    saveAs(new Blob([sheetToArrayBuffer(wbBinary)],{type:"application/octet-stream"}), "sales-report.xlsx")
+    saveAs(new Blob([sheetToArrayBuffer(wbBinary)],{type:"application/octet-stream"}), this.getReportFileName())
+  }
+
+  getReportFileName() {
+    const startDate = moment(this.state.startDate).format('DD-MM-YYYY')
+    const endDate = moment(this.state.endDate).format('DD-MM-YYYY')
+    return `sales-report${mstartDate}-to-${endDate}.xlsx`
   }
 
   handleStartDateChange(event, startDate) {
@@ -134,11 +140,6 @@ class GenerateReportDialog extends Component {
 	}
 }
 
-function datenum(v, date1904) {
-	if(date1904) v+=1462;
-	var epoch = Date.parse(v);
-	return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
-}
  
 function sheetFromArrayofArrays(data, opts) {
 	var ws = {};
@@ -155,10 +156,6 @@ function sheetFromArrayofArrays(data, opts) {
 			
 			if(typeof cell.v === 'number') cell.t = 'n';
 			else if(typeof cell.v === 'boolean') cell.t = 'b';
-			else if(cell.v instanceof Date) {
-				cell.t = 'n'; cell.z = XLSX.SSF._table[14];
-				cell.v = datenum(cell.v);
-			}
 			else cell.t = 's';
 			
 			ws[cell_ref] = cell;
